@@ -6,21 +6,26 @@ export default class GameContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    	gameStatus: 0,
+      gameStatus: 0,
     };
-  };
 
-  changeGameState = (newStatus) => {
+    this.changeGameState = (newStatus) => {
       this.setState({gameStatus: newStatus});
+    };
   }
 
   render() {
-      	switch (this.state.gameStatus) {
-      		case 0:
-      			return (<HomePage onClickStart={() => {this.changeGameState(1);}}/>);
-      		case 1: 
-      			return (<GameBoard/>);	
-      	
-      }
+    switch (this.state.gameStatus) {
+      case 0:
+        return (
+          <HomePage onClickStart={() => {this.changeGameState(1);}} />
+        );
+      case 1:
+        return (
+          <GameBoard />
+        );
+    }
   }
+
+
 }

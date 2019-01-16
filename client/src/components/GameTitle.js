@@ -8,7 +8,7 @@ export default class GameTitle extends React.Component {
 
   render() {
     return (
-      <div className="title">React Snake</div>
+      <div className={"title"}>React Snake</div>
     );
   }
 }

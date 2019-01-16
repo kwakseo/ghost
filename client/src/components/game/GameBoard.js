@@ -1,9 +1,9 @@
 import React from "react";
-import "../../css/game.css";
+import "../../css/game.css"
 import io from "socket.io-client";
 import { GRID_LENGTH } from "../../../../config";
-import Row from "./Row";
 import GameOver from "./GameOver";
+import Row from "./Row";
 
 export default class GameBoard extends React.Component {
   constructor(props) {
@@ -56,7 +56,7 @@ export default class GameBoard extends React.Component {
 
   updateBoard = (data) => {
     const newBoard = this.emptyBoard();
-    newBoard[data.food.y][data.food.x] = 2;
+    newBoard[data.food.y][data.food.x] = 3;
     for (const i in data.player.snakeCoords) {
       newBoard[data.player.snakeCoords[i].y][data.player.snakeCoords[i].x] = 1;
     }
@@ -74,12 +74,12 @@ export default class GameBoard extends React.Component {
       <div className="game-container">
         <div className="board">
           {Array.from(Array(GRID_LENGTH).keys()).map(y => (
-              <Row
-                key={y}
-                rowContent={this.state.boardContent[y]}
-                y={y}
-              />
-            ))}
+            <Row
+              rowContent={this.state.boardContent[y]}
+              y={y}
+              key={y}
+            />
+          ))}
         </div>
         {gameOverModal}
       </div>
