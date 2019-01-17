@@ -57,7 +57,11 @@ io.on("connection", (socket) => {
   socket.emit("new_game", game);
   gameStarted = true;
 
-  
+
+socket.on("letter-added", (letter) => {
+  socket.broadcast.emit("letter-added", letter);
+  console.log(letter);
+});
 
 /*  socket.on("add-letter", (e) => {    
       if (e.keyCode >= 65 && e.keyCode <= 90) {

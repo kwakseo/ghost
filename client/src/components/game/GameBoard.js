@@ -20,6 +20,16 @@ export default class GameBoard extends React.Component {
       this.updateBoard(msg);
     });*/
 
+    this.socket.on("letter-added", (letter) => {
+        console.log(letter);
+        this.setState({letters: this.state.letters + letter});
+        if (this.state.background_pos - 5 >= 0) {
+          this.setState({background_pos: this.state.background_pos - 5});
+        }
+        var container = document.getElementsByClassName("game-container");
+        container[0].setAttribute("style", "background-position:" + "0% " + this.state.background_pos + "%");
+      });
+
     this.state = {
       num_players: 4,
       active_player: 1,
@@ -39,11 +49,16 @@ export default class GameBoard extends React.Component {
         if (this.state.background_pos - 5 >= 0) {
           this.setState({background_pos: this.state.background_pos - 5});
         }
+        this.socket.emit("letter-added", e.key);
 
         var container = document.getElementsByClassName("game-container");
         container[0].setAttribute("style", "background-position:" + "0% " + this.state.background_pos + "%");
       console.log(this.state.letters);
       console.log(this.state.background_pos);
+
+      // this.socket.on("letter-added", (letter) => {
+      //   this.setState({letters: this.state.letters + letter});
+      // });
 
 /*    this.socket.emit("add-letter", e);*/
       }
