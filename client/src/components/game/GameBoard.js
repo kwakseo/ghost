@@ -3,29 +3,54 @@ import "../../css/game.css"
 import io from "socket.io-client";
 import { GRID_LENGTH } from "../../../../config";
 import GameOver from "./GameOver";
-import Row from "./Row";
+import Letters from "./Letters";
+import Player from "./Player"
 
 export default class GameBoard extends React.Component {
   constructor(props) {
     super(props);
     this.socket = io("http://localhost:3000");
     this.socket.on("new_game", (msg) => {
-      this.updateBoard(msg);
+/*      this*/
+/*      this.updateBoard(msg);*/
       document.addEventListener("keydown", this.keyDownBound);
     });
 
-    this.socket.on("update_game", (msg) => {
+/*    this.socket.on("update_game", (msg) => {
       this.updateBoard(msg);
-    });
+    });*/
 
     this.state = {
+      num_players: 4,
+      active_player: 1,
+      background_pos: 100,
+      letters: "",
       isGameOver: false,
-      boardContent: this.emptyBoard(),
     };
   }
 
+  keyDownBound = (e) => { 
 
-  keyDownBound = (e) => {
+    /* these should be moved to server eventually. 
+        temporarily here for testing purposes. */
+
+      if (e.keyCode >= 65 && e.keyCode <= 90) {
+        this.setState({letters: this.state.letters + e.key});
+        if (this.state.background_pos - 5 >= 0) {
+          this.setState({background_pos: this.state.background_pos - 5});
+        }
+
+        var container = document.getElementsByClassName("game-container");
+        container[0].setAttribute("style", "background-position:" + "0% " + this.state.background_pos + "%");
+      console.log(this.state.letters);
+      console.log(this.state.background_pos);
+
+/*    this.socket.emit("add-letter", e);*/
+      }
+  }
+
+
+ /* keyDownBound = (e) => {
     switch (e.key) {
       case "w":
         this.socket.emit("move", 0);
@@ -40,9 +65,9 @@ export default class GameBoard extends React.Component {
         this.socket.emit("move", 3);
         break;
     }
-  };
+  };*/
 
-  emptyBoard = () => {
+/*  emptyBoard = () => {
     const rows = [];
     for (let rowNum = 0; rowNum < GRID_LENGTH; rowNum += 1) {
       rows.push([]); // push an empty row
@@ -52,9 +77,9 @@ export default class GameBoard extends React.Component {
     }
 
     return rows;
-  };
+  };*/
 
-  updateBoard = (data) => {
+/*  updateBoard = (data) => {
     const newBoard = this.emptyBoard();
     newBoard[data.food.y][data.food.x] = 3;
     for (const i in data.player.snakeCoords) {
@@ -64,24 +89,38 @@ export default class GameBoard extends React.Component {
     if (data.game_over) {
       this.setState({isGameOver: true});
     }
-  };
+  };*/
 
   render() {
 
-    const gameOverModal = this.state.isGameOver ? (<GameOver /> ) : (null);
-
     return (
+
       <div className="game-container">
-        <div className="board">
-          {Array.from(Array(GRID_LENGTH).keys()).map(y => (
-            <Row
-              rowContent={this.state.boardContent[y]}
-              y={y}
-              key={y}
-            />
-          ))}
+        <div className="timer-box component-container">
+          <div className="timer"/>
         </div>
-        {gameOverModal}
+        <Letters
+            letters = {this.state.letters}
+        />
+        <div className="players-box component-container">
+          <Player
+              player_number = {1}
+              player_active = {true}
+          />
+          <Player
+              player_number = {2}
+              player_active = {false}
+          />
+          <Player
+              player_number = {3}
+              player_active = {false}
+          />
+          <Player
+              player_number = {4}
+              player_active = {false}
+          />
+
+        </div>
       </div>
     );
   }

@@ -1,9 +1,9 @@
-const { GRID_LENGTH } = require('../config.js');
+/*const { GRID_LENGTH } = require('../config.js');
 
 
-const randomNumber = () => Math.floor(Math.random() * GRID_LENGTH);
+const randomNumber = () => Math.floor(Math.random() * GRID_LENGTH);*/
 
-const initNewPlayer = () => ({
+/*const initNewPlayer = () => ({
   snakeCoords: [
     {
       x: randomNumber(),
@@ -11,9 +11,9 @@ const initNewPlayer = () => ({
     },
   ],
   direction: 0,
-});
+});*/
 
-const getNextSquare = (player) => {
+/*const getNextSquare = (player) => {
   let y = player.snakeCoords[0].y;
   let x = player.snakeCoords[0].x;
   switch (player.direction) {
@@ -28,17 +28,13 @@ const getNextSquare = (player) => {
   }
 
   return { x, y };
-};
+};*/
 
 const initNewGame = () => ({
-  food: {
-    x: randomNumber(),
-    y: randomNumber(),
-  },
-  player: initNewPlayer(),
-  game_over: false,
+  letters: "hi",
 });
 
+/*
 const nextStep = (currGame) => {
   const head = getNextSquare(currGame.player);
   if (head.x === currGame.food.x && head.y === currGame.food.y) {
@@ -59,6 +55,6 @@ const nextStep = (currGame) => {
     currGame.player.snakeCoords.unshift(head);
   }
   return currGame;
-};
+};*/
 
-module.exports = { initNewGame, nextStep };
+module.exports = { initNewGame };

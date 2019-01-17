@@ -1,20 +1,116 @@
-.game-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 20px;
-    height: 100%;
+.letters-active {
+/*    background-color: rgba(26, 19, 53, 0.3);*/
+    font-size: 50px;
+    text-align: right;
+    color: white;
+    padding: 20px 0px;
 }
 
-.board {
+.type-bar {
+/*    background-color: rgba(67, 66, 97, 0.3);*/
+    font-size: 50px;
+    color: #ccff00;
+    text-align: center;
+    padding: 20px 0px;
+}
+
+.timer {
+    width: 300px;
+    height: 20px;
+    border-radius: 50px;
+    background-color: rgba(50, 50, 50, 0);
+    margin: 10px;
+    border: #ccff00 solid 5px;
+
+}
+
+.player {
+    width: 70px;
+    height: 70px;
+    border-radius: 100px;
+    background-color: #311b4a;
+    margin: 10px;
+}
+
+.player_active {
+/*    width: 70px;
+    height: 70px;
+    flex: 1;*/
+    transition: width 0.5s, height 0.5s;
+}
+
+.player_active:hover {
+    width: 100px;
+    height: 100px;
+}
+
+.player_1 {
+    border: #ccff00 solid 5px;
+}
+
+.player_2 {
+    border: #40e0d0 solid 5px;
+}
+
+.player_3 {
+    border: #ff00ce solid 5px;
+}
+
+.player_4 {
+    border: #ff9900 solid 5px;
+}
+
+.component-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(245, 245, 245, 0.3);
+    border-radius: 50px;
+    margin: 10px;
+}
+
+.letters-box {
+    padding: 10px 20px;
+    border-radius: 0px;
+
+}
+
+.timer-box {
+    padding: 10px 20px;
+
+}
+
+.players-box {
+    width: 500px;
+    height: 200px;
+
+}
+
+.game-container {
+    display: flex;
+/*    min-height: 100%; */
+    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url(./gradient_big.png);
+    background-position: 0% 100%;
+
+/*    background-size: 100% auto;*/
+    background-repeat: no-repeat;
+/*    height: 100%;*/
+/*    padding: 500px;*/
+
+}
+
+/*.board {
     display:flex;
     flex-direction: column;
     align-self: center;
-    border: black solid 2px;
-}
+    border: red solid 2px;
+}*/
 
-.board-row {
+/*.board-row {
     display: flex;
     flex-direction: row;
 
@@ -28,7 +124,7 @@
 
 
 .empty {
-    background-color: #333333;
+    background-color: #ffffff;
 }
 
 .food {
@@ -48,7 +144,7 @@
 .game-over-text {
     font-size: 30px;
     margin-bottom: 10px;
-}
+}*/
 
 /*.game-over-button {*/
     /*font-size: 15px;*/

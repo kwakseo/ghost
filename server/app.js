@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const api = require("./api");
-const { initNewGame, nextStep } = require("./game");
+const { initNewGame } = require("./game");
 
 const app = express();
 const http = require("http").Server(app);
@@ -9,11 +9,13 @@ const io = require("socket.io")(http);
 
 const publicPath = path.resolve(__dirname, "..", "client", "dist");
 
-let gameInterval;
+/*let gameInterval;
 const gameTick = 300;
 let gameStarted = false;
+let numConnected = 0;*/
 let numConnected = 0;
 
+let gameStarted = false;
 app.use("/api", api );
 app.use(express.static(publicPath));
 
@@ -28,12 +30,12 @@ http.listen(3000, () => {
 let game = {};
 
 
-const getNextGameState = () => {
+/*const getNextGameState = () => {
   if (!game.game_over) {
     game = nextStep(game);
     io.emit("update_game", game);
   }
-};
+};*/
 
 
 // Websocket shenanigans
@@ -41,33 +43,44 @@ const getNextGameState = () => {
 io.on("connection", (socket) => {
   numConnected += 1;
   console.log("a user connected they are user number " + numConnected);
+
   if (!gameStarted) {
     game = initNewGame();
-    gameInterval = setInterval(
+  }
+    /*gameInterval = setInterval(
       () => {
         getNextGameState();
       },
       gameTick,
-    );
-    socket.emit("new_game", game);
-    gameStarted = true;
-  }
+    ); */
 
-  socket.on("move", (direction) => {
+  socket.emit("new_game", game);
+  gameStarted = true;
+
+  
+
+/*  socket.on("add-letter", (e) => {    
+      if (e.keyCode >= 65 && e.keyCode <= 90) {
+        game.letters = {game.letters + e.key};
+      }
+  });*/
+
+/*  socket.on("move", (direction) => {
     if ((direction - game.player.direction) % 2 !== 0){
       game.player.direction = direction;
     }
-  });
+  });*/
 
   socket.on("disconnect", () => {
     console.log("a user dced");
     numConnected -= 1;
-    clearInterval(gameInterval)
+/*    clearInterval(gameInterval)*/
     if (numConnected === 0) {
       gameStarted = false;
     }
-  })
+  });
 });
+/*});*/
 
 
 
