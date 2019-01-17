@@ -17,17 +17,3 @@ export default class Player extends React.Component{
     );
   }
 }
-
-/*  getCellClass = (cellContent) => {
-    switch (cellContent) {
-      case 0:
-        return "empty";
-      case 1:
-        return "my-snake";
-      case 3:
-        return "food";
-      default:
-        console.log("sad 😞");
-        return null;
-    }
-  };*/
