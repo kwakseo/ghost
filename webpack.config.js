@@ -40,7 +40,6 @@ module.exports = {
     hot: true,
     proxy: {
       '/api': 'http://localhost:3000',
-      '/rules': 'http://localhost:3000'
     }
   }
 };
