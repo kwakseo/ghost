@@ -28,10 +28,6 @@ app.use(express.static(publicPath));
 app.use(passport.initialize());
 app.use(passport.session());
 
-/*app.get(['/profile/:user'], function (req, res) {
-  res.sendFile(path.join(__dirname, '../socket/dist', 'index.html'));
-});*/
-
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
 
 app.get(
@@ -48,11 +44,6 @@ app.get(
 app.get(["/success"], (req, res) => {
   res.sendFile(path.join(publicPath, "index.html"));
 });
-
-/*app.get('/logout', function(req, res) {
-  req.logout();
-  res.redirect('/'); 
-});*/
 
 app.use('/api', api );
 app.use(express.static(publicPath));
@@ -73,9 +64,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
-/*const port = 3000; // config variable
-const server = http.Server(app);*/
 const server = http.Server(app);
 const io = socketio(server);
 app.set('socketio', io);
