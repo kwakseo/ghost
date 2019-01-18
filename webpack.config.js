@@ -31,13 +31,10 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|jpg|gif)$/i,
+        test: /\.(png|svg|jpg|gif)$/i,
         use: [
           {
-            loader: 'url-loader',
-            options: {
-              limit: 200000
-            }
+            loader: 'url-loader'
           }
         ]
       }
@@ -51,6 +48,8 @@ module.exports = {
     hot: true,
     proxy: {
       '/api': 'http://localhost:3000',
+      '/auth': 'http://localhost:3000',
+      '/success': 'http://localhost:3000'
     }
   }
 };

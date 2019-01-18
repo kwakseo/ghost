@@ -3,6 +3,7 @@ import "../../css/game.css";
 import io from "socket.io-client";
 import Letters from "./Letters";
 import Player from "./Player";
+import Timer from "./Timer";
 
 export default class GameBoard extends React.Component {
   constructor(props) {
@@ -56,9 +57,7 @@ export default class GameBoard extends React.Component {
     return (
 
       <div className="game-container">
-        <div className="timer-box component-container">
-          <div className="timer"/>
-        </div>
+        <Timer/>
         <Letters
             letters = {this.state.letters}
         />
@@ -69,15 +68,15 @@ export default class GameBoard extends React.Component {
           />
           <Player
               player_number = {2}
-              player_active = {false}
+              player_active = {true}
           />
           <Player
               player_number = {3}
-              player_active = {false}
+              player_active = {true}
           />
           <Player
               player_number = {4}
-              player_active = {false}
+              player_active = {true}
           />
 
         </div>

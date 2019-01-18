@@ -8,9 +8,9 @@ export default class Player extends React.Component{
   }
 
   render() {
-    let classList = "player " + "player_" + this.props.player_number;
+    let classList = "player " + "player-" + this.props.player_number;
       if (this.props.player_active) {
-        classList += " player_active"
+        classList += " player-active"
       };
     return (
       <div className={classList} /> 
