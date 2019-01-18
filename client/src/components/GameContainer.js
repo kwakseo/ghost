@@ -4,6 +4,7 @@ import HomePage from "./HomePage";
 import SelectRoom from "./SelectRoom";
 import WaitingAdmin from "./WaitingAdmin";
 import Waiting from "./Waiting";
+import InvalidCode from "./InvalidCode";
 import io from "socket.io-client";
 
 export default class GameContainer extends React.Component {
@@ -15,8 +16,20 @@ export default class GameContainer extends React.Component {
       roomNo: -1
     };
 
+    this.socket.on("roomCreated", (roomNo) => {
+      console.log("created");
+      this.setState({roomNo: roomNo});
+    });
+
     this.socket.on("roomChosen", (roomNo) => {
+        console.log("room chosen heard");
         this.setState({roomNo: roomNo});
+        if (roomNo === -1) {
+          this.setState({gameStatus:5});
+        }
+        else {
+          this.setState({gameStatus:4});
+        }
       });
 
     this.socket.on('gameStarted', (msg) => {
@@ -53,6 +66,10 @@ export default class GameContainer extends React.Component {
       case 4:
         return (
           <Waiting roomNo={this.state.roomNo} socket={this.socket} />
+        )
+      case 5:
+        return (
+          <InvalidCode onClickGoBack={() => {this.changeGameState(1);}}/>
         )
     }
   }
