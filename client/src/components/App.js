@@ -27,7 +27,6 @@ class App extends React.Component {
       <div>
         <Switch>
           <Route exact path="/" component={LoginPage} userInfo={this.state.userInfo} />
-          // <Route exact path="/success" component={GameContainer} />
           <Route exact path="/success" component={GameContainer} />
           <Route exact path="/rules" component={GameRules} />
           <Route exact path="/select-room" component={SelectRoom}/>

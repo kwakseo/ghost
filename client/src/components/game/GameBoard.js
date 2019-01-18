@@ -49,6 +49,34 @@ export default class GameBoard extends React.Component {
       console.log(this.state.letters);
       console.log(this.state.background_pos);
 
+      let datamuseURL = 'https://api.datamuse.com/words?max=50&sp=' + this.state.letters + '*';
+      let noSpaceWords = [];
+
+      fetch(datamuseURL)
+      .then(data => data.json())  
+      .then(res => {
+        for(const item of res){
+          let word = item.word
+          if(word.indexOf(" ") === -1){ 
+            noSpaceWords.push(word)
+          }
+        }
+        let result = JSON.stringify(noSpaceWords)
+        console.log(result)
+        console.log('result length')
+        console.log(noSpaceWords.length)
+
+        if (noSpaceWords.length === 0 || noSpaceWords.length === 1){
+          this.props.onEndGame();
+        }
+        // document.getElementById("newText").innerText = result;
+        })
+      .catch(error => {console.log(error)})
+
+      // if (this.state.letters === "hello"){
+      //   this.props.onEndGame();
+      // }
+
       }
   }
 

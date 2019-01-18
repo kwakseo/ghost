@@ -5,6 +5,7 @@ import SelectRoom from "./SelectRoom";
 import WaitingAdmin from "./WaitingAdmin";
 import Waiting from "./Waiting";
 import io from "socket.io-client";
+import EndGame from "./EndGame"
 
 export default class GameContainer extends React.Component {
   constructor(props) {
@@ -48,11 +49,15 @@ export default class GameContainer extends React.Component {
         );
       case 3:
         return (
-          <GameBoard socket={this.socket}/>
+          <GameBoard socket={this.socket} onEndGame={() => {this.changeGameState(5);}}/>
         )
       case 4:
         return (
           <Waiting roomNo={this.state.roomNo} socket={this.socket} />
+        )
+      case 5:
+        return (
+          <EndGame socket={this.socket}/>
         )
     }
   }
