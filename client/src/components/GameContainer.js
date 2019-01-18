@@ -27,17 +27,6 @@ export default class GameContainer extends React.Component {
       this.setState({numPlayers: numPlayers});
     });
 
-    this.socket.on("roomChosen", (roomNo) => {
-        console.log("room chosen heard");
-        this.setState({roomNo: roomNo});
-        if (roomNo === -1) {
-          this.setState({gameStatus:5});
-        }
-        else {
-          this.setState({gameStatus:4});
-        }
-      });
-
     this.socket.on('gameStarted', (msg) => {
       this.setState({gameStatus:3});
     });
