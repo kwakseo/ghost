@@ -1,0 +1,16 @@
+import React from "react";
+// import "../css/homepage.css"
+import "../css/app.css"
+import Link from "react-router-dom/es/Link";
+import GameTitle from "./GameTitle";
+import GameContainer from "./GameContainer";
+
+export default class Waiting extends React.Component {
+  render() {
+    return (
+      <div className={"center"}>
+        <div className="black-text"> Waiting to start </div>
+      </div>
+    );
+  }
+}

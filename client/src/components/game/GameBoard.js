@@ -8,12 +8,12 @@ import Timer from "./Timer";
 export default class GameBoard extends React.Component {
   constructor(props) {
     super(props);
-    this.socket = io("http://localhost:3000");
-    this.socket.on("new_game", (msg) => {
-      document.addEventListener("keydown", this.keyDownBound);
-    });
+    // this.socket = io("http://localhost:3000");
+    // this.socket.on("new_game", (msg) => {
+    document.addEventListener("keydown", this.keyDownBound);
+    // });
 
-    this.socket.on("letter-added", (letter) => {
+    this.props.socket.on("letter-added", (letter) => {
         console.log(letter);
         this.setState({letters: this.state.letters + letter});
         if (this.state.background_pos - 5 >= 0) {
@@ -42,7 +42,7 @@ export default class GameBoard extends React.Component {
         if (this.state.background_pos - 5 >= 0) {
           this.setState({background_pos: this.state.background_pos - 5});
         }
-        this.socket.emit("letter-added", e.key);
+        this.props.socket.emit("letter-added", e.key);
 
         var container = document.getElementsByClassName("game-container");
         container[0].setAttribute("style", "background-position:" + "0% " + this.state.background_pos + "%");

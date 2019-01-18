@@ -101,8 +101,27 @@ io.on("connection", (socket) => {
 
 
 socket.on("letter-added", (letter) => {
-  socket.broadcast.emit("letter-added", letter);
+  socket.broadcast.to(socket.room).emit("letter-added", letter);
   console.log(letter);
+});
+
+socket.on('roomChosen', (roomNo) => {
+  socket.room = roomNo;
+  // console.log('heard?');
+  socket.join(roomNo);
+  socket.roomNo = roomNo;
+  io.in(socket.room).emit('roomChosen', roomNo);
+  // socket[username] = socket.id;
+
+
+  // socket.rooms.push(roomNo);
+
+  // console.log("rooms" + socket.room);
+});
+
+socket.on('gameStarted', (msg) => {
+  console.log('heard?');
+  io.in(socket.room).emit('gameStarted', msg);
 });
 
   socket.on("disconnect", () => {

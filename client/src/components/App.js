@@ -4,6 +4,10 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import GameContainer from "./GameContainer";
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
+import GameRules from "./GameRules";
+import SelectRoom from "./SelectRoom";
+import WaitingAdmin from "./WaitingAdmin";
+import GameBoard from "./game/GameBoard";
 
 class App extends React.Component {
   constructor(props) {
@@ -23,7 +27,12 @@ class App extends React.Component {
       <div>
         <Switch>
           <Route exact path="/" component={LoginPage} userInfo={this.state.userInfo} />
+          // <Route exact path="/success" component={GameContainer} />
           <Route exact path="/success" component={GameContainer} />
+          <Route exact path="/rules" component={GameRules} />
+          <Route exact path="/select-room" component={SelectRoom}/>
+          <Route exact path="/waiting-admin" component={WaitingAdmin} /> 
+          <Route exact path="/game" component={GameBoard} />
         </Switch>
       </div>
     )

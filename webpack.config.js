@@ -49,7 +49,12 @@ module.exports = {
     proxy: {
       '/api': 'http://localhost:3000',
       '/auth': 'http://localhost:3000',
-      '/success': 'http://localhost:3000'
+      '/success': 'http://localhost:3000',
+      
+      '/rules': 'http://localhost:3000',
+      '/select-room': 'http://localhost:3000',
+      '/waiting-admin': 'http://localhost:3000',
+      '/game': 'http://localhost:3000'
     }
   }
 };
