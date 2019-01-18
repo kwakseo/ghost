@@ -13,12 +13,18 @@ export default class GameContainer extends React.Component {
     this.socket = io("http://localhost:3000");
     this.state = {
       gameStatus: 0,
-      roomNo: -1
+      roomNo: -1,
+      numPlayers: 0
     };
 
     this.socket.on("roomCreated", (roomNo) => {
       console.log("created");
       this.setState({roomNo: roomNo});
+    });
+
+    this.socket.on("numPlayers", (numPlayers) => {
+      console.log("numPlayers"+numPlayers);
+      this.setState({numPlayers: numPlayers});
     });
 
     this.socket.on("roomChosen", (roomNo) => {
@@ -61,7 +67,7 @@ export default class GameContainer extends React.Component {
         );
       case 3:
         return (
-          <GameBoard socket={this.socket}/>
+          <GameBoard numPlayers={this.state.numPlayers} socket={this.socket}/>
         )
       case 4:
         return (

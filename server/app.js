@@ -119,28 +119,19 @@ socket.on('roomCreated', (roomNo) =>  {
 });
 
 socket.on('roomChosen', (roomNo) => {
-  // socket.room = roomNo;
-  console.log(io.sockets.adapter.rooms);
-
   if (io.sockets.adapter.rooms[roomNo] === undefined) {
-    console.log("undefined");
     roomNo = -1;
     io.sockets.in(socket.id).emit('roomChosen', roomNo);
-    // socket.emit('roomChosen', roomNo);
   }
 
   else {
     if (io.sockets.adapter.rooms[roomNo].length < 4) {
-      console.log("defined")
       socket.join(roomNo);
       socket.room = roomNo;
-      console.log("testing" + roomNo);
       io.sockets.in(socket.id).emit('roomChosen', roomNo);
-      // io.in(socket.room).emit('roomChosen', roomNo);
     }
     else {
       roomNo = -1;
-      // socket.emit('roomChosen', roomNo);
       io.sockets.in(socket.id).emit('roomChosen', roomNo);
     }
   }
@@ -149,6 +140,7 @@ socket.on('roomChosen', (roomNo) => {
 socket.on('gameStarted', (msg) => {
   console.log('heard?');
   io.in(socket.room).emit('gameStarted', msg);
+  io.in(socket.room).emit('numPlayers', io.sockets.adapter.rooms[socket.room].length);
 });
 
   socket.on("disconnect", () => {
