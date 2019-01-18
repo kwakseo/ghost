@@ -23,14 +23,20 @@ export default class GameRules extends React.Component {
     this.props.socket.emit('roomChosen', this.state.value);
 
     this.setState({value: ''});
-    this.props.onClickSelectRoom();
+
+    // if (this.props.roomNo != -1) {
+    //   this.props.onClickSelectRoom();
+    // }
+    // else {
+    //   console.log("error");
+    // }
 
     event.preventDefault();
   }
 
   handleNew = (event) => {
     let roomNo = Math.floor((Math.random() * 100000) + 1);
-    this.props.socket.emit('roomChosen', roomNo);
+    this.props.socket.emit('roomCreated', roomNo);
     console.log(roomNo);
     this.props.onClickSelectAdminRoom();
 

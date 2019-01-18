@@ -105,18 +105,45 @@ socket.on("letter-added", (letter) => {
   console.log(letter);
 });
 
-socket.on('roomChosen', (roomNo) => {
+let allRooms = new Set();
+
+socket.on('roomCreated', (roomNo) =>  {
+  while (allRooms.has(roomNo)) {
+    roomNo = Math.floor((Math.random() * 100000) + 1);
+  };
   socket.room = roomNo;
-  // console.log('heard?');
+  allRooms.add(roomNo);
+
   socket.join(roomNo);
-  socket.roomNo = roomNo;
-  io.in(socket.room).emit('roomChosen', roomNo);
-  // socket[username] = socket.id;
+  io.in(socket.room).emit('roomCreated', roomNo);
+});
 
+socket.on('roomChosen', (roomNo) => {
+  // socket.room = roomNo;
+  console.log(io.sockets.adapter.rooms);
 
-  // socket.rooms.push(roomNo);
+  if (io.sockets.adapter.rooms[roomNo] === undefined) {
+    console.log("undefined");
+    roomNo = -1;
+    io.sockets.in(socket.id).emit('roomChosen', roomNo);
+    // socket.emit('roomChosen', roomNo);
+  }
 
-  // console.log("rooms" + socket.room);
+  else {
+    if (io.sockets.adapter.rooms[roomNo].length < 4) {
+      console.log("defined")
+      socket.join(roomNo);
+      socket.room = roomNo;
+      console.log("testing" + roomNo);
+      io.sockets.in(socket.id).emit('roomChosen', roomNo);
+      // io.in(socket.room).emit('roomChosen', roomNo);
+    }
+    else {
+      roomNo = -1;
+      // socket.emit('roomChosen', roomNo);
+      io.sockets.in(socket.id).emit('roomChosen', roomNo);
+    }
+  }
 });
 
 socket.on('gameStarted', (msg) => {
