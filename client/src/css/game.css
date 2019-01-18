@@ -8,7 +8,7 @@
 
 .type-bar {
 /*    background-color: rgba(67, 66, 97, 0.3);*/
-    font-size: 50px;
+    font-size: 70px;
     color: #ccff00;
     text-align: center;
     padding: 20px 0px;
@@ -20,7 +20,7 @@
     width: 300px;
     height: 20px;
     border-radius: 50px;
-    background-color: rgba(50, 50, 50, 0);
+    background-color: transparent;
     margin: 10px;
     border: #ccff00 solid 5px;
 }
@@ -70,7 +70,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(245, 245, 245, 0.3);
     border-radius: 100px;
 }
 
@@ -81,7 +80,7 @@
 
 .timer-box {
 /*    padding: 10px 20px;*/
-    background-color: rgba(50, 50, 50, 0);
+    background-color: transparent;
     margin: 30px;
     position: relative;
 
@@ -90,7 +89,7 @@
 .players-box {
     width: 500px;
     height: 150px;
-    background-color: rgba(245, 245, 245, 0);
+    background-color: transparent;
 
 }
 
