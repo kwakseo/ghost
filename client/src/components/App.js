@@ -3,7 +3,6 @@ import "../css/app.css";
 import Route from "react-router-dom/es/Route";
 import Switch from "react-router-dom/es/Switch";
 import GameContainer from "./GameContainer";
->>>>>>> lillian-merge
 
 class App extends React.Component {
   render() {
