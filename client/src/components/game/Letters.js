@@ -8,7 +8,7 @@ export default class Letters extends React.Component{
 
   render() {
     return (
-      <div className={"letters-bbox component-container"}>
+      <div className={"letters-box component-container"}>
         <div className={"letters-active"}>{this.props.letters}</div>
         <div className={"type-bar"}> | </div>
       </div>
