@@ -24,60 +24,67 @@ export default class GameBoard extends React.Component {
       });
 
     this.state = {
+      players: {},
       num_players: 4,
-      active_player: 1,
+      indexMap: {},
+      activePlayer: 1,
       background_pos: 100,
       letters: "",
-      isGameOver: false,
+      timer: 10,
+      isGameOver: false
     };
-  }
+
+    this.props.socket.on("game-init", (game) => {
+      console.log("gameboard socket on")
+      this.setState({
+        players: game.players,
+        num_players: game.playerOrder.length,
+        indexMap: game.indexMap,
+        activePlayer: game.activePlayer,
+        timer: game.timer,
+        isGameOver: game.isGameOver
+      });
+    });
+
+      this.props.socket.on("game-update", (game) => {
+      console.log("gameboard socket on")
+      this.setState({
+        players: game.players,
+        num_players: game.playerOrder.length,
+        indexMap: game.indexMap,
+        activePlayer: game.activePlayer,
+        timer: game.timer,
+        isGameOver: game.isGameOver
+      });
+    });
+  };
 
   keyDownBound = (e) => { 
 
     /* these should be moved to server eventually. 
         temporarily here for testing purposes. */
-
-      if (e.keyCode >= 65 && e.keyCode <= 90) {
-        this.setState({letters: this.state.letters + e.key});
-        if (this.state.background_pos - 5 >= 0) {
-          this.setState({background_pos: this.state.background_pos - 5});
-        }
-        this.props.socket.emit("letter-added", e.key);
-
-        var container = document.getElementsByClassName("game-container");
-        container[0].setAttribute("style", "background-position:" + "0% " + this.state.background_pos + "%");
-      console.log(this.state.letters);
-      console.log(this.state.background_pos);
-
-      let datamuseURL = 'https://api.datamuse.com/words?max=50&sp=' + this.state.letters + '*';
-      let noSpaceWords = [];
-
-      fetch(datamuseURL)
-      .then(data => data.json())  
-      .then(res => {
-        for(const item of res){
-          let word = item.word
-          if(word.indexOf(" ") === -1){ 
-            noSpaceWords.push(word)
+      console.log("keydown check");
+      console.log("activePlayer" + this.state.activePlayer);
+      // console.log(this.state.indexMap);
+      if (this.props.socket.id === this.state.indexMap[this.state.activePlayer]) {
+        if (e.keyCode >= 65 && e.keyCode <= 90) {
+          this.setState({letters: this.state.letters + e.key});
+          if (this.state.background_pos - 5 >= 0) {
+            this.setState({background_pos: this.state.background_pos - 5});
           }
+          this.props.socket.emit("letter-added", this.state.letters);
+
+          var container = document.getElementsByClassName("game-container");
+          container[0].setAttribute("style", "background-position:" + "0% " + this.state.background_pos + "%");
+        console.log(this.state.letters);
+        console.log(this.state.background_pos);
+
+        // if (this.state.letters === "hello"){
+        //   this.props.onEndGame();
+        // }
+
         }
-        let result = JSON.stringify(noSpaceWords)
-        console.log(result)
-        console.log('result length')
-        console.log(noSpaceWords.length)
-
-        if (noSpaceWords.length === 0 || noSpaceWords.length === 1){
-          this.props.onEndGame();
-        }
-        // document.getElementById("newText").innerText = result;
-        })
-      .catch(error => {console.log(error)})
-
-      // if (this.state.letters === "hello"){
-      //   this.props.onEndGame();
-      // }
-
-      }
+    };
   }
 
   render() {
