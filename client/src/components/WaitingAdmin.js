@@ -14,7 +14,7 @@ export default class WaitingAdmin extends React.Component {
   startGame = (event) => {
   	this.props.socket.emit('gameStarted', 'started');
 
-  	this.props.onClickGoToGame()
+  	// this.props.onClickGoToGame()
 
   	event.preventDefault();
   };

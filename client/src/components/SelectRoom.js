@@ -61,9 +61,6 @@ export default class GameRules extends React.Component {
           <div className="black-text">{invalid}</div>
           <div className="button" onClick={this.handleNew}>New Game</div>
         </form>
-
-        <div className="button" onClick={this.props.onClickGoHome}>Home</div>
-
       </div>
     );
   }
