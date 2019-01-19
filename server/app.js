@@ -12,7 +12,7 @@ const db = require('./db');
 const passport = require('./passport');
 const api = require('./routes/api');
 
-const { initNewGame, gameUpdate } = require("./game");
+const { initNewGame, gameUpdate, shuffleArray } = require("./game");
 
 const app = express();
 const publicPath = path.resolve(__dirname, '..', "client", "dist");
@@ -95,9 +95,9 @@ io.on("connection", (socket) => {
 
 
 socket.on("letter-added", (letter) => {
-  socket.broadcast.to(socket.room).emit("letter-added", letter[-1]);
+  socket.broadcast.to(socket.room).emit("letter-added", letter[letter.length -1]);
   console.log(letter);
-  gameUpdate();
+  gameUpdate(game, letter);
 });
 
 //once game has ended remove game number from list
@@ -155,10 +155,12 @@ socket.on('gameStarted', (msg) => {
   for (userId of allRooms[socket.room.toString()].users) {
     game.players[userId] = {alive: true, index: index, ghost: 0}
     game.playerOrder.push(index);
+    game.indexMap[index] = userId;
     index += 1;
   }
   shuffleArray(game.playerOrder);
   game.activePlayer = game.playerOrder[0];
+  game.activePlayerIndex = 0;
   game.timer = 10;
   console.log("init game");
   console.log(game);
@@ -170,13 +172,6 @@ socket.on('gameStarted', (msg) => {
   io.in(socket.room).emit('gameStarted', msg);
   io.in(socket.room).emit('numPlayers', io.sockets.adapter.rooms[socket.room].length);
 });
-
-let shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-};
 
 
 

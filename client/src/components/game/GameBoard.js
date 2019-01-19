@@ -42,7 +42,7 @@ export default class GameBoard extends React.Component {
         if (this.state.background_pos - 5 >= 0) {
           this.setState({background_pos: this.state.background_pos - 5});
         }
-        this.props.socket.emit("letter-added", this.state.letters + e.key);
+        this.props.socket.emit("letter-added", this.state.letters);
 
         var container = document.getElementsByClassName("game-container");
         container[0].setAttribute("style", "background-position:" + "0% " + this.state.background_pos + "%");
