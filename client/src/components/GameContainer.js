@@ -5,6 +5,7 @@ import SelectRoom from "./SelectRoom";
 import WaitingAdmin from "./WaitingAdmin";
 import Waiting from "./Waiting";
 import InvalidCode from "./InvalidCode";
+import Room from "./Room";
 import io from "socket.io-client";
 
 export default class GameContainer extends React.Component {
@@ -13,8 +14,9 @@ export default class GameContainer extends React.Component {
     this.socket = io("http://localhost:3000");
     this.state = {
       gameStatus: 0,
+      admin: false,
       roomNo: -1,
-      numPlayers: 0
+      // numPlayers: 0
     };
 
     this.socket.on("roomCreated", (roomNo) => {
@@ -22,50 +24,38 @@ export default class GameContainer extends React.Component {
       this.setState({roomNo: roomNo});
     });
 
-    this.socket.on("numPlayers", (numPlayers) => {
-      console.log("numPlayers"+numPlayers);
-      this.setState({numPlayers: numPlayers});
-    });
-
-    this.socket.on('gameStarted', (msg) => {
-      this.setState({gameStatus:3});
-    });
+    // this.socket.on("numPlayers", (numPlayers) => {
+    //   console.log("numPlayers"+numPlayers);
+    //   this.setState({numPlayers: numPlayers});
+    // });
 
     this.changeGameState = (newStatus) => {
       this.setState({gameStatus: newStatus});
     };
-  }
+  };
+
+  GoToRoomAdmin = () => {
+    this.setState({admin: true});
+    this.changeGameState(1);
+    console.log("go to room admin")
+  };
+
+  GoToRoom = () => {
+    this.setState({admin: false});
+    this.changeGameState(1);
+  };
 
   render() {
     console.log(this.state.gameStatus)
     switch (this.state.gameStatus) {
       case 0:
         return (
-          <div>
-            <HomePage onClickStart={() => {this.changeGameState(1);}} />
-          </div>
+          <SelectRoom socket={this.socket} onClickSelectAdminRoom={() => {this.GoToRoomAdmin()}} onClickSelectRoom={() => {this.GoToRoom()}} />
         );
       case 1:
         return (
-          <SelectRoom socket={this.socket} roomNo={this.state.roomNo} onClickSelectAdminRoom={() => {this.changeGameState(2);}} onClickSelectRoom={() => {this.changeGameState(4);}} onClickGoHome={() => {this.changeGameState(0);}}/>
+          <Room roomNo={this.state.roomNo} socket={this.socket} adminStatus={this.state.admin} />
         );
-
-      case 2:
-        return (
-          <WaitingAdmin socket={this.socket} roomNo={this.state.roomNo} onClickGoToGame={() => {this.changeGameState(3);}} />
-        );
-      case 3:
-        return (
-          <GameBoard numPlayers={this.state.numPlayers} socket={this.socket}/>
-        )
-      case 4:
-        return (
-          <Waiting roomNo={this.state.roomNo} socket={this.socket} />
-        )
-      case 5:
-        return (
-          <InvalidCode onClickGoBack={() => {this.changeGameState(1);}}/>
-        )
     }
   }
 
