@@ -6,6 +6,7 @@ import WaitingAdmin from "./WaitingAdmin";
 import Waiting from "./Waiting";
 import InvalidCode from "./InvalidCode";
 import io from "socket.io-client";
+import EndGame from "./EndGame"
 
 export default class GameContainer extends React.Component {
   constructor(props) {
@@ -56,7 +57,7 @@ export default class GameContainer extends React.Component {
         );
       case 3:
         return (
-          <GameBoard numPlayers={this.state.numPlayers} socket={this.socket}/>
+          <GameBoard numPlayers={this.state.numPlayers} socket={this.socket} onEndGame={() => {this.changeGameState(6);}}/>
         )
       case 4:
         return (
@@ -66,6 +67,10 @@ export default class GameContainer extends React.Component {
         return (
           <InvalidCode onClickGoBack={() => {this.changeGameState(1);}}/>
         )
+      case 6: 
+        return (
+            <EndGame socket={this.socket}/>
+          )
     }
   }
 

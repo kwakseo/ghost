@@ -2,7 +2,7 @@ import React from "react";
 import GameTitle from "./GameTitle";
 import Link from "react-router-dom/es/Link";
 
-export default class GameRules extends React.Component {
+export default class EndGame extends React.Component {
   constructor(props){
     super(props);
   }
@@ -11,8 +11,7 @@ export default class GameRules extends React.Component {
     return (
       <div className={"center"}>
         <GameTitle />
-
-        Rules are good. These are rules.
+          Game Over
         <Link to="/" className={"button"}>Home</Link>
 
       </div>
