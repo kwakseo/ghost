@@ -98,6 +98,7 @@ socket.on("letter-added", (letter) => {
   socket.broadcast.to(socket.room).emit("letter-added", letter[letter.length -1]);
   console.log(letter);
   gameUpdate(game, letter);
+  io.in(socket.room).emit("game-update", game);
 });
 
 //once game has ended remove game number from list
@@ -158,12 +159,18 @@ socket.on('gameStarted', (msg) => {
     game.indexMap[index] = userId;
     index += 1;
   }
+  console.log("indexmap");
+  console.log(game.indexMap);
   shuffleArray(game.playerOrder);
   game.activePlayer = game.playerOrder[0];
   game.activePlayerIndex = 0;
   game.timer = 10;
   console.log("init game");
   console.log(game);
+  console.log("room");
+  console.log(socket.room);
+
+
 
 
   // socket.emit("new_game", game);
@@ -171,6 +178,7 @@ socket.on('gameStarted', (msg) => {
 
   io.in(socket.room).emit('gameStarted', msg);
   io.in(socket.room).emit('numPlayers', io.sockets.adapter.rooms[socket.room].length);
+  io.in(socket.room).emit("game-init", game);
 });
 
 

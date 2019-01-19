@@ -2,8 +2,8 @@ require('isomorphic-fetch');
 
 const initNewGame = () => ({
   roomNo: 0,
-  players: {}, //alive or dead, assign all players no. 1-4, how many letters of GHOST they have
-  indexMap: {},
+  players: {}, //alive or dead, assign all players no. 0-3, how many letters of GHOST they have
+  indexMap: {}, //maps index 0-3 to socket id
   activePlayer: 0,
   activePlayerIndex: 0,
   playerOrder: [],
@@ -28,7 +28,7 @@ const gameUpdate = (game, letters) => {
 
 	if (checkWord(letters)) {
 		//if player becomes ghost
-		if (game.players[loser].ghost === 5) {
+		if (game.players[loser].ghost === 3) {
 			game.players[loser].alive = false;
 			for (let i = 0; i < numPlayers; i++) {
 				game.playerOrder = [];
