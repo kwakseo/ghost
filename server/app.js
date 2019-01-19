@@ -12,7 +12,7 @@ const db = require('./db');
 const passport = require('./passport');
 const api = require('./routes/api');
 
-const { initNewGame } = require("./game");
+const { initNewGame, gameUpdate } = require("./game");
 
 const app = express();
 const publicPath = path.resolve(__dirname, '..', "client", "dist");
@@ -87,33 +87,27 @@ server.listen(3000, () => {
 let numConnected = 0;
 let gameStarted = false;
 let game = {};
-let allRooms = new Set();
+let allRooms = {};
 
 io.on("connection", (socket) => {
   numConnected += 1;
   console.log("a user connected they are user number " + numConnected);
 
-  if (!gameStarted) {
-    game = initNewGame();
-  }
-
-  socket.emit("new_game", game);
-  gameStarted = true;
-
 
 socket.on("letter-added", (letter) => {
-  socket.broadcast.to(socket.room).emit("letter-added", letter);
+  socket.broadcast.to(socket.room).emit("letter-added", letter[-1]);
   console.log(letter);
+  gameUpdate();
 });
 
 //once game has ended remove game number from list
 
 socket.on('roomCreated', (roomNo) =>  {
-  while (allRooms.has(roomNo.toString())) {
+  while (roomNo.toString() in allRooms) {
     roomNo = Math.floor((Math.random() * 100000) + 1);
   };
   socket.room = roomNo;
-  allRooms.add(roomNo.toString());
+  allRooms[roomNo.toString()] = {joinable: true, users: [socket.id], numUsers: 1};
   console.log("created allRooms")
   console.log(allRooms);
 
@@ -126,7 +120,7 @@ socket.on('roomChosen', (roomNo) => {
   console.log(allRooms);
   console.log(roomNo);
 
-  if (!allRooms.has(roomNo.toString())) {
+  if (!(roomNo.toString() in allRooms) || !allRooms[roomNo.toString()].joinable) {
     console.log("!allRooms")
     roomNo = -1;
     io.sockets.in(socket.id).emit('roomChosen', roomNo);
@@ -136,11 +130,14 @@ socket.on('roomChosen', (roomNo) => {
     if (io.sockets.adapter.rooms[roomNo].length < 4) {
       console.log("valid")
       socket.join(roomNo);
+      allRooms[roomNo.toString()].users.push(socket.id);
+      allRooms[roomNo.toString()].numUsers = allRooms[roomNo.toString()].numUsers + 1;
       socket.room = roomNo;
       io.sockets.in(socket.id).emit('roomChosen', roomNo);
     }
     else {
       console.log("too many players");
+      allRooms[roomNo.toString()] = {joinable: false};
       roomNo = -1;
       io.sockets.in(socket.id).emit('roomChosen', roomNo);
     }
@@ -148,11 +145,40 @@ socket.on('roomChosen', (roomNo) => {
 });
 
 socket.on('gameStarted', (msg) => {
-  allRooms.delete(socket.room.toString());
+  // allRooms.delete(socket.room.toString());
+  allRooms[socket.room.toString()].joinable = false;
   console.log('heard?');
+
+  game = initNewGame();
+  game.roomNo = socket.room.toString();
+  let index = 0;
+  for (userId of allRooms[socket.room.toString()].users) {
+    game.players[userId] = {alive: true, index: index, ghost: 0}
+    game.playerOrder.push(index);
+    index += 1;
+  }
+  shuffleArray(game.playerOrder);
+  game.activePlayer = game.playerOrder[0];
+  game.timer = 10;
+  console.log("init game");
+  console.log(game);
+
+
+  // socket.emit("new_game", game);
+  // gameStarted = true;
+
   io.in(socket.room).emit('gameStarted', msg);
   io.in(socket.room).emit('numPlayers', io.sockets.adapter.rooms[socket.room].length);
 });
+
+let shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+};
+
+
 
   socket.on("disconnect", () => {
     console.log("a user dced");
