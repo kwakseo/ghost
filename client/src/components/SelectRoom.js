@@ -11,7 +11,7 @@ import GameContainer from "./GameContainer";
 export default class GameRules extends React.Component {
   constructor(props){
     super(props);
-    this.state = {value: ''};
+    this.state = {value: '', validCode: true};
   }
 
   handleChange = (event) => {
@@ -22,15 +22,25 @@ export default class GameRules extends React.Component {
     console.log(this.state.value);
     this.props.socket.emit('roomChosen', this.state.value);
 
+    this.props.socket.on('roomChosen', (roomNo) => {
+      console.log("room chosen heard");
+      this.setState({validCode: true});
+      if (roomNo === -1) {
+        this.setState({validCode: false});
+      }
+      else {
+        this.props.onClickSelectRoom();
+      }
+    });
+
     this.setState({value: ''});
-    this.props.onClickSelectRoom();
 
     event.preventDefault();
   }
 
   handleNew = (event) => {
     let roomNo = Math.floor((Math.random() * 100000) + 1);
-    this.props.socket.emit('roomChosen', roomNo);
+    this.props.socket.emit('roomCreated', roomNo);
     console.log(roomNo);
     this.props.onClickSelectAdminRoom();
 
@@ -39,6 +49,8 @@ export default class GameRules extends React.Component {
   }
 
   render(){
+    const invalid = this.state.validCode ? null : <div>invalid</div>;
+
     return (
       <div className={"center"}>
         <GameTitle />
@@ -46,6 +58,7 @@ export default class GameRules extends React.Component {
         <form onSubmit={this.handleJoin}>
           <input id="m" value={this.state.value} onChange={this.handleChange} autoComplete="off"/>
           <div className="button" onClick={this.handleJoin}>Join</div>
+          <div className="black-text">{invalid}</div>
           <div className="button" onClick={this.handleNew}>New Game</div>
         </form>
 

@@ -4,6 +4,7 @@ import HomePage from "./HomePage";
 import SelectRoom from "./SelectRoom";
 import WaitingAdmin from "./WaitingAdmin";
 import Waiting from "./Waiting";
+import InvalidCode from "./InvalidCode";
 import io from "socket.io-client";
 import EndGame from "./EndGame"
 
@@ -13,12 +14,19 @@ export default class GameContainer extends React.Component {
     this.socket = io("http://localhost:3000");
     this.state = {
       gameStatus: 0,
-      roomNo: -1
+      roomNo: -1,
+      numPlayers: 0
     };
 
-    this.socket.on("roomChosen", (roomNo) => {
-        this.setState({roomNo: roomNo});
-      });
+    this.socket.on("roomCreated", (roomNo) => {
+      console.log("created");
+      this.setState({roomNo: roomNo});
+    });
+
+    this.socket.on("numPlayers", (numPlayers) => {
+      console.log("numPlayers"+numPlayers);
+      this.setState({numPlayers: numPlayers});
+    });
 
     this.socket.on('gameStarted', (msg) => {
       this.setState({gameStatus:3});
@@ -49,7 +57,7 @@ export default class GameContainer extends React.Component {
         );
       case 3:
         return (
-          <GameBoard socket={this.socket} onEndGame={() => {this.changeGameState(5);}}/>
+          <GameBoard numPlayers={this.state.numPlayers} socket={this.socket} onEndGame={() => {this.changeGameState(6);}}/>
         )
       case 4:
         return (
@@ -57,8 +65,12 @@ export default class GameContainer extends React.Component {
         )
       case 5:
         return (
-          <EndGame socket={this.socket}/>
+          <InvalidCode onClickGoBack={() => {this.changeGameState(1);}}/>
         )
+      case 6: 
+        return (
+            <EndGame socket={this.socket}/>
+          )
     }
   }
 

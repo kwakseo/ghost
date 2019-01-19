@@ -87,6 +87,7 @@ server.listen(3000, () => {
 let numConnected = 0;
 let gameStarted = false;
 let game = {};
+let allRooms = new Set();
 
 io.on("connection", (socket) => {
   numConnected += 1;
@@ -105,23 +106,52 @@ socket.on("letter-added", (letter) => {
   console.log(letter);
 });
 
-socket.on('roomChosen', (roomNo) => {
+//once game has ended remove game number from list
+
+socket.on('roomCreated', (roomNo) =>  {
+  while (allRooms.has(roomNo.toString())) {
+    roomNo = Math.floor((Math.random() * 100000) + 1);
+  };
   socket.room = roomNo;
-  // console.log('heard?');
+  allRooms.add(roomNo.toString());
+  console.log("created allRooms")
+  console.log(allRooms);
+
   socket.join(roomNo);
-  socket.roomNo = roomNo;
-  io.in(socket.room).emit('roomChosen', roomNo);
-  // socket[username] = socket.id;
+  io.in(socket.room).emit('roomCreated', roomNo);
+});
 
+socket.on('roomChosen', (roomNo) => {
+  console.log("chosen allRooms");
+  console.log(allRooms);
+  console.log(roomNo);
 
-  // socket.rooms.push(roomNo);
+  if (!allRooms.has(roomNo.toString())) {
+    console.log("!allRooms")
+    roomNo = -1;
+    io.sockets.in(socket.id).emit('roomChosen', roomNo);
+  }
 
-  // console.log("rooms" + socket.room);
+  else {
+    if (io.sockets.adapter.rooms[roomNo].length < 4) {
+      console.log("valid")
+      socket.join(roomNo);
+      socket.room = roomNo;
+      io.sockets.in(socket.id).emit('roomChosen', roomNo);
+    }
+    else {
+      console.log("too many players");
+      roomNo = -1;
+      io.sockets.in(socket.id).emit('roomChosen', roomNo);
+    }
+  }
 });
 
 socket.on('gameStarted', (msg) => {
+  allRooms.delete(socket.room.toString());
   console.log('heard?');
   io.in(socket.room).emit('gameStarted', msg);
+  io.in(socket.room).emit('numPlayers', io.sockets.adapter.rooms[socket.room].length);
 });
 
   socket.on("disconnect", () => {
