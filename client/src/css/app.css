@@ -21,41 +21,79 @@ body {
     top: 40%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
-    text-align: center;
-    color: #fff;
+    align-items: center;
     display: flex;
     flex-direction: column;
+    margin: 10px;
+}
 
+.login-title-box{
+    width: 300px;
+}
+
+.select-title-box{
+    width: 600px;
 }
 
 .button {
-    align-self: center;
     cursor: pointer;
     font-size: 30px;
     background-color: rgba(245, 245, 245, 0.3);
     line-height: 1;
-    color: #f5f5f5;
-    margin-top: 15px;
-    display: flex;
+    color: #efefef;
+    margin: 15px;
     align-items: center;
     justify-content: center;
     padding: 20px 40px;
     border-radius: 50px;
     text-decoration-line: none;
+    border-style: solid;
+    border-color: #efefef;
+    border-width: 3px;
 }
 
 .button:hover{
-    background-color: #3281ff;
+    background-color: rgba(245, 245, 245, 0.5);
     color: white;
 }
 
 .title{
     font-size: 100px;
     color: white;
-    text-align: center;
     margin: 20px;
+    padding: 0px 7px;
+    border-right-style: solid;
+    border-right-color: #ccff00;
+    border-right-width: 7px;
+    overflow: hidden;
+    animation-name: typewriter;
+    animation-duration: 2s;
+    animation-direction: normal;
+    animation-timing-function: steps(2);
+    animation-iteration-count: infinite;
 }
 
 .black-text {
     color:white;
 }
+
+.type-bar {
+/*    background-color: rgba(67, 66, 97, 0.3);*/
+    font-size: 100px;
+    color: #ccff00;
+    padding: 20px 0px;
+}
+
+/*.anim-typewriter{
+  animation-name: typewriter;
+  animation-duration: 2s;
+  animation-direction: normal;
+/*  animation-timing-function: steps(2);*/
+/*  animation-iteration-count: infinite;
+}*/
+
+@keyframes typewriter {
+  from {width: 202px;}
+  to {width: auto;}
+}
+
