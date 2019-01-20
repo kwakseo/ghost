@@ -13,12 +13,7 @@ export default class Waiting extends React.Component {
 
 
 	}
-
-/*
-	componentDidMount() {
-        this.getUser();
-    };*/
-
+  
   render() {
     var players = [];
     console.log('in waiting');

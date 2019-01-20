@@ -19,8 +19,6 @@ export default class GameBoard extends React.Component {
         container[0].setAttribute("style", "background-position:" + "0% " + this.props.background_pos + "%");
       });
 
-<<<<<<< HEAD
-=======
     this.state = {
       players: {},
       num_players: 4,

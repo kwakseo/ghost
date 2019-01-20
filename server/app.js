@@ -93,7 +93,6 @@ io.on("connection", (socket) => {
 
 
 socket.on("letter-added", (letter) => {
-<<<<<<< HEAD
 /*  socket.broadcast.to(socket.room).emit("letter-added", letter[letter.length -1]);*/
   console.log("letter added emit");
   gameUpdate(game, letter).then(() => {
@@ -107,7 +106,6 @@ socket.on("letter-added", (letter) => {
     }
     })
   });
-=======
   game.letters += letter[letter.length -1];
   socket.broadcast.to(socket.room).emit("letter-added", letter[letter.length -1]);
   console.log(letter);
@@ -123,7 +121,6 @@ socket.on("letter-added", (letter) => {
   }
   })
 });
->>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
 
 // socket.on("user-info", (userInfo) => {
 //   console.log("userInfo");

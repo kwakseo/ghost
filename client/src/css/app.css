@@ -236,14 +236,6 @@ body {
 
 }
 
-/*.anim-typewriter{
-  animation-name: typewriter;
-  animation-duration: 2s;
-  animation-direction: normal;
-/*  animation-timing-function: steps(2);*/
-/*  animation-iteration-count: infinite;
-}*/
-
 @keyframes typewriter {
   from {width: 202px;}
   to {width: auto;}

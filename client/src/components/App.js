@@ -17,17 +17,10 @@ class App extends React.Component {
           userInfo: null
       };
   }
-
-<<<<<<< HEAD
-=======
   componentDidMount() {
       this.getUser();
     }
 
-/*  componentDidMount() {
-      this.getUser();
-  }*/
->>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
 
   render() {
     return (

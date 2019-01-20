@@ -12,25 +12,7 @@ export default class Room extends React.Component {
   constructor(props) {
   	super(props);
 
-/*    this.state = {
-      playerOrder:null
-    };*/
-
-/*    this.props.socket.on('gameStartedGo', (indexMap, playerOrder) => {
-      this.setState({gameStatus: 1,
-                    playerOrder: playerOrder});
-    });*/
-
-/*    this.props.socket.on("roomCreated", (roomNo, userInfo) => {
-      console.log("created, in roomjs");
-      this.setState({users: [userInfo]});
-
-<<<<<<< HEAD
-    });*/
   }
-
- 
-=======
     this.props.socket.on('gameStarted', (msg) => {
       this.setState({gameStatus: 1});
     });
@@ -39,7 +21,6 @@ export default class Room extends React.Component {
       this.setState({gameStatus: 2})
     });
   };
->>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
 
   render() {
     console.log("in room.js");

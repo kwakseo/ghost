@@ -9,15 +9,10 @@ const initNewGame = () => ({
   playerOrder: [],
   letters: '',
   timer: 0,
-<<<<<<< HEAD
   gameOver: false,
   joinable: true,
   numPlayers: 1,
   roundEnd: false,
-=======
-  roundEnd: false,
-  gameOver: false
->>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
 });
 
 let shuffleArray = (array) => {
@@ -28,7 +23,6 @@ let shuffleArray = (array) => {
 };
 
 const gameUpdate = (game, letters) => {
-<<<<<<< HEAD
   game.roundEnd = false;
 	let loser = game.indexMap[game.activePlayerIndex];
   let numPlayers = game.numPlayers;
@@ -92,7 +86,7 @@ let gameAddUser = (game, userInfo, socketid) => {
   console.log("this is a function!");
   game.players[socketid.toString()] = userInfo;
 };
-=======
+
 	game.roundEnd = false;
 	// console.log(game);
 	console.log("activePlayer" + game.activePlayer);
@@ -146,8 +140,6 @@ let gameAddUser = (game, userInfo, socketid) => {
 	)
 
 }
->>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
-
 const checkWord = (new_word, game) => {
   let datamuseURL = 'https://api.datamuse.com/words?max=50&sp=' + new_word + '*';
   let noSpaceWords = [];
@@ -162,24 +154,18 @@ const checkWord = (new_word, game) => {
         noSpaceWords.push(word);
       }
     }
-<<<<<<< HEAD
     result = JSON.stringify(noSpaceWords);
     console.log(result);
-=======
 
     result = JSON.stringify(noSpaceWords)
     console.log(result)
->>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
     console.log('result length')
     console.log(noSpaceWords.length);
 
-<<<<<<< HEAD
     if (noSpaceWords.length === 0 || noSpaceWords.length === 1){
       console.log('valid word');
-=======
     if (noSpaceWords.length === 0 || (noSpaceWords.length === 1 && game.letters === noSpaceWords[0])){
   		console.log("round should end")
->>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
     	return true;
       // this.props.onEndGame();
     }

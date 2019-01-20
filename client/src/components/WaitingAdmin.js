@@ -19,17 +19,10 @@ export default class WaitingAdmin extends React.Component {
   startGame = (event) => {
   	this.props.socket.emit('gameStarted', this.props.roomNo);
 
-  	// this.props.onClickGoToGame()
 
   	event.preventDefault();
   };
-/*          {Object.keys(this.props.indexMap).map(playerIndex => {
-            <Player 
-              key={playerIndex}
-              playerInfo={this.props.players[this.props.indexMap[playerIndex]]}
-              socketid={this.props.indexMap[playerIndex]}
-              playerActive = {true}
-            />*/
+
 
   render() {
     var players = [];
