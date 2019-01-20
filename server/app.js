@@ -105,7 +105,7 @@ socket.on("letter-added", (letter) => {
       io.to(socket.room).emit("game-update", game);
     }
     })
-  });
+  
   game.letters += letter[letter.length -1];
   socket.broadcast.to(socket.room).emit("letter-added", letter[letter.length -1]);
   console.log(letter);
@@ -120,7 +120,8 @@ socket.on("letter-added", (letter) => {
       io.in(socket.room).emit("game-update", game);
   }
   })
-});
+  });
+
 
 // socket.on("user-info", (userInfo) => {
 //   console.log("userInfo");
@@ -221,6 +222,7 @@ socket.on('gameStarted', (roomNo) => {
 
 
 
+
   socket.on("disconnect", () => {
     console.log("a user dced");
     numConnected -= 1;
@@ -228,5 +230,5 @@ socket.on('gameStarted', (roomNo) => {
       gameStarted = false;
     }
   });
-});
+  });
 

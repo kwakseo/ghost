@@ -13,14 +13,6 @@ export default class Room extends React.Component {
   	super(props);
 
   }
-    this.props.socket.on('gameStarted', (msg) => {
-      this.setState({gameStatus: 1});
-    });
-
-    this.props.socket.on('game-over', (game) => {
-      this.setState({gameStatus: 2})
-    });
-  };
 
   render() {
     console.log("in room.js");
@@ -56,10 +48,6 @@ export default class Room extends React.Component {
 
             />
           );
-      case 2: 
-        return (
-          <EndGame />
-        );
       case 2: 
         return (
           <EndGame />

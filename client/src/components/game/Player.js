@@ -25,7 +25,9 @@ export default class Player extends React.Component{
     const socketid = indexMap[playerIndex];
     console.log(socketid);
     const playerInfo = players[socketid];
+    console.log(playerInfo);
     const userInfo = playerInfo.userInfo;
+    console.log(userInfo);
     this.setState({name: userInfo.name, googleid: userInfo.googleid, socketid: socketid, playerIndex: playerIndex});
     console.log("id?: " + this.state.googleid);
   };

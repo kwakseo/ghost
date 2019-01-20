@@ -85,7 +85,7 @@ const gameUpdate = (game, letters) => {
 let gameAddUser = (game, userInfo, socketid) => {
   console.log("this is a function!");
   game.players[socketid.toString()] = userInfo;
-};
+
 
 	game.roundEnd = false;
 	// console.log(game);
@@ -138,8 +138,8 @@ let gameAddUser = (game, userInfo, socketid) => {
 		}
 	}
 	)
-
 }
+
 const checkWord = (new_word, game) => {
   let datamuseURL = 'https://api.datamuse.com/words?max=50&sp=' + new_word + '*';
   let noSpaceWords = [];
@@ -163,26 +163,13 @@ const checkWord = (new_word, game) => {
     console.log(noSpaceWords.length);
 
     if (noSpaceWords.length === 0 || noSpaceWords.length === 1){
-      console.log('valid word');
-    if (noSpaceWords.length === 0 || (noSpaceWords.length === 1 && game.letters === noSpaceWords[0])){
-  		console.log("round should end")
     	return true;
-      // this.props.onEndGame();
     }
     else {
     	return false;
     }
     })
   .catch(error => {console.log(error)})
-
-  // if (noSpaceWords.length === 0 || noSpaceWords.length === 1){
-  // 		console.log("round should end")
-  //   	return true;
-  //     // this.props.onEndGame();
-  //   }
-  //   else {
-  //   	return false;
-  //   }
 }
 
 module.exports = { initNewGame, gameUpdate, shuffleArray };

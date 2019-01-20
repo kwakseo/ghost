@@ -17,9 +17,7 @@ class App extends React.Component {
           userInfo: null
       };
   }
-  componentDidMount() {
-      this.getUser();
-    }
+
 
 
   render() {
