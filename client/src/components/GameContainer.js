@@ -35,6 +35,10 @@ export default class GameContainer extends React.Component {
     };
   }
 
+  componentDidMount() {
+      this.socket.emit("user-info", this.props.userInfo);
+    }
+
   GoToRoomAdmin = () => {
     this.setState({admin: true});
     this.changeGameState(1);

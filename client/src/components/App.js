@@ -18,6 +18,10 @@ class App extends React.Component {
       };
   }
 
+  componentDidMount() {
+      this.getUser();
+    }
+
 /*  componentDidMount() {
       this.getUser();
   }*/
@@ -27,7 +31,7 @@ class App extends React.Component {
       <div>
         <Switch>
           <Route exact path="/" component={LoginPage} userInfo={this.state.userInfo} />
-          <Route exact path="/success" component={GameContainer} />
+          <Route exact path="/success" userInfo={this.state.userInfo} component={GameContainer} />
           <Route exact path="/rules" component={GameRules} />
         </Switch>
       </div>

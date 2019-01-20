@@ -76,6 +76,7 @@ let numConnected = 0;
 let gameStarted = false;
 let game = {};
 let allRooms = {};
+let clientToSocketIdMap = {};
 
 io.on("connection", (socket) => {
   numConnected += 1;
@@ -98,6 +99,12 @@ socket.on("letter-added", (letter) => {
   }
   })
 });
+
+// socket.on("user-info", (userInfo) => {
+//   console.log("userInfo");
+//   console.log(userInfo);
+//   // clientToSocketIdMap[userInfo]
+// });
 
 //once game has ended remove game number from list
 
