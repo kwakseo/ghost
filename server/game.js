@@ -28,7 +28,6 @@ const gameUpdate = (game, letters) => {
   let numPlayers = game.numPlayers;
 
 	game.timer = 10;
-
   return checkWord(letters, game).then((valid) => {
       if (valid) {
         game.roundEnd = true;
@@ -68,6 +67,7 @@ const gameUpdate = (game, letters) => {
 
 	//game ongoing, change active player
   	else {
+      console.log('change active player');
         game.letters = letters;
     		if (game.activePlayerIndex < game.numPlayers - 1) {
     			 game.activePlayerIndex += 1;

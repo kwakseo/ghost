@@ -92,26 +92,13 @@ io.on("connection", (socket) => {
   console.log("a user connected they are user number " + numConnected);
 
 
-socket.on("letter-added", (letter) => {
-/*  socket.broadcast.to(socket.room).emit("letter-added", letter[letter.length -1]);*/
+socket.on("letter-added", (letters) => {
+  game = allRooms[socket.room.toString()];
   console.log("letter added emit");
-  gameUpdate(game, letter).then(() => {
-    if (game.gameOver) {
-      console.log("game over emit attempt");
-      io.to(socket.room).emit("game-over", game);
-      }
-    else {
-      console.log("game update emit attempt");
-      io.to(socket.room).emit("game-update", game);
-    }
-    })
+  game.letters += letters[letters.length -1];
+  socket.broadcast.to(socket.room).emit("letter-added", letters[letters.length -1]);
   
-  game.letters += letter[letter.length -1];
-  socket.broadcast.to(socket.room).emit("letter-added", letter[letter.length -1]);
-  console.log(letter);
-  // gameUpdate(game, letter);
-
-  gameUpdate(game, letter).then(() => {
+  gameUpdate(game, letters).then(() => {
     console.log(game)
     if (game.gameOver) {
       io.in(socket.room).emit("game-over", game);
@@ -121,14 +108,6 @@ socket.on("letter-added", (letter) => {
   }
   })
   });
-
-
-// socket.on("user-info", (userInfo) => {
-//   console.log("userInfo");
-//   console.log(userInfo);
-//   // clientToSocketIdMap[userInfo]
-// });
-
 //once game has ended remove game number from list
 
 socket.on('roomCreated', (roomNoUserInfo) =>  {
@@ -181,13 +160,16 @@ socket.on('roomChosen', (roomNoUserInfo) => {
       game.numPlayers += 1;
       const index = game.numPlayers - 1;
       console.log("num players " + game.numPlayers);
+
       socketid = socket.id.toString();
       game.indexMap[index] = socketid;
       let updateOrder = [];
+
       for (var i of game.playerOrder) {
         updateOrder.push(i);
         console.log(i);
       };
+
       updateOrder.push(index);
       game.playerOrder = updateOrder;
       game.players[socket.id.toString()] = {alive: true, index: index, ghost: 0, userInfo: userInfo};

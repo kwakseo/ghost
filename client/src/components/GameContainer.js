@@ -77,6 +77,7 @@ export default class GameContainer extends React.Component {
 
     this.socket.on("game-update", (game) => {
       console.log("update heard container");
+      console.log(game.activePlayerIndex);
 
       this.setState({
         indexMap: game.indexMap,

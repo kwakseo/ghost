@@ -12,10 +12,10 @@ import GameBoard from "./game/GameBoard";
 class App extends React.Component {
   constructor(props) {
       super(props);
+  this.state = {
+    userInfo: null,
+  }
 
-      this.state = {
-          userInfo: null
-      };
   }
 
 
@@ -25,7 +25,7 @@ class App extends React.Component {
       <div>
         <Switch>
           <Route exact path="/" component={LoginPage} userInfo={this.state.userInfo} />
-          <Route exact path="/success" userInfo={this.state.userInfo} component={GameContainer} />
+          <Route exact path="/success" component={GameContainer} />
           <Route exact path="/rules" component={GameRules} />
         </Switch>
       </div>
