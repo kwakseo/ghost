@@ -31,6 +31,7 @@ export default class GameBoard extends React.Component {
       background_pos: 100,
       letters: "",
       timer: 10,
+      roundEnd: false,
       isGameOver: false
     };
 
@@ -54,8 +55,16 @@ export default class GameBoard extends React.Component {
         indexMap: game.indexMap,
         activePlayer: game.activePlayer,
         timer: game.timer,
+        roundEnd: game.roundEnd,
         isGameOver: game.isGameOver
       });
+
+      if (this.state.roundEnd) {
+        this.setState({
+          letters: "",
+          background_pos: 100
+        })
+      }
     });
   };
 

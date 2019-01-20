@@ -83,10 +83,20 @@ io.on("connection", (socket) => {
 
 
 socket.on("letter-added", (letter) => {
+  game.letters += letter[letter.length -1];
   socket.broadcast.to(socket.room).emit("letter-added", letter[letter.length -1]);
   console.log(letter);
-  gameUpdate(game, letter);
-  io.in(socket.room).emit("game-update", game);
+  // gameUpdate(game, letter);
+
+  gameUpdate(game, letter).then(() => {
+    console.log(game)
+    if (game.gameOver) {
+      io.in(socket.room).emit("game-over", game);
+    }
+    else {
+      io.in(socket.room).emit("game-update", game);
+  }
+  })
 });
 
 //once game has ended remove game number from list

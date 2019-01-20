@@ -9,6 +9,7 @@ const initNewGame = () => ({
   playerOrder: [],
   letters: '',
   timer: 0,
+  roundEnd: false,
   gameOver: false
 });
 
@@ -20,50 +21,66 @@ let shuffleArray = (array) => {
 };
 
 const gameUpdate = (game, letters) => {
-	console.log(game);
+	game.roundEnd = false;
+	// console.log(game);
+	console.log("activePlayer" + game.activePlayer);
 	let loser = game.indexMap[game.activePlayer];
 	let numPlayers = game.playerOrder.length;
 
 	game.timer = 10;
 
-	if (checkWord(letters)) {
-		//if player becomes ghost
-		if (game.players[loser].ghost === 3) {
-			game.players[loser].alive = false;
-			for (let i = 0; i < numPlayers; i++) {
-				game.playerOrder = [];
-				if (i != game.activePlayer) {
-					game.playerOrder.push(i)
+	return checkWord(letters, game).then( (valid) => {
+		console.log("valid" + valid)
+		if (valid) {
+			game.roundEnd = true;
+			game.letters = "";
+			//if player becomes ghost
+			console.log("round has ended")
+			if (game.players[loser].ghost === 3) {
+				game.players[loser].alive = false;
+				for (let i = 0; i < numPlayers; i++) {
+					game.playerOrder = [];
+					if (i != game.activePlayer) {
+						game.playerOrder.push(i)
+					}
 				}
 			}
-		}
-		//if player gets strike
-		else {
-			game.players[loser].ghost += 1;
-		}
-		shuffleArray(game.playerOrder);
-		game.activePlayerIndex = 0;
-		game.activePlayer = game.playerOrder[0];
+			//if player gets strike
+			else {
+				game.players[loser].ghost += 1;
+			}
 
-	}
-	//game ongoing, change active player
-	else {
-		if (game.activePlayerIndex < game.playerOrder.length - 1) {
-			game.activePlayerIndex += 1;
-		}
-		else {
+			//end game if one player left
+			if (game.playerOrder.length <= 1) {
+				game.gameOver = true;
+			}
+
+			shuffleArray(game.playerOrder);
 			game.activePlayerIndex = 0;
+			game.activePlayer = game.playerOrder[0];
+
 		}
-		game.activePlayer = game.playerOrder[game.activePlayerIndex];
+		//game ongoing, change active player
+		else {
+			if (game.activePlayerIndex < game.playerOrder.length - 1) {
+				game.activePlayerIndex += 1;
+			}
+			else {
+				game.activePlayerIndex = 0;
+			}
+			game.activePlayer = game.playerOrder[game.activePlayerIndex];
+		}
 	}
+	)
 
-};
+}
 
-const checkWord = (new_word) => {
+const checkWord = (new_word, game) => {
   let datamuseURL = 'https://api.datamuse.com/words?max=50&sp=' + new_word + '*';
   let noSpaceWords = [];
+  let result = null;
 
-  fetch(datamuseURL)
+  return fetch(datamuseURL)
   .then(data => data.json())  
   .then(res => {
     for(const item of res){
@@ -72,21 +89,31 @@ const checkWord = (new_word) => {
         noSpaceWords.push(word)
       }
     }
-    let result = JSON.stringify(noSpaceWords)
+
+    result = JSON.stringify(noSpaceWords)
     console.log(result)
     console.log('result length')
     console.log(noSpaceWords.length)
 
-    if (noSpaceWords.length === 0 || noSpaceWords.length === 1){
+    if (noSpaceWords.length === 0 || (noSpaceWords.length === 1 && game.letters === noSpaceWords[0])){
+  		console.log("round should end")
     	return true;
       // this.props.onEndGame();
     }
     else {
     	return false;
     }
-    // document.getElementById("newText").innerText = result;
     })
   .catch(error => {console.log(error)})
+
+  // if (noSpaceWords.length === 0 || noSpaceWords.length === 1){
+  // 		console.log("round should end")
+  //   	return true;
+  //     // this.props.onEndGame();
+  //   }
+  //   else {
+  //   	return false;
+  //   }
 }
 
 module.exports = { initNewGame, gameUpdate, shuffleArray };

@@ -5,6 +5,7 @@ import GameTitle from "./GameTitle";
 import GameContainer from "./GameContainer";
 import Lobby from "./Lobby";
 import GameBoard from "./game/GameBoard";
+import EndGame from "./EndGame";
 
 export default class Room extends React.Component {
 
@@ -23,6 +24,10 @@ export default class Room extends React.Component {
     this.props.socket.on('gameStarted', (msg) => {
       this.setState({gameStatus: 1});
     });
+
+    this.props.socket.on('game-over', (game) => {
+      this.setState({gameStatus: 2})
+    });
   };
 
   render() {
@@ -35,6 +40,10 @@ export default class Room extends React.Component {
       case 1:
         return (
           <GameBoard socket={this.props.socket} />
+        );
+      case 2: 
+        return (
+          <EndGame />
         );
     }
   }
