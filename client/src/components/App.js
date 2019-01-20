@@ -18,9 +18,6 @@ class App extends React.Component {
       };
   }
 
-/*  componentDidMount() {
-      this.getUser();
-  }*/
 
   render() {
     return (
@@ -35,23 +32,6 @@ class App extends React.Component {
     ;
   }
 
-  getUser = () => {    
-        fetch('/api/whoami')
-        .then(res => res.json())
-        .then(
-            userObj => {
-                if (userObj._id !== undefined) {
-                    this.setState({ 
-                        userInfo: userObj
-                    });
-                } else {
-                    this.setState({ 
-                        userInfo: null
-                    });
-                }
-            }
-        );
-    }
 }
 
 export default withRouter(App);

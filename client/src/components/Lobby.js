@@ -5,15 +5,36 @@ import GameTitle from "./GameTitle";
 import GameContainer from "./GameContainer";
 import Waiting from "./Waiting";
 import WaitingAdmin from "./WaitingAdmin";
+import Player from "./game/Player";
 
 export default class Lobby extends React.Component {
 
   constructor(props) {
   	super(props);
-  };
+  }
 
+  
   render() {
-    const view = this.props.adminStatus ? <WaitingAdmin roomNo={this.props.roomNo} socket={this.props.socket} /> : <Waiting socket={this.props.socket} />;
+    console.log("in lobbyjs");
+    console.log(this.props.userInfo);
+    const view = this.props.adminStatus ? 
+        <WaitingAdmin 
+          userInfo={this.props.userInfo} 
+          roomNo={this.props.roomNo} 
+          socket={this.props.socket} 
+          players={this.props.players} 
+          indexMap={this.props.indexMap} 
+          playerOrder = {this.props.playerOrder}
+          numPlayers = {this.props.numPlayers}/> 
+
+      : <Waiting 
+          socket={this.props.socket} 
+          userInfo={this.props.userInfo} 
+          players={this.props.players}
+          indexMap={this.props.indexMap} 
+          playerOrder = {this.props.playerOrder}
+          numPlayers = {this.props.numPlayers}/>;
+
     return (
       <div className={"center"}>
       	{view}

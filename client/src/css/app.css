@@ -10,6 +10,9 @@ body {
     background-image: url(./gradient_big.png);
     background-position: 0% 0%;
     background-repeat: no-repeat;
+/*    -webkit-transform: translateZ(0);
+    transform: translateZ(0);*/
+
 }
 
 #root {
@@ -38,7 +41,7 @@ body {
 .button {
     cursor: pointer;
     font-size: 30px;
-    background-color: rgba(245, 245, 245, 0.3);
+    background-color: rgba(245, 245, 245, 0.2);
     line-height: 1;
     color: #efefef;
     margin: 15px;
@@ -62,15 +65,14 @@ body {
     color: white;
     margin: 20px;
     padding: 0px 7px;
+    width: 202px;
     border-right-style: solid;
     border-right-color: #ccff00;
     border-right-width: 7px;
     overflow: hidden;
-    animation-name: typewriter;
-    animation-duration: 2s;
-    animation-direction: normal;
-    animation-timing-function: steps(2);
-    animation-iteration-count: infinite;
+
+    animation: typewriter 2s normal steps(2) infinite;
+    -webkit-animation: typewriter 2s normal steps(2) infinite;
 }
 
 .black-text {
@@ -84,6 +86,156 @@ body {
     padding: 20px 0px;
 }
 
+.letters-active {
+/*    background-color: rgba(26, 19, 53, 0.3);*/
+    font-size: 50px;
+    color: white;
+    padding: 10px 5px;
+    margin: 50px;
+    border-right-style: solid;
+    border-right-width: 5px;
+    height: 70px;
+
+}
+
+.typing-player-0 {
+    border-right-color: #ccff00;
+}
+
+.typing-player-1 {
+    border-right-color: #40e0d0;
+}
+
+.typing-player-2 {
+    border-right-color: #ff00ce;
+}
+
+.typing-player-3 {
+    border-right-color: #ff9900;
+}
+
+
+.timer-bar {
+    width: 300px;
+    height: 20px;
+    border-radius: 50px;
+    background-color: transparent;
+    margin: 10px;
+    border: #ccff00 solid 5px;
+}
+
+.timer-fill {
+    width: 50%;
+    height: 20px;
+    border-radius: 50px;
+    background-color: #ccff00;
+
+}
+
+.timer-player-0 {
+    background-color: #ccff00;
+}
+
+.timer-player-1 {
+    background-color: #40e0d0;
+}
+
+.timer-player-2 {
+    background-color: #ff00ce;
+}
+
+.timer-player-3 {
+    background-color: #ff9900;
+}
+
+.player-name {
+    color: #efefef;
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+
+}
+
+.player-bubble {
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+    background-color: rgba(27, 26, 53, 0.7);
+    margin: 5px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-active {
+    transition: width 0.1s, height 0.1s;
+    -webkit-transition: width 0.1s, height 0.1s;
+}
+
+.player-active:hover {
+    width: 100px;
+    height: 100px;
+}
+
+.player-0 {
+    border: #ccff00 solid 5px;
+}
+
+.player-1 {
+    border: #40e0d0 solid 5px;
+}
+
+.player-2 {
+    border: #ff00ce solid 5px;
+}
+
+.player-3 {
+    border: #ff9900 solid 5px;
+}
+
+.component-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+}
+
+.letters-box {
+    padding: 10px 30px;
+
+}
+
+.timer-box {
+/*    padding: 10px 20px;*/
+    background-color: transparent;
+    margin: 30px;
+    position: relative;
+
+}
+
+.players-box {
+    width: 500px;
+    height: 150px;
+
+}
+
+.game-container {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url(./gradient_big.png);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+
+}
+
 /*.anim-typewriter{
   animation-name: typewriter;
   animation-duration: 2s;
@@ -95,5 +247,10 @@ body {
 @keyframes typewriter {
   from {width: 202px;}
   to {width: auto;}
+}
+
+@-webkit-keyframes typewriter {
+  from {-webkit-transform: width(202px);}
+  to {-webkit-transform: width(210px);}
 }
 

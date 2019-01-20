@@ -4,12 +4,42 @@ import "../css/app.css"
 import Link from "react-router-dom/es/Link";
 import GameTitle from "./GameTitle";
 import GameContainer from "./GameContainer";
+import Player from "./game/Player";
 
 export default class Waiting extends React.Component {
+	constructor(props) {
+		super(props);
+
+
+
+	}
+
+/*
+	componentDidMount() {
+        this.getUser();
+    };*/
+
   render() {
+    var players = [];
+    console.log('in waiting');
+    for (var i=0; i<this.props.numPlayers; i++) {
+      players.push(<Player 
+              key = {i}
+              players = {this.props.players}
+              playerIndex = {i}
+              indexMap={this.props.indexMap}
+              playerActive = {true}
+            />);
+      console.log('inloop');
+
+    };
+
     return (
       <div className={"center"}>
         <div className="black-text"> Waiting to start </div>
+        <div className={"players-box component-container"}>
+          {players}
+        </div>
       </div>
     );
   }

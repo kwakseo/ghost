@@ -8,11 +8,12 @@ const http = require("http");
 const socketio = require("socket.io");
 const bodyParser = require('body-parser');
 
+const User = require('./models/user');
 const db = require('./db');
 const passport = require('./passport');
 const api = require('./routes/api');
 
-const { initNewGame, gameUpdate, shuffleArray } = require("./game");
+const { initNewGame, gameUpdate, gameAddUser, shuffleArray } = require("./game");
 
 const app = express();
 const publicPath = path.resolve(__dirname, '..', "client", "dist");
@@ -37,9 +38,17 @@ app.get(
     { failureRedirect: '/login' }
   ),
   function(req, res) {
+
     res.redirect('/success');
-  }
-);
+    });
+  
+
+app.get('/user', function(req, res) {
+    User.findOne({ _id: req.query._id }, function(err, user) {
+
+        console.log('in find one');
+    });
+});
 
 app.get(["/success"], (req, res) => {
   res.sendFile(path.join(publicPath, "index.html"));
@@ -83,90 +92,109 @@ io.on("connection", (socket) => {
 
 
 socket.on("letter-added", (letter) => {
-  socket.broadcast.to(socket.room).emit("letter-added", letter[letter.length -1]);
-  console.log(letter);
-  gameUpdate(game, letter);
-  io.in(socket.room).emit("game-update", game);
-});
+/*  socket.broadcast.to(socket.room).emit("letter-added", letter[letter.length -1]);*/
+  console.log("letter added emit");
+  gameUpdate(game, letter).then(() => {
+    if (game.gameOver) {
+      console.log("game over emit attempt");
+      io.to(socket.room).emit("game-over", game);
+      }
+    else {
+      console.log("game update emit attempt");
+      io.to(socket.room).emit("game-update", game);
+    }
+    })
+  });
 
 //once game has ended remove game number from list
 
-socket.on('roomCreated', (roomNo) =>  {
+socket.on('roomCreated', (roomNoUserInfo) =>  {
+  const userInfo = roomNoUserInfo.userInfo;
+  let roomNo = roomNoUserInfo.roomNo;
+
   while (roomNo.toString() in allRooms) {
     roomNo = Math.floor((Math.random() * 100000) + 1);
   };
-  socket.room = roomNo;
-  allRooms[roomNo.toString()] = {joinable: true, users: [socket.id], numUsers: 1};
-  console.log("created allRooms")
-  console.log(allRooms);
 
+  socket.room = roomNo;
   socket.join(roomNo);
-  io.in(socket.room).emit('roomCreated', roomNo);
+  game = initNewGame();
+  console.log(allRooms[roomNo.toString()]);
+
+  game.roomNo = roomNo;
+  const socketid = socket.id.toString();
+  game.players[socketid] = {alive: true, index: 0, ghost: 0, userInfo: userInfo};
+  game.indexMap[0] = socketid;
+  game.playerOrder = [0];
+  game.timer = 10;
+
+  console.log("init game");
+  console.log(game);
+  console.log("info");
+  console.log(userInfo);
+  io.to(socket.room).emit("gameInit", game, userInfo, socketid);
+
+  allRooms[roomNo.toString()] = game;
+  console.log("userinfo, appjs: " + userInfo);
 });
 
-socket.on('roomChosen', (roomNo) => {
-  console.log("chosen allRooms");
-  console.log(allRooms);
-  console.log(roomNo);
-
+socket.on('roomChosen', (roomNoUserInfo) => {
+  const roomNo = roomNoUserInfo.roomNo;
+  const userInfo = roomNoUserInfo.userInfo;
   if (!(roomNo.toString() in allRooms) || !allRooms[roomNo.toString()].joinable) {
-    console.log("!allRooms")
-    roomNo = -1;
-    io.sockets.in(socket.id).emit('roomChosen', roomNo);
+    console.log("appjs checking joinable");
+    console.log(allRooms[roomNo.toString()]);
+    console.log(allRooms[roomNo.toString()].joinable);
+    console.log("appjs checking in rooms");
+    console.log(roomNo.toString() in allRooms);
+    io.sockets.in(socket.id).emit('roomInvalid', roomNo);
   }
 
   else {
     if (io.sockets.adapter.rooms[roomNo].length < 4) {
-      console.log("valid")
+      console.log("valid");
       socket.join(roomNo);
-      allRooms[roomNo.toString()].users.push(socket.id);
-      allRooms[roomNo.toString()].numUsers = allRooms[roomNo.toString()].numUsers + 1;
+      game = allRooms[roomNo.toString()];
+      game.numPlayers += 1;
+      const index = game.numPlayers - 1;
+      console.log("num players " + game.numPlayers);
+      socketid = socket.id.toString();
+      game.indexMap[index] = socketid;
+      let updateOrder = [];
+      for (var i of game.playerOrder) {
+        updateOrder.push(i);
+        console.log(i);
+      };
+      updateOrder.push(index);
+      game.playerOrder = updateOrder;
+      game.players[socket.id.toString()] = {alive: true, index: index, ghost: 0, userInfo: userInfo};
+      console.log(game.playerOrder);
       socket.room = roomNo;
-      io.sockets.in(socket.id).emit('roomChosen', roomNo);
+      io.to(socket.room).emit('roomJoined', game, userInfo, socketid);
+/*      io.sockets.in(socket.id).emit('roomJoined', {roomNo: roomNo, userInfo: userInfo, socketId: socket.id});*/
     }
     else {
       console.log("too many players");
-      allRooms[roomNo.toString()] = {joinable: false};
+      allRooms[roomNo.toString()].joinable = false;
       roomNo = -1;
-      io.sockets.in(socket.id).emit('roomChosen', roomNo);
+      io.sockets.in(socket.id).emit('roomInvalid', roomNo);
     }
   }
 });
 
-socket.on('gameStarted', (msg) => {
-  // allRooms.delete(socket.room.toString());
-  allRooms[socket.room.toString()].joinable = false;
-  console.log('heard?');
-
-  game = initNewGame();
-  game.roomNo = socket.room.toString();
+socket.on('gameStarted', (roomNo) => {
+  game = allRooms[roomNo.toString()];
   let index = 0;
-  for (userId of allRooms[socket.room.toString()].users) {
-    game.players[userId] = {alive: true, index: index, ghost: 0}
-    game.playerOrder.push(index);
-    game.indexMap[index] = userId;
-    index += 1;
-  }
-  console.log("indexmap");
-  console.log(game.indexMap);
+
+
   shuffleArray(game.playerOrder);
-  game.activePlayer = game.playerOrder[0];
-  game.activePlayerIndex = 0;
-  game.timer = 10;
-  console.log("init game");
-  console.log(game);
-  console.log("room");
-  console.log(socket.room);
+  console.log("player order");
+  console.log(game.playerOrder);
+  game.activePlayerIndex = game.playerOrder[0];
+  allRooms[roomNo.toString()].joinable = false;
 
+  io.to(socket.room).emit('gameStartedGo', game);
 
-
-
-  // socket.emit("new_game", game);
-  // gameStarted = true;
-
-  io.in(socket.room).emit('gameStarted', msg);
-  io.in(socket.room).emit('numPlayers', io.sockets.adapter.rooms[socket.room].length);
-  io.in(socket.room).emit("game-init", game);
 });
 
 

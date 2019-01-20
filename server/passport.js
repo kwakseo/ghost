@@ -5,19 +5,20 @@ const User = require('./models/user');
 
 // set up passport configs
 passport.use(new GoogleStrategy({
-  clientID: '1060162542849-7mh2la92i9nt5e14eknth2p0ai1krdna.apps.googleusercontent.com', // config variables
-  clientSecret: 'hEYUL7GBX7hHEY-55XXm_Fmf',
+  clientID: '77917308709-h4kh930mvbf772k5lc3uegauhjn4ibea.apps.googleusercontent.com', // config variables
+  clientSecret: 'iRILISPETXj0xX7x1oTP0EZC',
   callbackURL: '/auth/google/callback'
 }, function(accessToken, refreshToken, profile, done) {
   User.findOne({
     'googleid': profile.id
   }, function(err, user) {
+    console.log("looking in passport");
     if (err) return done(err);
 
     if (!user) {
       const user = new User({
         name: profile.displayName,
-        googleid: profile.id
+        googleid: profile.id,
       });
 
       user.save(function(err) {

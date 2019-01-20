@@ -1,5 +1,5 @@
 import React from "react";
-import "../../css/game.css";
+import "../../css/app.css";
 
 export default class Letters extends React.Component{
   constructor(props) {
@@ -7,10 +7,10 @@ export default class Letters extends React.Component{
   }
 
   render() {
+    var typeClassList = "letters-active typing-player-" + this.props.activePlayerIndex;
     return (
       <div className={"letters-box component-container"}>
-        <div className={"letters-active"}>{this.props.letters}</div>
-        <div className={"type-bar"}> | </div>
+        <div className={typeClassList}>{this.props.letters}</div>
       </div>
     );
   }
