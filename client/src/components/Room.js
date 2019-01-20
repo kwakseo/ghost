@@ -25,10 +25,21 @@ export default class Room extends React.Component {
       console.log("created, in roomjs");
       this.setState({users: [userInfo]});
 
+<<<<<<< HEAD
     });*/
   }
 
  
+=======
+    this.props.socket.on('gameStarted', (msg) => {
+      this.setState({gameStatus: 1});
+    });
+
+    this.props.socket.on('game-over', (game) => {
+      this.setState({gameStatus: 2})
+    });
+  };
+>>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
 
   render() {
     console.log("in room.js");
@@ -64,6 +75,10 @@ export default class Room extends React.Component {
 
             />
           );
+      case 2: 
+        return (
+          <EndGame />
+        );
       case 2: 
         return (
           <EndGame />

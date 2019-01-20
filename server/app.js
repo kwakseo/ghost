@@ -85,6 +85,7 @@ let numConnected = 0;
 let gameStarted = false;
 let game = {};
 let allRooms = {};
+let clientToSocketIdMap = {};
 
 io.on("connection", (socket) => {
   numConnected += 1;
@@ -92,6 +93,7 @@ io.on("connection", (socket) => {
 
 
 socket.on("letter-added", (letter) => {
+<<<<<<< HEAD
 /*  socket.broadcast.to(socket.room).emit("letter-added", letter[letter.length -1]);*/
   console.log("letter added emit");
   gameUpdate(game, letter).then(() => {
@@ -105,6 +107,29 @@ socket.on("letter-added", (letter) => {
     }
     })
   });
+=======
+  game.letters += letter[letter.length -1];
+  socket.broadcast.to(socket.room).emit("letter-added", letter[letter.length -1]);
+  console.log(letter);
+  // gameUpdate(game, letter);
+
+  gameUpdate(game, letter).then(() => {
+    console.log(game)
+    if (game.gameOver) {
+      io.in(socket.room).emit("game-over", game);
+    }
+    else {
+      io.in(socket.room).emit("game-update", game);
+  }
+  })
+});
+>>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
+
+// socket.on("user-info", (userInfo) => {
+//   console.log("userInfo");
+//   console.log(userInfo);
+//   // clientToSocketIdMap[userInfo]
+// });
 
 //once game has ended remove game number from list
 

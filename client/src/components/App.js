@@ -18,13 +18,23 @@ class App extends React.Component {
       };
   }
 
+<<<<<<< HEAD
+=======
+  componentDidMount() {
+      this.getUser();
+    }
+
+/*  componentDidMount() {
+      this.getUser();
+  }*/
+>>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
 
   render() {
     return (
       <div>
         <Switch>
           <Route exact path="/" component={LoginPage} userInfo={this.state.userInfo} />
-          <Route exact path="/success" component={GameContainer} />
+          <Route exact path="/success" userInfo={this.state.userInfo} component={GameContainer} />
           <Route exact path="/rules" component={GameRules} />
         </Switch>
       </div>

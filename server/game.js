@@ -9,10 +9,15 @@ const initNewGame = () => ({
   playerOrder: [],
   letters: '',
   timer: 0,
+<<<<<<< HEAD
   gameOver: false,
   joinable: true,
   numPlayers: 1,
   roundEnd: false,
+=======
+  roundEnd: false,
+  gameOver: false
+>>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
 });
 
 let shuffleArray = (array) => {
@@ -23,6 +28,7 @@ let shuffleArray = (array) => {
 };
 
 const gameUpdate = (game, letters) => {
+<<<<<<< HEAD
   game.roundEnd = false;
 	let loser = game.indexMap[game.activePlayerIndex];
   let numPlayers = game.numPlayers;
@@ -86,6 +92,61 @@ let gameAddUser = (game, userInfo, socketid) => {
   console.log("this is a function!");
   game.players[socketid.toString()] = userInfo;
 };
+=======
+	game.roundEnd = false;
+	// console.log(game);
+	console.log("activePlayer" + game.activePlayer);
+	let loser = game.indexMap[game.activePlayer];
+	let numPlayers = game.playerOrder.length;
+
+	game.timer = 10;
+
+	return checkWord(letters, game).then( (valid) => {
+		console.log("valid" + valid)
+		if (valid) {
+			game.roundEnd = true;
+			game.letters = "";
+			//if player becomes ghost
+			console.log("round has ended")
+			if (game.players[loser].ghost === 3) {
+				game.players[loser].alive = false;
+				for (let i = 0; i < numPlayers; i++) {
+					game.playerOrder = [];
+					if (i != game.activePlayer) {
+						game.playerOrder.push(i)
+					}
+				}
+			}
+			//if player gets strike
+			else {
+				game.players[loser].ghost += 1;
+			}
+
+			//end game if one player left
+			if (game.playerOrder.length <= 1) {
+				game.gameOver = true;
+			}
+
+			shuffleArray(game.playerOrder);
+			game.activePlayerIndex = 0;
+			game.activePlayer = game.playerOrder[0];
+
+		}
+		//game ongoing, change active player
+		else {
+			if (game.activePlayerIndex < game.playerOrder.length - 1) {
+				game.activePlayerIndex += 1;
+			}
+			else {
+				game.activePlayerIndex = 0;
+			}
+			game.activePlayer = game.playerOrder[game.activePlayerIndex];
+		}
+	}
+	)
+
+}
+>>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
 
 const checkWord = (new_word, game) => {
   let datamuseURL = 'https://api.datamuse.com/words?max=50&sp=' + new_word + '*';
@@ -101,22 +162,41 @@ const checkWord = (new_word, game) => {
         noSpaceWords.push(word);
       }
     }
+<<<<<<< HEAD
     result = JSON.stringify(noSpaceWords);
     console.log(result);
+=======
+
+    result = JSON.stringify(noSpaceWords)
+    console.log(result)
+>>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
     console.log('result length')
     console.log(noSpaceWords.length);
 
+<<<<<<< HEAD
     if (noSpaceWords.length === 0 || noSpaceWords.length === 1){
       console.log('valid word');
+=======
+    if (noSpaceWords.length === 0 || (noSpaceWords.length === 1 && game.letters === noSpaceWords[0])){
+  		console.log("round should end")
+>>>>>>> ab6ebcdb292565a00993bd406c061924d7fede2e
     	return true;
       // this.props.onEndGame();
     }
     else {
     	return false;
     }
-    // document.getElementById("newText").innerText = result;
     })
   .catch(error => {console.log(error)})
+
+  // if (noSpaceWords.length === 0 || noSpaceWords.length === 1){
+  // 		console.log("round should end")
+  //   	return true;
+  //     // this.props.onEndGame();
+  //   }
+  //   else {
+  //   	return false;
+  //   }
 }
 
 module.exports = { initNewGame, gameUpdate, shuffleArray };
