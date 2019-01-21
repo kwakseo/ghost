@@ -7,7 +7,7 @@ export default class Letters extends React.Component{
   }
 
   render() {
-    var typeClassList = "letters-active typing-player-" + this.props.activePlayerIndex;
+    var typeClassList = "letters-active typing-player-" + this.props.activePlayer;
     return (
       <div className={"letters-box component-container"}>
         <div className={typeClassList}>{this.props.letters}</div>

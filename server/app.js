@@ -195,7 +195,9 @@ socket.on('gameStarted', (roomNo) => {
   shuffleArray(game.playerOrder);
   console.log("player order");
   console.log(game.playerOrder);
-  game.activePlayerIndex = game.playerOrder[0];
+  game.activePlayerIndex = 0;
+  game.activePlayer = game.playerOrder[0];
+  // game.activePlayerIndex = game.playerOrder[0];
   allRooms[roomNo.toString()].joinable = false;
 
   io.to(socket.room).emit('gameStartedGo', game);

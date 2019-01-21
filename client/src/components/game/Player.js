@@ -36,7 +36,7 @@ export default class Player extends React.Component{
     console.log("name?");
     console.log(this.state.name);
     let classList = "player-bubble " + "player-" + this.state.playerIndex;
-      if (this.props.activePlayerIndex === this.state.playerIndex) {
+      if (this.props.activePlayer === this.state.playerIndex) {
         classList += " player-active"
       };
     return (

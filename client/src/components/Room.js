@@ -16,7 +16,7 @@ export default class Room extends React.Component {
 
   render() {
     console.log("in room.js");
-    console.log(this.props.activePlayerIndex);
+    console.log(this.props.activePlayer);
     switch (this.props.gameStatus) {
       case 0:
         return (
@@ -40,7 +40,7 @@ export default class Room extends React.Component {
             indexMap={this.props.indexMap} 
             playerOrder = {this.props.playerOrder}
             numPlayers = {this.props.numPlayers}
-            activePlayerIndex = {this.props.activePlayerIndex}
+            activePlayer = {this.props.activePlayer}
             timer = {this.props.timer}
             background_pos = {this.props.background_pos}
             gameStatus={this.props.gameStatus} 

@@ -7,8 +7,8 @@ export default class Timer extends React.Component{
   }
 
   render() {
-    var timerBarClassList = "timer-bar player-" + this.props.activePlayerIndex;
-    var timerFillClassList = "timer-fill timer-player-" + this.props.activePlayerIndex;
+    var timerBarClassList = "timer-bar player-" + this.props.activePlayer;
+    var timerFillClassList = "timer-fill timer-player-" + this.props.activePlayer;
     return (
       <div className={"timer-box component-container"}>
         <div className={timerBarClassList}>

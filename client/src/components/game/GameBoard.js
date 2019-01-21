@@ -21,17 +21,17 @@ export default class GameBoard extends React.Component {
               playerIndex = {playerIndex}
               players={this.props.players}
               indexMap={this.props.indexMap}
-              activePlayerIndex = {this.props.activePlayerIndex}
+              activePlayer = {this.props.activePlayer}
             />
             )
     };
     return (
 
       <div className="game-container">
-        <Timer activePlayerIndex={this.props.activePlayerIndex}/>
+        <Timer activePlayer={this.props.activePlayer}/>
         <Letters
             letters = {this.props.letters}
-            activePlayerIndex={this.props.activePlayerIndex}
+            activePlayer={this.props.activePlayer}
         />
         <div className="players-box component-container">
           {players}
