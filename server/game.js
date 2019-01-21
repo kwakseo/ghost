@@ -24,7 +24,7 @@ let shuffleArray = (array) => {
 
 const gameUpdate = (game, letters) => {
   game.roundEnd = false;
-	let loser = game.indexMap[game.activePlayerIndex];
+	let loser = game.indexMap[game.activePlayer];
   let numPlayers = game.numPlayers;
 
 	game.timer = 10;
@@ -35,14 +35,25 @@ const gameUpdate = (game, letters) => {
         //if player becomes ghost
         console.log("round has ended")
         if (game.players[loser].ghost === 3) {
+        	let tempNumPlayers = game.numPlayers;
             game.players[loser].alive = false;
             game.numPlayers -= 1;
+<<<<<<< HEAD
             for (let i = 0; i < numPlayers; i++) {
                 game.playerOrder = [];
                 if (i != game.activePlayerIndex) {
+=======
+            game.playerOrder = [];
+            for (let i = 0; i < tempNumPlayers; i++) {
+            	console.log("should be only deleting one player")
+                console.log(game.activePlayer);
+                if (i != game.activePlayer) {
+>>>>>>> b1ce07233aadc93b5bba9db03f56d6b76876f808
                     game.playerOrder.push(i)
               }
+              console.log(game.playerOrder);
             }
+            // console.log(game.playerOrder);
         }
       
       //if player gets strike

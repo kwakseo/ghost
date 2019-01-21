@@ -28,7 +28,7 @@ export default class GameContainer extends React.Component {
       playerOrder: null,
       roundEnd: false,
 
-      activePlayerIndex: null,
+      activePlayer: null,
       timer: null,
       background_pos: 100,
       letters: "",
@@ -76,19 +76,28 @@ export default class GameContainer extends React.Component {
       this.setState({gameStatus: 1,
                     playerOrder: game.playerOrder,
                     indexMap: game.indexMap,
+<<<<<<< HEAD
                     activePlayerIndex: game.activePlayerIndex});
 
+=======
+                    activePlayer: game.activePlayer});
+>>>>>>> b1ce07233aadc93b5bba9db03f56d6b76876f808
       var container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%")
     });
 
     this.socket.on("game-update", (game) => {
       console.log("update heard container");
+<<<<<<< HEAD
       console.log(game.activePlayerIndex);
       console.log(game.playerOrder);
+=======
+      console.log(game.activePlayer);
+
+>>>>>>> b1ce07233aadc93b5bba9db03f56d6b76876f808
       this.setState({
         indexMap: game.indexMap,
-        activePlayerIndex: game.activePlayerIndex,
+        activePlayer: game.activePlayer,
         numPlayers: game.numPlayers,
         timer: game.timer,
         roundEnd: game.roundEnd,
@@ -139,8 +148,8 @@ export default class GameContainer extends React.Component {
         temporarily here for testing purposes. */
       if (this.state.gameStatus === 1) {
         console.log("keydown check");
-        console.log("activePlayer" + this.state.activePlayerIndex);
-        if (this.socket.id === this.state.indexMap[this.state.activePlayerIndex]) {
+        console.log("activePlayer" + this.state.activePlayer);
+        if (this.socket.id === this.state.indexMap[this.state.activePlayer]) {
           if (e.keyCode >= 65 && e.keyCode <= 90) {
             this.setState({letters: this.state.letters + e.key});
             }
@@ -208,7 +217,7 @@ export default class GameContainer extends React.Component {
             players={this.state.players}
             indexMap = {this.state.indexMap}
             numPlayers = {this.state.numPlayers}
-            activePlayerIndex = {this.state.activePlayerIndex}
+            activePlayer = {this.state.activePlayer}
             timer = {this.state.timer}
             background_pos = {this.state.background_pos}
             letters = {this.state.letters}  />

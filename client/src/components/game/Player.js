@@ -44,8 +44,12 @@ export default class Player extends React.Component{
 
   render() {
     let classList = "player-bubble " + "player-" + this.state.playerIndex;
+<<<<<<< HEAD
     let ghostClassList= "ghost-letters ghost-player-" + this.state.playerIndex;
       if (this.props.activePlayerIndex === this.state.playerIndex) {
+=======
+      if (this.props.activePlayer === this.state.playerIndex) {
+>>>>>>> b1ce07233aadc93b5bba9db03f56d6b76876f808
         classList += " player-active"
       };
 
