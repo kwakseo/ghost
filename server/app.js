@@ -96,7 +96,7 @@ socket.on("letter-added", (letters) => {
   game = allRooms[socket.room.toString()];
   console.log("letter added emit");
   game.letters += letters[letters.length -1];
-  socket.broadcast.to(socket.room).emit("letter-added", letters[letters.length -1]);
+/*  socket.broadcast.to(socket.room).emit("letter-added", letters[letters.length -1]);*/
 
   gameUpdate(game, letters).then(() => {
     console.log(game)

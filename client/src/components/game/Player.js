@@ -58,9 +58,6 @@ export default class Player extends React.Component{
       ghostLetters = ghostLetters + 'ghost'[i];
     };
 
-    console.log("stats?");
-    console.log(numStrikes);
-
     let classList = "player-bubble " + "player-" + index;
     let ghostClassList= "ghost-letters ghost-player-" + index;
 

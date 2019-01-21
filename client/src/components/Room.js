@@ -15,8 +15,6 @@ export default class Room extends React.Component {
   }
 
   render() {
-    console.log("in room.js");
-    console.log(this.props.activePlayer);
     switch (this.props.gameStatus) {
       case 0:
         return (

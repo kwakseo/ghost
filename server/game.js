@@ -62,7 +62,8 @@ const gameUpdate = (game, letters) => {
       }
 
       shuffleArray(game.playerOrder);
-      game.activePlayerIndex = game.playerOrder[0];
+      game.activePlayer = game.playerOrder[0];
+      game.activePlayerIndex = 0;
 
     }
   

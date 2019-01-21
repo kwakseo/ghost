@@ -37,7 +37,6 @@ export default class GameContainer extends React.Component {
     document.addEventListener("keydown", this.keyDownBound);
 
     this.socket.on('gameInit', (game, userInfo, socketid) => {
-      console.log("heard room init");
       const players = game.players;
 
       this.setState({players: players,
@@ -56,7 +55,6 @@ export default class GameContainer extends React.Component {
 
 
     this.socket.on('roomJoined', (game, userInfo, socketid) => {
-      console.log("join heard container");
       const players = game.players;
 
       this.setState({players: players,
@@ -72,7 +70,6 @@ export default class GameContainer extends React.Component {
     });
     
     this.socket.on('gameStartedGo', (game) => {
-      console.log("gameStart heard container");
       this.setState({gameStatus: 1,
                     playerOrder: game.playerOrder,
                     indexMap: game.indexMap,
@@ -151,7 +148,6 @@ export default class GameContainer extends React.Component {
   GoToRoomAdmin = () => {
     this.setState({admin: true});
     this.changeGameState(true);
-    console.log("go to room admin")
   };
 
   GoToRoom = () => {
@@ -179,7 +175,6 @@ export default class GameContainer extends React.Component {
   } 
 
   render() {
-    console.log("userInfo? " +this.state.userInfo);
     switch (this.state.roomSelect) {
       case false:
         return (

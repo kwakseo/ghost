@@ -13,8 +13,10 @@ export default class GameBoard extends React.Component {
 
 
   render() {
+    console.log("render board");
+    console.log(this.props.playerOrder);
+    console.log(this.props.activePlayer);
     var players = [];
-    console.log("in board");
     for (var playerIndex of this.props.playerOrder) {
       players.push(<Player 
               key={playerIndex}

@@ -149,6 +149,8 @@ body {
 
 .ghost-letters {
     font-size: 20px;
+    height: 25px;
+    width: 50px;
 }
 
 .ghost-player-0 {
