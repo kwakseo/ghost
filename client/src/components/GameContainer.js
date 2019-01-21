@@ -26,7 +26,7 @@ export default class GameContainer extends React.Component {
       numPlayers: 4,
       indexMap: null,
       playerOrder: null,
-      roundEnd: null,
+      roundEnd: false,
 
       activePlayerIndex: null,
       timer: null,
@@ -77,6 +77,7 @@ export default class GameContainer extends React.Component {
                     playerOrder: game.playerOrder,
                     indexMap: game.indexMap,
                     activePlayerIndex: game.activePlayerIndex});
+
       var container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%")
     });
@@ -84,7 +85,7 @@ export default class GameContainer extends React.Component {
     this.socket.on("game-update", (game) => {
       console.log("update heard container");
       console.log(game.activePlayerIndex);
-
+      console.log(game.playerOrder);
       this.setState({
         indexMap: game.indexMap,
         activePlayerIndex: game.activePlayerIndex,
@@ -93,6 +94,8 @@ export default class GameContainer extends React.Component {
         roundEnd: game.roundEnd,
         isGameOver: game.isGameOver,
         letters: game.letters,
+        playerOrder: game.playerOrder,
+
       });
 
 

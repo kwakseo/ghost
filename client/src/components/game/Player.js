@@ -12,9 +12,10 @@ export default class Player extends React.Component{
       googleid: null,
       socketid: null,
       playerIndex: null,
+      ghostLetters: '',
+      alive: true,
 
     }
-    console.log('player js');
   }
 
   componentDidMount() {
@@ -23,25 +24,37 @@ export default class Player extends React.Component{
 
   unpackUserInfo = (players, playerIndex, indexMap) => {
     const socketid = indexMap[playerIndex];
-    console.log(socketid);
     const playerInfo = players[socketid];
-    console.log(playerInfo);
     const userInfo = playerInfo.userInfo;
-    console.log(userInfo);
-    this.setState({name: userInfo.name, googleid: userInfo.googleid, socketid: socketid, playerIndex: playerIndex});
-    console.log("id?: " + this.state.googleid);
+    const strikes = playerInfo.ghost;
+
+    let playerGhostLetters = ''
+
+    for (i=0; i<strikes; i++) {
+      let playerGhostLetters = playerGhostLetters + 'ghost'[i];
+    }
+
+    this.setState({name: userInfo.name, 
+                  googleid: userInfo.googleid, 
+                  socketid: socketid, 
+                  playerIndex: playerInfo.index,
+                  ghostLetters: playerGhostLetters,
+                  alive: playerInfo.alive});
   };
 
   render() {
-    console.log("name?");
-    console.log(this.state.name);
     let classList = "player-bubble " + "player-" + this.state.playerIndex;
+    let ghostClassList= "ghost-letters ghost-player-" + this.state.playerIndex;
       if (this.props.activePlayerIndex === this.state.playerIndex) {
         classList += " player-active"
       };
+
     return (
-      <div className={classList}>
-        <div className="player-name">{this.state.name}</div>
+      <div className="player-container">
+        <div className={classList}>
+          <div className="player-name">{this.state.name}</div>
+        </div>
+        <div className={ghostClassList}></div>
       </div>
     );
   }

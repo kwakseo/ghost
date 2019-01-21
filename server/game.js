@@ -39,7 +39,7 @@ const gameUpdate = (game, letters) => {
             game.numPlayers -= 1;
             for (let i = 0; i < numPlayers; i++) {
                 game.playerOrder = [];
-                if (i != game.activePlayer) {
+                if (i != game.activePlayerIndex) {
                     game.playerOrder.push(i)
               }
             }
@@ -58,8 +58,7 @@ const gameUpdate = (game, letters) => {
       }
 
       shuffleArray(game.playerOrder);
-      game.activePlayerIndex = 0;
-      game.activePlayer = game.playerOrder[0];
+      game.activePlayerIndex = game.playerOrder[0];
 
     }
   

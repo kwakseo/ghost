@@ -97,12 +97,13 @@ socket.on("letter-added", (letters) => {
   console.log("letter added emit");
   game.letters += letters[letters.length -1];
   socket.broadcast.to(socket.room).emit("letter-added", letters[letters.length -1]);
-  
+
   gameUpdate(game, letters).then(() => {
     console.log(game)
     if (game.gameOver) {
       io.in(socket.room).emit("game-over", game);
     }
+
     else {
       io.in(socket.room).emit("game-update", game);
   }
@@ -154,7 +155,7 @@ socket.on('roomChosen', (roomNoUserInfo) => {
 
   else {
     if (io.sockets.adapter.rooms[roomNo].length < 4) {
-      console.log("valid");
+      console.log("valid room");
       socket.join(roomNo);
       game = allRooms[roomNo.toString()];
       game.numPlayers += 1;

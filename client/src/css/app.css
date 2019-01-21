@@ -7,6 +7,7 @@ body {
     height: 100%;
     padding:0;
     font-family: 'Lato', sans-serif;
+    color: #efefef;
 /*    -webkit-transform: translateZ(0);
     transform: translateZ(0);*/
 
@@ -146,6 +147,26 @@ body {
     background-color: #ff9900;
 }
 
+.ghost-letters {
+    font-size: 12px;
+}
+
+.ghost-player-0 {
+    color: #ccff00;
+}
+
+.ghost-player-1 {
+    color: #40e0d0;
+}
+
+.ghost-player-2 {
+    color: #ff00ce;
+}
+
+.ghost-player-3 {
+    color: #ff9900;
+}
+
 .player-name {
     color: #efefef;
     width: 80px;
@@ -262,6 +283,11 @@ body {
     flex-direction: column;
     align-items: center;
 
+}
+
+.player-container {
+    display: flex;
+    flex-direction: column;
 }
 
 @keyframes scrollbottom {
