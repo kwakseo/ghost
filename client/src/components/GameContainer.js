@@ -76,26 +76,14 @@ export default class GameContainer extends React.Component {
       this.setState({gameStatus: 1,
                     playerOrder: game.playerOrder,
                     indexMap: game.indexMap,
-<<<<<<< HEAD
-                    activePlayerIndex: game.activePlayerIndex});
-
-=======
                     activePlayer: game.activePlayer});
->>>>>>> b1ce07233aadc93b5bba9db03f56d6b76876f808
       var container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%")
     });
 
     this.socket.on("game-update", (game) => {
-      console.log("update heard container");
-<<<<<<< HEAD
-      console.log(game.activePlayerIndex);
-      console.log(game.playerOrder);
-=======
-      console.log(game.activePlayer);
-
->>>>>>> b1ce07233aadc93b5bba9db03f56d6b76876f808
       this.setState({
+        players: game.players,
         indexMap: game.indexMap,
         activePlayer: game.activePlayer,
         numPlayers: game.numPlayers,
