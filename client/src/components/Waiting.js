@@ -13,7 +13,7 @@ export default class Waiting extends React.Component {
 
 
 	}
-  
+
   render() {
     var players = [];
     console.log('in waiting');
@@ -23,7 +23,6 @@ export default class Waiting extends React.Component {
               players = {this.props.players}
               playerIndex = {i}
               indexMap={this.props.indexMap}
-              playerActive = {true}
             />);
       console.log('inloop');
 

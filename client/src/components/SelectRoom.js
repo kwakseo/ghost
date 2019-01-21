@@ -52,11 +52,16 @@ export default class GameRules extends React.Component {
     const invalid = this.state.validCode ? null : <div>invalid</div>;
 
     return (
-      <div className={"center select-title-box"}>
+      <div className={"game-container"}>
         <GameTitle />
-
-        <form onSubmit={this.handleJoin}>
-          <input id="m" className="center" value={this.state.value} onChange={this.handleChange} autoComplete="off"/>
+        <form onSubmit={this.handleJoin} className="selectroom-container">
+          <input id="m" className="input-box" 
+                    value={this.state.value} 
+                    onChange={this.handleChange} 
+                    autoComplete="off" 
+                    placeholder="Code"
+                    onFocus={(e) => e.target.placeholder = ""} 
+                    onBlur={(e) => e.target.placeholder = "Code"}/>
           <div className="button" onClick={this.handleJoin}>Join</div>
           <div className="black-text">{invalid}</div>
           <div className="button" onClick={this.handleNew}>New Game</div>

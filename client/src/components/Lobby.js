@@ -25,7 +25,8 @@ export default class Lobby extends React.Component {
           players={this.props.players} 
           indexMap={this.props.indexMap} 
           playerOrder = {this.props.playerOrder}
-          numPlayers = {this.props.numPlayers}/> 
+          numPlayers = {this.props.numPlayers}
+          background_pos = {this.props.background_pos}/> 
 
       : <Waiting 
           socket={this.props.socket} 
@@ -33,10 +34,11 @@ export default class Lobby extends React.Component {
           players={this.props.players}
           indexMap={this.props.indexMap} 
           playerOrder = {this.props.playerOrder}
-          numPlayers = {this.props.numPlayers}/>;
+          numPlayers = {this.props.numPlayers}
+          background_pos = {this.props.background_pos}/>;
 
     return (
-      <div className={"center"}>
+      <div className={"game-container scroll-background"}>
       	{view}
       </div>
     );

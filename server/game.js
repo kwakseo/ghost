@@ -153,7 +153,8 @@ const checkWord = (new_word, game) => {
       if(word.indexOf(" ") === -1){ 
         noSpaceWords.push(word);
       }
-    }
+      }
+    
     result = JSON.stringify(noSpaceWords);
     console.log(result);
 
@@ -162,13 +163,18 @@ const checkWord = (new_word, game) => {
     console.log('result length')
     console.log(noSpaceWords.length);
 
-    if (noSpaceWords.length === 0 || noSpaceWords.length === 1){
-    	return true;
+    if (noSpaceWords.length === 1){
+      if (noSpaceWords[0] === game.letters) {
+    	   return true;
+      }
     }
     else {
-    	return false;
+      if (noSpaceWords.length === 0){
+    	return true;
+      }
+      return false;
     }
-    })
+  })
   .catch(error => {console.log(error)})
 }
 

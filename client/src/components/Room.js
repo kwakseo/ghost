@@ -50,7 +50,9 @@ export default class Room extends React.Component {
           );
       case 2: 
         return (
-          <EndGame />
+          <EndGame 
+            background_pos = {this.props.background_pos}
+          />
         );
     }
   }

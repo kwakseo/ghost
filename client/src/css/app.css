@@ -7,9 +7,6 @@ body {
     height: 100%;
     padding:0;
     font-family: 'Lato', sans-serif;
-    background-image: url(./gradient_big.png);
-    background-position: 0% 0%;
-    background-repeat: no-repeat;
 /*    -webkit-transform: translateZ(0);
     transform: translateZ(0);*/
 
@@ -40,14 +37,15 @@ body {
 
 .button {
     cursor: pointer;
-    font-size: 30px;
+    font-size: 20px;
     background-color: rgba(245, 245, 245, 0.2);
     line-height: 1;
     color: #efefef;
-    margin: 15px;
+    margin: 12px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 40px;
+    padding: 20px 30px;
     border-radius: 50px;
     text-decoration-line: none;
     border-style: solid;
@@ -170,16 +168,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.player-active {
     transition: width 0.1s, height 0.1s;
     -webkit-transition: width 0.1s, height 0.1s;
 }
 
-.player-active:hover {
-    width: 100px;
-    height: 100px;
+.player-active {
+    width: 105px;
+    height: 105px;
 }
 
 .player-0 {
@@ -231,9 +226,51 @@ body {
     align-items: center;
     justify-content: center;
     background-image: url(./gradient_big.png);
-    background-position: 0% 100%;
+    background-position: 0% 0%;
     background-repeat: no-repeat;
+    transition: background-position 0.5s;
+    -webkit-transition: background-position 0.5s;
 
+}
+
+.scroll-background {
+    animation: scrollbottom 2s forwards;
+    -webkit-animation: scrollbottom 2s forwards;
+}
+
+.scroll-background-reverse {
+    animation: scrolltop 2s forwards;
+    -webkit-animation: scrolltop 2s forwards;
+}
+
+.input-box {
+    margin: 10px;
+    padding: 10px 15px;
+    width: 100px;
+    display: flex;
+    border-radius: 50px;
+    border-width: 0px;
+    outline-width: 0;
+    font-size: 20px;
+    color: #1b1a35;
+    background-color: #efefef;
+
+}
+
+.selectroom-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+@keyframes scrollbottom {
+    from {background-position: 0% 0%;}
+    to {background-position: 0% 100%;}
+}
+
+@keyframes scrolltop {
+    to {background-position: 0% 0%;}
 }
 
 @keyframes typewriter {

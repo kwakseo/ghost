@@ -21,7 +21,7 @@ export default class GameBoard extends React.Component {
               playerIndex = {playerIndex}
               players={this.props.players}
               indexMap={this.props.indexMap}
-              playerActive = {true}
+              activePlayerIndex = {this.props.activePlayerIndex}
             />
             )
     };

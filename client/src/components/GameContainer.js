@@ -26,6 +26,7 @@ export default class GameContainer extends React.Component {
       numPlayers: 4,
       indexMap: null,
       playerOrder: null,
+      roundEnd: null,
 
       activePlayerIndex: null,
       timer: null,
@@ -44,7 +45,10 @@ export default class GameContainer extends React.Component {
                   userInfo: userInfo,
                   admin: true,
                   numPlayers: game.numPlayers,
-                  indexMap: game.indexMap});
+                  indexMap: game.indexMap,});
+
+      var container = document.getElementsByClassName("game-container");
+      container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%");
 
       console.log("in container created room, user: " + this.state.userInfo);
       this.GoToRoomAdmin();
@@ -60,8 +64,8 @@ export default class GameContainer extends React.Component {
                   userInfo: userInfo,
                   playerOrder: game.playerOrder,
                   numPlayers: game.numPlayers,
-                  indexMap: game.indexMap});
-
+                  indexMap: game.indexMap,});
+      
       console.log("in container joined room, user: " + this.state.userInfo)
       this.GoToRoom();
 
@@ -73,6 +77,8 @@ export default class GameContainer extends React.Component {
                     playerOrder: game.playerOrder,
                     indexMap: game.indexMap,
                     activePlayerIndex: game.activePlayerIndex});
+      var container = document.getElementsByClassName("game-container");
+      container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%")
     });
 
     this.socket.on("game-update", (game) => {
@@ -94,14 +100,17 @@ export default class GameContainer extends React.Component {
         this.setState({
           background_pos: 100
         })
-        var container = document.getElementsByClassName("game-container");
-        container[0].setAttribute("style", "background-position: " + this.state.background_pos + "%");
+
+        
       }
       else {
         if (this.state.background_pos - 5 >= 0) {
             this.setState({background_pos: this.state.background_pos - 5});
+            
           }
       }
+      var container = document.getElementsByClassName("game-container");
+      container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%");
     });
 
     this.socket.on('game-over', (game) => {
@@ -125,23 +134,19 @@ export default class GameContainer extends React.Component {
 
     /* these should be moved to server eventually. 
         temporarily here for testing purposes. */
+      if (this.state.gameStatus === 1) {
+        console.log("keydown check");
+        console.log("activePlayer" + this.state.activePlayerIndex);
+        if (this.socket.id === this.state.indexMap[this.state.activePlayerIndex]) {
+          if (e.keyCode >= 65 && e.keyCode <= 90) {
+            this.setState({letters: this.state.letters + e.key});
+            }
+            this.socket.emit("letter-added", this.state.letters);
 
-      console.log("keydown check");
-      console.log("activePlayer" + this.state.activePlayerIndex);
-      // console.log(this.state.indexMap);
-      if (this.socket.id === this.state.indexMap[this.state.activePlayerIndex]) {
-        if (e.keyCode >= 65 && e.keyCode <= 90) {
-          this.setState({letters: this.state.letters + e.key});
-          /*if (this.state.background_pos - 5 >= 0) {
-            this.setState({background_pos: this.state.background_pos - 5});
-          }*/
-          this.socket.emit("letter-added", this.state.letters);
-
+          }
         }
     };
-    console.log(this.state.letters);
-    console.log(this.state.background_pos);
-};
+
 
   GoToRoomAdmin = () => {
     this.setState({admin: true});
