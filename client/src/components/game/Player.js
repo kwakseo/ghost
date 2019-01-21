@@ -18,7 +18,7 @@ export default class Player extends React.Component{
     }
   }
 
-  componentDidMount() {
+/*  componentDidMount() {
         this.unpackUserInfo(this.props.players, this.props.playerIndex, this.props.indexMap);
     };
 
@@ -30,7 +30,7 @@ export default class Player extends React.Component{
 
     let playerGhostLetters = ''
 
-    for (i=0; i<strikes; i++) {
+    for (var i=0; i<strikes; i++) {
       let playerGhostLetters = playerGhostLetters + 'ghost'[i];
     }
 
@@ -40,46 +40,41 @@ export default class Player extends React.Component{
                   playerIndex: playerInfo.index,
                   ghostLetters: playerGhostLetters,
                   alive: playerInfo.alive});
-  };
+  };*/
 
   render() {
-    let classList = "player-bubble " + "player-" + this.state.playerIndex;
-<<<<<<< HEAD
-    let ghostClassList= "ghost-letters ghost-player-" + this.state.playerIndex;
-      if (this.props.activePlayerIndex === this.state.playerIndex) {
-=======
-      if (this.props.activePlayer === this.state.playerIndex) {
->>>>>>> b1ce07233aadc93b5bba9db03f56d6b76876f808
+
+    const index = this.props.playerIndex;
+    const socketid = this.props.indexMap[index];
+    const playerStats = this.props.players[socketid];
+
+    const numStrikes = playerStats.ghost;
+    const userInfo = playerStats.userInfo;
+    const name = userInfo.name;
+
+    let ghostLetters = '';
+
+    for (var i=0; i<numStrikes; i++) {
+      ghostLetters = ghostLetters + 'ghost'[i];
+    };
+
+    console.log("stats?");
+    console.log(numStrikes);
+
+    let classList = "player-bubble " + "player-" + index;
+    let ghostClassList= "ghost-letters ghost-player-" + index;
+
+      if (this.props.activePlayer === index) {
         classList += " player-active"
       };
 
     return (
       <div className="player-container">
         <div className={classList}>
-          <div className="player-name">{this.state.name}</div>
+          <div className="player-name">{name}</div>
         </div>
-        <div className={ghostClassList}></div>
+        <div className={ghostClassList}>{ghostLetters}</div>
       </div>
     );
   }
-
-
-  /*getUser = () => {
-    fetch("/api/whoami")
-        .then(res => res.json())
-        .then(
-            userObj => {
-                if (userObj._id !== undefined) {
-                    this.setState({ 
-                        name: userObj.name,
-                        id: userObj._id
-                    });
-                } else {
-                    this.setState({ 
-                        userInfo: null
-                    });
-                }
-            }
-        );
-  } */
 }

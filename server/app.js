@@ -13,7 +13,7 @@ const db = require('./db');
 const passport = require('./passport');
 const api = require('./routes/api');
 
-const { initNewGame, gameUpdate, gameAddUser, shuffleArray } = require("./game");
+const { initNewGame, gameUpdate, shuffleArray } = require("./game");
 
 const app = express();
 const publicPath = path.resolve(__dirname, '..', "client", "dist");
