@@ -11,7 +11,28 @@ import GameContainer from "./GameContainer";
 export default class GameRules extends React.Component {
   constructor(props){
     super(props);
-    this.state = {value: '', validCode: true};
+    this.state = {value: '', validCode: true, render: false, history: null};
+
+    console.log("get history in select room")
+    console.log(this.props.userInfo)
+    console.log(this.props.history);
+
+    // this.props.socket.on('get-history', (history) => {
+    //   this.props.history = history;
+    //   // console.log(this.props.history)
+    // })
+  }
+
+  componentDidMount() {
+    this.getHistory().then(() => {
+      console.log("in getHistory")
+      console.log(this.state.history);
+      this.props.socket.emit("get-history", this.state.history);
+    });
+
+    setTimeout(function() { //Start the timer
+        this.setState({render: true}) //After 1 second, set render to true
+    }.bind(this), 500)
   }
 
   handleChange = (event) => {
@@ -49,10 +70,18 @@ export default class GameRules extends React.Component {
   };
 
   render(){
+    console.log('timer');
+    console.log(this.state.render);
+    console.log(this.state.history);
+    // if (this.state.render) {console.log(this.state.history.number_wins)}
+    const welcome = this.state.render ? <div>Welcome {this.props.userInfo.name}</div> : null;
     const invalid = this.state.validCode ? null : <div>invalid</div>;
+    const historyShow = (this.state.render && this.state.history != null) ? <div><div>Number Wins: {this.state.history[0].number_wins}</div><div>Total Games Played: {this.state.history[0].number_games}</div></div> : null;
+    console.log(historyShow);
 
     return (
       <div className={"game-container"}>
+      {welcome}
         <GameTitle />
         <form onSubmit={this.handleJoin} className="selectroom-container">
          <div className={"component-container join-box"}> 
@@ -71,8 +100,32 @@ export default class GameRules extends React.Component {
           <Link to="/rules" className={"rule-button"}>?</Link>
           <p>How to play</p>
         </div>
+        <div> History </div>
+        {historyShow}
         </form>
       </div>
     );
   }
+
+  getHistory = () => {
+        return fetch('/api/history')
+        .then(res => res.json())
+        .then(
+          historyObj => {
+            console.log("history object");
+          console.log(historyObj);
+          // console.log(historyObj[0]._id)
+                if (historyObj[0] !== undefined) {
+                  console.log('returning player')
+                    this.setState({ 
+                        history: historyObj,
+                    });
+                } else {
+                  console.log('new player')
+                    this.setState({ 
+                        history: null
+                    });
+                }
+            })
+    };
 }
