@@ -43,13 +43,15 @@ export default class Room extends React.Component {
             background_pos = {this.props.background_pos}
             gameStatus={this.props.gameStatus} 
             letters = {this.props.letters} 
-
+            winnerId = {this.props.winnerId}
             />
           );
       case 2: 
         return (
           <EndGame 
             background_pos = {this.props.background_pos}
+            newPlayer = {this.props.newPlayer}
+            winnerId = {this.props.winnerId}
           />
         );
     }
