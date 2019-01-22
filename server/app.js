@@ -89,7 +89,7 @@ app.set('socketio', io);
 console.log("print port info");
 console.log(process.env.PORT);
 
-server.listen(process.env.PORT || 3000, () => {
+server.listen((process.env.PORT || 3000), () => {
   console.log(`Listening on port 3000 and looking in folder ${publicPath}`);
 });
 
