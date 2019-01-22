@@ -10,6 +10,7 @@ export default class LoginPage extends React.Component {
       <div className={"center login-title-box"}>
       	<GameTitle/>
       	<a className={"button"} href="/auth/google">Login</a>
+        <Link to="/rules" className={"button"}>Rules</Link>
       </div>
     </div>
     );

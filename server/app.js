@@ -35,7 +35,7 @@ app.get(
   '/auth/google/callback',
   passport.authenticate(
     'google',
-    { failureRedirect: '/login' }
+    { failureRedirect: '/' }
   ),
   function(req, res) {
 
@@ -51,6 +51,10 @@ app.get('/user', function(req, res) {
 });
 
 app.get(["/success"], (req, res) => {
+  res.sendFile(path.join(publicPath, "index.html"));
+});
+
+app.get(["/rules"], (req, res) => {
   res.sendFile(path.join(publicPath, "index.html"));
 });
 

@@ -65,6 +65,7 @@ export default class GameRules extends React.Component {
           <div className="button" onClick={this.handleJoin}>Join</div>
           <div className="black-text">{invalid}</div>
           <div className="button" onClick={this.handleNew}>New Game</div>
+          <Link to="/rules" className={"button"}>Rules</Link>
         </form>
       </div>
     );
