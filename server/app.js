@@ -9,9 +9,11 @@ const socketio = require("socket.io");
 const bodyParser = require('body-parser');
 
 const User = require('./models/user');
+const History = require('./models/history')
 const db = require('./db');
 const passport = require('./passport');
 const api = require('./routes/api');
+// const router = express.Router();
 
 const { initNewGame, gameUpdate, shuffleArray } = require("./game");
 
@@ -41,7 +43,9 @@ app.get(
 
     res.redirect('/success');
     });
-  
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get('/user', function(req, res) {
     User.findOne({ _id: req.query._id }, function(err, user) {
@@ -90,6 +94,7 @@ let gameStarted = false;
 let game = {};
 let allRooms = {};
 let clientToSocketIdMap = {};
+let userGoogleInfo = {};
 
 io.on("connection", (socket) => {
   numConnected += 1;
@@ -104,8 +109,12 @@ socket.on("letter-added", (letters) => {
 
   gameUpdate(game, letters).then(() => {
     console.log(game)
+    if (game.playerDeath) {
+      io.in(socket.room).emit("player-death", game);
+    }
     if (game.gameOver) {
       io.in(socket.room).emit("game-over", game);
+      updateDatabase();
     }
 
     else {
@@ -114,6 +123,14 @@ socket.on("letter-added", (letters) => {
   })
   });
 //once game has ended remove game number from list
+
+socket.on("user-info", (userInfo) => {
+  console.log("userInfo");
+  console.log(userInfo);
+  userGoogleInfo = userInfo;
+  clientToSocketIdMap[socket.id] = userInfo._id;
+  console.log(clientToSocketIdMap);
+});
 
 socket.on('roomCreated', (roomNoUserInfo) =>  {
   const userInfo = roomNoUserInfo.userInfo;
@@ -126,6 +143,7 @@ socket.on('roomCreated', (roomNoUserInfo) =>  {
   socket.room = roomNo;
   socket.join(roomNo);
   game = initNewGame();
+  game.clientToSocketIdMap = clientToSocketIdMap;
   console.log(allRooms[roomNo.toString()]);
 
   game.roomNo = roomNo;
@@ -208,6 +226,56 @@ socket.on('gameStarted', (roomNo) => {
   io.to(socket.room).emit('gameStartedGo', game);
 
 });
+
+const updateDatabaseHelper = (player) => {
+    console.log('one loop in updateDatabase')
+    console.log(player);
+    playerGoogleId = game.clientToSocketIdMap[game.indexMap[player]];
+    console.log(game.indexMap[player]);
+    console.log(game.clientToSocketIdMap[game.indexMap[player]]);
+    // console.log()
+    console.log(playerGoogleId);
+    console.log('winning person info')
+    console.log(game.clientToSocketIdMap[game.indexMap[game.activePlayer]])
+    return History.findOne({player_id: playerGoogleId}, function(err, history) {
+      if (err) {
+        console.log('error');
+      }
+      else if (history === null) {
+        let number_wins = 0;
+        if (playerGoogleId === game.clientToSocketIdMap[game.indexMap[game.activePlayer]]) {
+          number_wins += 1;
+        }
+        const newHistory = new History({
+          'player_id': userGoogleInfo._id,
+          'player_name': userGoogleInfo.name,
+          'number_wins': number_wins,
+          'number_games': 1,
+        });
+        newHistory.save();
+      }
+      else {
+        console.log("is this in the right order")
+        let number_wins = 0;
+        if (playerGoogleId === game.clientToSocketIdMap[game.indexMap[game.activePlayer]]) {
+          console.log('winner')
+          history.number_wins += 1;
+        }
+        history.number_games = history.number_games + 1;
+        history.save();
+      }
+    });
+}
+
+const databasePromises = [];
+
+async function updateDatabase() {
+  console.log('updateDatabase');
+  for (player in game.indexMap) {
+    let result = await updateDatabaseHelper(player);
+  }
+  return Promise.all(databasePromises);
+}
 
 
 

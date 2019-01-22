@@ -10,4 +10,8 @@ const db = mongoose.connection;
 // db error handling
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+db.on('connected', function() {
+	console.log('database connection');
+});
+
 module.exports = db;

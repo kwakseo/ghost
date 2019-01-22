@@ -32,6 +32,12 @@ export default class GameContainer extends React.Component {
       timer: null,
       background_pos: 100,
       letters: "",
+
+      history: null,
+      newPlayer: true,
+      winnerId: null,
+      clientToSocketIdMap: [],
+      playerDeath: false,
     }
 
     document.addEventListener("keydown", this.keyDownBound);
@@ -73,7 +79,8 @@ export default class GameContainer extends React.Component {
       this.setState({gameStatus: 1,
                     playerOrder: game.playerOrder,
                     indexMap: game.indexMap,
-                    activePlayer: game.activePlayer});
+                    activePlayer: game.activePlayer,
+                    clientToSocketIdMap: game.clientToSocketIdMap});
       var container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%")
     });
@@ -111,8 +118,15 @@ export default class GameContainer extends React.Component {
     });
 
     this.socket.on('game-over', (game) => {
+      this.setState({winnerId: this.state.clientToSocketIdMap[this.state.indexMap[this.state.activePlayer]]});
+      console.log('game over')
+      console.log(this.state.winnerId);
       this.setState({gameStatus: 2})
     });
+
+    // this.socket.on('player-death', (game) => {
+    //   this.updateHistory();
+    // });
 
     
  
@@ -124,7 +138,13 @@ export default class GameContainer extends React.Component {
    }
 
     componentDidMount() {
-        this.getUser();
+       this.getUser().then(() => {
+          console.log("game container did mount")
+          console.log(this.state.userInfo)
+          this.socket.emit("user-info", this.state.userInfo);
+        });
+        this.getHistory();
+        // this.addHistory();    
     };
 
     keyDownBound = (e) => { 
@@ -155,7 +175,7 @@ export default class GameContainer extends React.Component {
   };
 
   getUser = () => {
-    fetch("/api/whoami")
+    return fetch("/api/whoami")
         .then(res => res.json())
         .then(
             userObj => {
@@ -203,10 +223,34 @@ export default class GameContainer extends React.Component {
             activePlayer = {this.state.activePlayer}
             timer = {this.state.timer}
             background_pos = {this.state.background_pos}
-            letters = {this.state.letters}  />
+            letters = {this.state.letters}
+            newPlayer = {this.state.newPlayer}
+            winnerId = {this.state.winnerId}  />
         );
     }
   }
 
+  getHistory = () => {
+        fetch('/api/history')
+        .then(res => res.json())
+        .then(
+          historyObj => {
+            console.log("history object");
+          console.log(historyObj);
+          // console.log(historyObj[0]._id)
+                if (historyObj[0] !== undefined) {
+                  console.log('returning player')
+                    this.setState({ 
+                        history: historyObj,
+                        newPlayer: false
+                    });
+                } else {
+                  console.log('new player')
+                    this.setState({ 
+                        history: null
+                    });
+                }
+            })
+    };
 
 }
