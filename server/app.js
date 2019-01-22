@@ -86,7 +86,7 @@ const server = http.Server(app);
 const io = socketio(server);
 app.set('socketio', io);
 
-server.listen(5000, () => {
+server.listen(process.env.PORT || 3000, () => {
   console.log(`Listening on port 3000 and looking in folder ${publicPath}`);
 });
 
