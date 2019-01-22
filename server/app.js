@@ -132,6 +132,10 @@ socket.on("user-info", (userInfo) => {
   console.log(clientToSocketIdMap);
 });
 
+socket.on('get-history', (history) => {
+  io.in(socket.room).emit('get-history', history);
+});
+
 socket.on('roomCreated', (roomNoUserInfo) =>  {
   const userInfo = roomNoUserInfo.userInfo;
   let roomNo = roomNoUserInfo.roomNo;

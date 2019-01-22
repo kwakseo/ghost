@@ -42,6 +42,10 @@ export default class GameContainer extends React.Component {
 
     document.addEventListener("keydown", this.keyDownBound);
 
+    this.socket.on('get-history', (history) => {
+      this.setState({history: history});
+    })
+
     this.socket.on('gameInit', (game, userInfo, socketid) => {
       const players = game.players;
 
@@ -143,7 +147,11 @@ export default class GameContainer extends React.Component {
           console.log(this.state.userInfo)
           this.socket.emit("user-info", this.state.userInfo);
         });
-        this.getHistory();
+        // this.getHistory().then(() => {
+        //   console.log("in getHistory")
+        //   console.log(this.state.history);
+        //   this.socket.emit("get-history", this.state.history);
+        // });
         // this.addHistory();    
     };
 
@@ -230,27 +238,27 @@ export default class GameContainer extends React.Component {
     }
   }
 
-  getHistory = () => {
-        fetch('/api/history')
-        .then(res => res.json())
-        .then(
-          historyObj => {
-            console.log("history object");
-          console.log(historyObj);
-          // console.log(historyObj[0]._id)
-                if (historyObj[0] !== undefined) {
-                  console.log('returning player')
-                    this.setState({ 
-                        history: historyObj,
-                        newPlayer: false
-                    });
-                } else {
-                  console.log('new player')
-                    this.setState({ 
-                        history: null
-                    });
-                }
-            })
-    };
+  // getHistory = () => {
+  //       return fetch('/api/history')
+  //       .then(res => res.json())
+  //       .then(
+  //         historyObj => {
+  //           console.log("history object");
+  //         console.log(historyObj);
+  //         // console.log(historyObj[0]._id)
+  //               if (historyObj[0] !== undefined) {
+  //                 console.log('returning player')
+  //                   this.setState({ 
+  //                       history: historyObj,
+  //                       newPlayer: false
+  //                   });
+  //               } else {
+  //                 console.log('new player')
+  //                   this.setState({ 
+  //                       history: null
+  //                   });
+  //               }
+  //           })
+  //   };
 
 }
