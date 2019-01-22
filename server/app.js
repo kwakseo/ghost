@@ -13,6 +13,7 @@ const History = require('./models/history')
 const db = require('./db');
 const passport = require('./passport');
 const api = require('./routes/api');
+require('dotenv').config();
 // const router = express.Router();
 
 const { initNewGame, gameUpdate, shuffleArray } = require("./game");
@@ -85,7 +86,7 @@ const server = http.Server(app);
 const io = socketio(server);
 app.set('socketio', io);
 
-server.listen(3000, () => {
+server.listen(5000, () => {
   console.log(`Listening on port 3000 and looking in folder ${publicPath}`);
 });
 
