@@ -125,17 +125,14 @@ export default class GameContainer extends React.Component {
     });
 
     this.socket.on('game-over', (game) => {
-<<<<<<< HEAD
       this.setState({winnerId: this.state.clientToSocketIdMap[this.state.indexMap[this.state.activePlayer]]});
       console.log('game over')
       console.log(this.state.winnerId);
-      this.setState({gameStatus: 2})
-=======
+
       this.setState({
         gameStatus: 2,
         deathOrder: game.deathOrder,
         })
->>>>>>> cc7b15e442411ac5d2c64f8529e3c86bc85c5d48
     });
 
     // this.socket.on('player-death', (game) => {
@@ -242,12 +239,9 @@ export default class GameContainer extends React.Component {
             timer = {this.state.timer}
             background_pos = {this.state.background_pos}
             letters = {this.state.letters}
-<<<<<<< HEAD
             newPlayer = {this.state.newPlayer}
-            winnerId = {this.state.winnerId}  />
-=======
+            winnerId = {this.state.winnerId} 
             deathOrder = {this.state.deathOrder}  />
->>>>>>> cc7b15e442411ac5d2c64f8529e3c86bc85c5d48
         );
     }
   }

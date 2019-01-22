@@ -2,6 +2,8 @@ import React from "react";
 import GameTitle from "./GameTitle";
 import Link from "react-router-dom/es/Link";
 import "../css/endgame.css";
+import "../css/app.css";
+
 
 export default class EndGame extends React.Component {
   constructor(props){
@@ -24,15 +26,19 @@ export default class EndGame extends React.Component {
     // let deathOrder = JSON.stringify(this.props.deathOrder);
     let deathOrderArr = []
     for (let loser in this.props.deathOrder) {
-      let player = JSON.stringify(this.props.deathOrder[loser].userInfo.name)
+      let player = JSON.stringify(this.props.deathOrder[loser].userInfo.name).replace(/['"]+/g, '')
       deathOrderArr.push((
-        <div key={loser} className="loser-order" {player} </div>
+        <div key={loser} className="loser-order"> {player} </div>
         ))
     }
     return (
       <div className={"game-container scroll-background-reverse"}>
-        <div className="title">GameOver</div>
-        <div className="rectangles">{deathOrderArr} </div>
+        <div className="title">GameOver</div> 
+        <div className="rectangles">
+          <div className="players-box component-container">
+            {deathOrderArr} 
+          </div>
+        </div>
         <Link to="/" className={"button"}>Home</Link>
       </div>
     );

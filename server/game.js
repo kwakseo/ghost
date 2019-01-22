@@ -66,6 +66,8 @@ const gameUpdate = (game, letters) => {
       if (game.numPlayers <= 1) {
         console.log("one player");
         game.activePlayer = game.playerOrder[0];
+        let winner = game.indexMap[game.activePlayer];
+        game.deathOrder.push(game.players[winner])
         game.gameOver = true;
       }
 
