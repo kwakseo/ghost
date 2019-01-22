@@ -1,0 +1,13 @@
+
+.rectangles {
+    width:680px;
+    height:310px;
+    background:#efefef;
+    background-color: rgba(245, 245, 245, 0.2);
+    margin: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 30px;
+    border-radius: 50px;
+}
