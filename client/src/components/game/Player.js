@@ -7,7 +7,7 @@ export default class Player extends React.Component{
     super(props);
   
 
-    this.state = {
+/*    this.state = {
       name: null,
       googleid: null,
       socketid: null,
@@ -15,7 +15,7 @@ export default class Player extends React.Component{
       ghostLetters: '',
       alive: true,
 
-    }
+    }*/
   }
 
 /*  componentDidMount() {
@@ -53,17 +53,22 @@ export default class Player extends React.Component{
     const name = userInfo.name;
 
     let ghostLetters = '';
+/*    let ghostClassList = '';*/
 
     for (var i=0; i<numStrikes; i++) {
       ghostLetters = ghostLetters + 'ghost'[i];
     };
 
+/*    if (ghostLetters === 'ghost') {
+      classList = "dead-player";
+    }*/
     let classList = "player-bubble " + "player-" + index;
-    let ghostClassList= "ghost-letters ghost-player-" + index;
+    let ghostClassList = "ghost-letters ghost-player-" + index;
 
-      if (this.props.activePlayer === index) {
+    if (this.props.activePlayer === index) {
         classList += " player-active"
       };
+
 
     return (
       <div className="player-container">

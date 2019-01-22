@@ -8,60 +8,18 @@ body {
     padding: 0px;
     font-family: 'Lato', sans-serif;
     color: #efefef;
-/*    -webkit-transform: translateZ(0);
-    transform: translateZ(0);*/
-
 }
 
 #root {
     height: 100%;
 }
 
-ol{
-    margin: 5px;
-}
 
-li {
-    margin: 10px 50px 0px;
-}
 
-h2{
-    align-self: center;
-}
-
-.rules-box {
-}
-
-.rule-button {
-    width: 40px;
-    height: 40px;
-    border-radius: 50px;
-    background-color: rgba(245, 245, 245, 0.2);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    margin: 0px 10px 0px 0px;
-    font-weight: bold;
-    font-size: 22px;
-}
-
-.left-align{
-    position: absolute;
-    top: 12%;
-    left: 50%;
-    height: 200px;
-    width: 750px;
-    transform: translateY(-10%) translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-content: flex-start;
-    justify-content: space-between;
-}
+/* ============== General Styling ============== */
 
 .center{
-    position: absolute;
+    position: absolute; 
     top: 40%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
@@ -71,12 +29,24 @@ h2{
     margin: 10px;
 }
 
-.login-title-box{
-    width: 300px;
+.component-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
 }
 
-.select-title-box{
-    width: 600px;
+.game-container {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url(./gradient_big.png);
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    transition: background-position 0.5s;
+    -webkit-transition: background-position 0.5s;
 }
 
 .button {
@@ -92,9 +62,6 @@ h2{
     padding: 16px 25px;
     border-radius: 50px;
     text-decoration-line: none;
-/*    border-style: solid;
-    border-color: #efefef;*/
-/*    border-width: 3px;*/
 }
 
 .button:hover{
@@ -114,22 +81,217 @@ h2{
     overflow: hidden;
 
     animation: typewriter 2s normal steps(2) infinite;
-    -webkit-animation: typewriter 2s normal steps(2) infinite;
 }
 
-.black-text {
-    color:white;
+.scroll-background {
+    animation: scrollbottom 2s forwards;
+    -webkit-animation: scrollbottom 2s forwards;
 }
 
-.type-bar {
-/*    background-color: rgba(67, 66, 97, 0.3);*/
-    font-size: 100px;
-    color: #ccff00;
-    padding: 20px 0px;
+.scroll-background-reverse {
+    animation: scrolltop 2s forwards;
+    -webkit-animation: scrolltop 2s forwards;
+}
+
+@keyframes scrollbottom {
+    from {background-position: 0% 0%;}
+    to {background-position: 0% 100%;}
+}
+
+@keyframes scrolltop {
+    to {background-position: 0% 0%;}
+}
+
+@keyframes typewriter {
+  from {width: 202px;}
+  to {width: auto;}
+}
+
+
+
+/* ============== Rules Page ============== */
+
+ol{
+    margin: 5px;
+}
+
+li {
+    margin: 10px 50px 0px;
+}
+
+h2{
+    align-self: center;
+}
+
+.left-align {
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    height: 200px;
+    width: 750px;
+    transform: translateY(-10%) translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    justify-content: space-between;
+}
+
+
+
+/* ============== How to Play Button ============== */
+
+.rules-box {
+}
+
+.rule-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    background-color: rgba(245, 245, 245, 0.2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    margin: 0px 10px 0px 0px;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+
+
+/* ============== Login Page ============== */
+
+.login-title-box{
+    width: 300px;
+}
+
+
+
+/* ============== Select Room Page ============== */
+
+.select-title-box{
+    width: 600px;
+}
+
+.join-button {
+    cursor: pointer;
+    font-size: 18px;
+    background-color: rgba(245, 245, 245, 0.2);
+    color: #efefef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 20px 14px 10px;
+    text-decoration-line: none;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.selectroom-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.join-button:hover {
+    background-color: rgba(245, 245, 245, 0.5);
+    color: white;
+}
+
+.input-box {
+    margin: 10px 0px;
+    width: 85px;
+    display: flex;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-width: 0px;
+    outline-width: 0;
+    font-size: 16px;
+    padding: 16px 10px;
+    color: #1b1a35;
+    background-color: #efefef;
+    line-height: 1;
+
+}
+
+
+
+/* ============== GAME: Players ============== */
+
+.players-box {
+    width: 8700px;
+    height: 200px;
+}
+
+.player-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.player-bubble {
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+    background-color: rgba(27, 26, 53, 0.7);
+    margin: 0px 5px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.1s, height 0.1s;
+    -webkit-transition: width 0.1s, height 0.1s;
+}
+
+.player-name {
+    color: #efefef;
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}
+
+.player-active {
+    width: 105px;
+    height: 105px;
+}
+
+.player-0 {
+    border: #ccff00 solid 5px;
+}
+
+.player-1 {
+    border: #40e0d0 solid 5px;
+}
+
+.player-2 {
+    border: #ff00ce solid 5px;
+}
+
+.player-3 {
+    border: #ff9900 solid 5px;
+}
+
+
+
+/* ============== GAME: Players ============== */
+.dead-player {
+    background-image: url(./ghost_logo.png);
+}
+
+
+/* ============== GAME: Letters ============== */
+
+.letters-box {
+    padding: 10px 30px;
 }
 
 .letters-active {
-/*    background-color: rgba(26, 19, 53, 0.3);*/
     font-size: 50px;
     color: white;
     padding: 10px 5px;
@@ -137,7 +299,16 @@ h2{
     border-right-style: solid;
     border-right-width: 5px;
     height: 70px;
+}
 
+
+
+/* ============== GAME: Type Bar ============== */
+
+.type-bar {
+    font-size: 100px;
+    color: #ccff00;
+    padding: 20px 0px;
 }
 
 .typing-player-0 {
@@ -156,6 +327,11 @@ h2{
     border-right-color: #ff9900;
 }
 
+/* ============== GAME: Timer ============== */
+
+.timer-box {
+    margin: 50px;
+}
 
 .timer-bar {
     display: flex;
@@ -166,7 +342,6 @@ h2{
     margin: 10px;
     align-items: center;
     justify-content: left;
-
 }
 
 .timer-fill {
@@ -194,6 +369,19 @@ h2{
     background-color: #ff9900;
 }
 
+@keyframes timer {
+    from {width: 0px;}
+    to {width: 500px;}
+}
+
+@keyframes timer-reset {
+    to {padding: 0px;}
+}
+
+
+
+/* ============== GAME: Strikes ============== */
+
 .ghost-letters {
     font-size: 20px;
     height: 25px;
@@ -217,176 +405,4 @@ h2{
     color: #ff9900;
 }
 
-.player-name {
-    color: #efefef;
-    width: 80px;
-    height: 80px;
-    border-radius: 100px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-}
-
-.player-bubble {
-    width: 80px;
-    height: 80px;
-    border-radius: 100px;
-    background-color: rgba(27, 26, 53, 0.7);
-    margin: 0px 5px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: width 0.1s, height 0.1s;
-    -webkit-transition: width 0.1s, height 0.1s;
-}
-
-.player-active {
-    width: 105px;
-    height: 105px;
-}
-
-.player-0 {
-    border: #ccff00 solid 5px;
-}
-
-.player-1 {
-    border: #40e0d0 solid 5px;
-}
-
-.player-2 {
-    border: #ff00ce solid 5px;
-}
-
-.player-3 {
-    border: #ff9900 solid 5px;
-}
-
-.component-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 100px;
-}
-
-.letters-box {
-    padding: 10px 30px;
-
-}
-
-.timer-box {
-    margin: 50px;
-
-
-}
-
-.players-box {
-    width: 8700px;
-    height: 200px;
-
-}
-
-.game-container {
-    display: flex;
-    height: 100vh;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-image: url(./gradient_big.png);
-    background-position: 0% 0%;
-    background-repeat: no-repeat;
-    transition: background-position 0.5s;
-    -webkit-transition: background-position 0.5s;
-
-}
-
-.scroll-background {
-    animation: scrollbottom 2s forwards;
-    -webkit-animation: scrollbottom 2s forwards;
-}
-
-.scroll-background-reverse {
-    animation: scrolltop 2s forwards;
-    -webkit-animation: scrolltop 2s forwards;
-}
-
-.input-box {
-    margin: 10px 0px;
-    width: 85px;
-    display: flex;
-    border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
-    border-width: 0px;
-    outline-width: 0;
-    font-size: 16px;
-    padding: 16px 10px;
-    color: #1b1a35;
-    background-color: #efefef;
-    line-height: 1;
-
-}
-
-.selectroom-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-}
-
-.join-box {
-}
-
-.join-button {
-    cursor: pointer;
-    font-size: 18px;
-    background-color: rgba(245, 245, 245, 0.2);
-    color: #efefef;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 20px 14px 10px;
-    text-decoration-line: none;
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
-}
-
-.join-button:hover {
-    background-color: rgba(245, 245, 245, 0.5);
-    color: white;
-}
-
-.player-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-@keyframes timer {
-    from {width: 0px;}
-    to {width: 500px;}
-}
-
-@keyframes timer-reset {
-    to {padding: 0px;}
-}
-
-@keyframes scrollbottom {
-    from {background-position: 0% 0%;}
-    to {background-position: 0% 100%;}
-}
-
-@keyframes scrolltop {
-    to {background-position: 0% 0%;}
-}
-
-@keyframes typewriter {
-  from {width: 202px;}
-  to {width: auto;}
-}
-
-@-webkit-keyframes typewriter {
-  from {-webkit-transform: width(202px);}
-  to {-webkit-transform: width(210px);}
-}
 
