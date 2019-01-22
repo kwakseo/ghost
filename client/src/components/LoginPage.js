@@ -1,3 +1,5 @@
+const API_ENDPOINT_START = 'http://ghost6148.herokuapp.com';
+
 import React from "react";
 import "../css/app.css";
 import GameTitle from "./GameTitle";
@@ -11,7 +13,7 @@ export default class LoginPage extends React.Component {
       	<GameTitle/>
       	<a className={"button"} href="/auth/google">Login</a>
         <div className={"rules-box component-container"}>
-          <Link to="/rules" className={"rule-button"}>?</Link>
+          <Link to={API_ENDPOINT_START} + "/rules" className={"rule-button"}>?</Link>
           <p>How to play</p>
         </div>
       </div>
