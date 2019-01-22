@@ -55,17 +55,22 @@ export default class GameRules extends React.Component {
       <div className={"game-container"}>
         <GameTitle />
         <form onSubmit={this.handleJoin} className="selectroom-container">
+         <div className={"component-container join-box"}> 
           <input id="m" className="input-box" 
                     value={this.state.value} 
                     onChange={this.handleChange} 
                     autoComplete="off" 
-                    placeholder="Code"
+                    placeholder="Enter Code"
                     onFocus={(e) => e.target.placeholder = ""} 
-                    onBlur={(e) => e.target.placeholder = "Code"}/>
-          <div className="button" onClick={this.handleJoin}>Join</div>
+                    onBlur={(e) => e.target.placeholder = "Enter Code"}/>
+            <div className="join-button" onClick={this.handleJoin}>Join</div>
+          </div>
           <div className="black-text">{invalid}</div>
           <div className="button" onClick={this.handleNew}>New Game</div>
-          <Link to="/rules" className={"button"}>Rules</Link>
+          <div className={"rules-box component-container"}>
+          <Link to="/rules" className={"rule-button"}>?</Link>
+          <p>How to play</p>
+        </div>
         </form>
       </div>
     );

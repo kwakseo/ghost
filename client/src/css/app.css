@@ -19,19 +19,32 @@ body {
 
 ol{
     margin: 5px;
-
 }
 
 li {
     margin: 10px 50px 0px;
 }
 
-h1{
-
-}
-
 h2{
     align-self: center;
+}
+
+.rules-box {
+}
+
+.rule-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    background-color: rgba(245, 245, 245, 0.2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    margin: 0px 10px 0px 0px;
+    font-weight: bold;
+    font-size: 22px;
 }
 
 .left-align{
@@ -68,7 +81,7 @@ h2{
 
 .button {
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
     background-color: rgba(245, 245, 245, 0.2);
     line-height: 1;
     color: #efefef;
@@ -76,12 +89,12 @@ h2{
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 30px;
+    padding: 16px 25px;
     border-radius: 50px;
     text-decoration-line: none;
-    border-style: solid;
-    border-color: #efefef;
-    border-width: 3px;
+/*    border-style: solid;
+    border-color: #efefef;*/
+/*    border-width: 3px;*/
 }
 
 .button:hover{
@@ -213,7 +226,6 @@ h2{
     display: flex;
     align-items: center;
     font-size: 16px;
-
 }
 
 .player-bubble {
@@ -300,16 +312,18 @@ h2{
 }
 
 .input-box {
-    margin: 10px;
-    padding: 10px 15px;
-    width: 100px;
+    margin: 10px 0px;
+    width: 85px;
     display: flex;
-    border-radius: 50px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
     border-width: 0px;
     outline-width: 0;
-    font-size: 20px;
+    font-size: 16px;
+    padding: 16px 10px;
     color: #1b1a35;
     background-color: #efefef;
+    line-height: 1;
 
 }
 
@@ -318,6 +332,27 @@ h2{
     flex-direction: column;
     align-items: center;
 
+}
+
+.join-box {
+}
+
+.join-button {
+    font-size: 18px;
+    background-color: rgba(245, 245, 245, 0.2);
+    color: #efefef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 20px 14px 10px;
+    text-decoration-line: none;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.join-button:hover {
+    background-color: rgba(245, 245, 245, 0.5);
+    color: white;
 }
 
 .player-container {

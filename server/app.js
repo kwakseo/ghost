@@ -168,8 +168,8 @@ socket.on('roomChosen', (roomNoUserInfo) => {
   const userInfo = roomNoUserInfo.userInfo;
   if (!(roomNo.toString() in allRooms) || !allRooms[roomNo.toString()].joinable) {
     console.log("appjs checking joinable");
-    console.log(allRooms[roomNo.toString()]);
-    console.log(allRooms[roomNo.toString()].joinable);
+/*    console.log(allRooms[roomNo.toString()]);
+    console.log(allRooms[roomNo.toString()].joinable);*/
     console.log("appjs checking in rooms");
     console.log(roomNo.toString() in allRooms);
     io.sockets.in(socket.id).emit('roomInvalid', roomNo);
