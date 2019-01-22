@@ -338,6 +338,7 @@ h2{
 }
 
 .join-button {
+    cursor: pointer;
     font-size: 18px;
     background-color: rgba(245, 245, 245, 0.2);
     color: #efefef;

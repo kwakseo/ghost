@@ -30,7 +30,7 @@ export default class GameBoard extends React.Component {
     return (
 
       <div className="game-container">
-        <Timer activePlayer={this.props.activePlayer}/>
+    {/*    <Timer activePlayer={this.props.activePlayer}/>*/}
         <Letters
             letters = {this.props.letters}
             activePlayer={this.props.activePlayer}
