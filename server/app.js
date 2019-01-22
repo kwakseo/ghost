@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const session = require('express-session');
 const path = require("path");
@@ -86,7 +87,14 @@ const server = http.Server(app);
 const io = socketio(server);
 app.set('socketio', io);
 
+<<<<<<< HEAD
 server.listen(5000, () => {
+=======
+console.log("print port info");
+console.log(process.env.PORT);
+
+server.listen((process.env.PORT || 3000), () => {
+>>>>>>> a7db65d40c81c5f19070b88de660d5ba93456315
   console.log(`Listening on port 3000 and looking in folder ${publicPath}`);
 });
 
