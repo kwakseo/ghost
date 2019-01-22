@@ -1,5 +1,3 @@
-const API_ENDPOINT_START = 'http://ghost6148.herokuapp.com';
-
 import React from "react";
 import "../css/app.css";
 import { Route, Switch, withRouter } from 'react-router-dom';
@@ -26,9 +24,9 @@ class App extends React.Component {
     return (
       <div>
         <Switch>
-          <Route exact path={API_ENDPOINT_START} component={LoginPage} userInfo={this.state.userInfo} />
-          <Route exact path={API_ENDPOINT_START} + "/success" component={GameContainer} />
-          <Route exact path={API_ENDPOINT_START} + "/rules" component={GameRules} />
+          <Route exact path="/" component={LoginPage} userInfo={this.state.userInfo} />
+          <Route exact path="/success" component={GameContainer} />
+          <Route exact path="/rules" component={GameRules} />
         </Switch>
       </div>
     )

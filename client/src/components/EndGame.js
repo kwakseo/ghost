@@ -1,5 +1,3 @@
-const API_ENDPOINT_START = 'http://ghost6148.herokuapp.com';
-
 import React from "react";
 import GameTitle from "./GameTitle";
 import Link from "react-router-dom/es/Link";
@@ -26,7 +24,7 @@ export default class EndGame extends React.Component {
       <div className={"game-container scroll-background-reverse"}>
         <GameTitle />
           Game Over
-        <Link to={API_ENDPOINT_START} className={"button"}>Home</Link>
+        <Link to="/" className={"button"}>Home</Link>
 
       </div>
     );
