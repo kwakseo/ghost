@@ -32,6 +32,7 @@ export default class GameContainer extends React.Component {
       timer: null,
       background_pos: 100,
       letters: "",
+      deathOrder: null,
     }
 
     document.addEventListener("keydown", this.keyDownBound);
@@ -44,7 +45,8 @@ export default class GameContainer extends React.Component {
                   userInfo: userInfo,
                   admin: true,
                   numPlayers: game.numPlayers,
-                  indexMap: game.indexMap,});
+                  indexMap: game.indexMap,
+                  deathOrder: game.deathOrder,});
 
       var container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%");
@@ -89,13 +91,14 @@ export default class GameContainer extends React.Component {
         isGameOver: game.isGameOver,
         letters: game.letters,
         playerOrder: game.playerOrder,
-
+        deathOrder: game.deathOrder,
       });
 
 
       if (this.state.roundEnd) {
         this.setState({
-          background_pos: 100
+          background_pos: 100,
+          deathOrder: game.deathOrder,
         })
 
         
@@ -111,7 +114,10 @@ export default class GameContainer extends React.Component {
     });
 
     this.socket.on('game-over', (game) => {
-      this.setState({gameStatus: 2})
+      this.setState({
+        gameStatus: 2,
+        deathOrder: game.deathOrder,
+        })
     });
 
     
@@ -203,7 +209,8 @@ export default class GameContainer extends React.Component {
             activePlayer = {this.state.activePlayer}
             timer = {this.state.timer}
             background_pos = {this.state.background_pos}
-            letters = {this.state.letters}  />
+            letters = {this.state.letters}
+            deathOrder = {this.state.deathOrder}  />
         );
     }
   }

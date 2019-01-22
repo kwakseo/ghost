@@ -50,6 +50,7 @@ export default class Room extends React.Component {
         return (
           <EndGame 
             background_pos = {this.props.background_pos}
+            deathOrder = {this.props.deathOrder}
           />
         );
     }

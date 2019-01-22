@@ -13,6 +13,7 @@ const initNewGame = () => ({
   joinable: true,
   numPlayers: 1,
   roundEnd: false,
+  deathOrder: [],
 });
 
 let shuffleArray = (array) => {
@@ -33,11 +34,12 @@ const gameUpdate = (game, letters) => {
         game.letters = "";
         //if player becomes ghost
         console.log("round has ended")
-        if (game.players[loser].ghost === 3) {
+        if (game.players[loser].ghost === 2) {
         	let tempNumPlayers = game.numPlayers;
             game.players[loser].alive = false;
             game.numPlayers -= 1;
             game.playerOrder = [];
+            game.deathOrder.push(game.players[loser]);
             for (let i = 0; i < tempNumPlayers; i++) {
             	console.log("should be only deleting one player")
                 console.log(game.activePlayer);
@@ -53,6 +55,8 @@ const gameUpdate = (game, letters) => {
       else {
         console.log("strike" + game.numPlayers);
         game.players[loser].ghost += 1;
+
+        console.log('')
       }
 
       //end game if one player left
