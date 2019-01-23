@@ -12,8 +12,10 @@ const initNewGame = () => ({
   gameOver: false,
   joinable: true,
   numPlayers: 1,
+  totalPlayers: 1,
   roundEnd: false,
   playerDeath: false,
+  deadPlayers: new Set(),
   clientToSocketIdMap: [],
 });
 
@@ -36,15 +38,16 @@ const gameUpdate = (game, letters) => {
         //if player becomes ghost
         console.log("round has ended")
         if (game.players[loser].ghost === 3) {
-        	let tempNumPlayers = game.numPlayers;
+          game.deadPlayers.add(game.activePlayer);
+        	// let tempNumPlayers = game.numPlayers;
             game.players[loser].alive = false;
             game.numPlayers -= 1;
             game.playerDeath = true;
             game.playerOrder = [];
-            for (let i = 0; i < tempNumPlayers; i++) {
+            for (let i = 0; i < game.totalPlayers; i++) {
             	console.log("should be only deleting one player")
                 console.log(game.activePlayer);
-                if (i != game.activePlayer) {
+                if (i != game.activePlayer && !game.deadPlayers.has(i)) {
                     game.playerOrder.push(i)
               }
               console.log(game.playerOrder);
@@ -62,12 +65,15 @@ const gameUpdate = (game, letters) => {
       if (game.numPlayers <= 1) {
         console.log("one player");
         game.activePlayer = game.playerOrder[0];
+        console.log("active player");
+        console.log(game.activePlayer);
         game.gameOver = true;
       }
-
-      shuffleArray(game.playerOrder);
-      game.activePlayer = game.playerOrder[0];
-      game.activePlayerIndex = 0;
+      else {
+        shuffleArray(game.playerOrder);
+        game.activePlayer = game.playerOrder[0];
+        game.activePlayerIndex = 0;
+      }
 
     }
   

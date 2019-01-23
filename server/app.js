@@ -189,6 +189,7 @@ socket.on('roomChosen', (roomNoUserInfo) => {
       socket.join(roomNo);
       game = allRooms[roomNo.toString()];
       game.numPlayers += 1;
+      game.totalPlayers += 1;
       const index = game.numPlayers - 1;
       console.log("num players " + game.numPlayers);
 
@@ -235,18 +236,8 @@ socket.on('gameStarted', (roomNo) => {
 
 });
 
-const updateDatabaseHelper = (player) => {
-    console.log('one loop in updateDatabase')
-    console.log(player);
-    playerGoogleId = game.clientToSocketIdMap[game.indexMap[player]];
-    console.log(game.indexMap[player]);
-    console.log(game.clientToSocketIdMap[game.indexMap[player]]);
-    // console.log()
-    console.log(playerGoogleId);
-    console.log('winning person info')
-    console.log(game.clientToSocketIdMap[game.indexMap[game.activePlayer]])
-    return History.findOne({player_id: playerGoogleId}, function(err, history) {
-      if (err) {
+function historyFinder(err, history) {
+  if (err) {
         console.log('error');
       }
       else if (history === null) {
@@ -272,6 +263,49 @@ const updateDatabaseHelper = (player) => {
         history.number_games = history.number_games + 1;
         history.save();
       }
+} 
+
+const morePromises = [];
+
+async function updateDatabaseHelper(player) {
+    console.log('one loop in updateDatabase')
+    console.log(player);
+    playerGoogleId = game.clientToSocketIdMap[game.indexMap[player]];
+    console.log(game.indexMap[player]);
+    console.log(game.clientToSocketIdMap[game.indexMap[player]]);
+    // console.log()
+    console.log(playerGoogleId);
+    console.log('winning person info')
+    console.log(game.clientToSocketIdMap[game.indexMap[game.activePlayer]])
+    return History.findOne({player_id: playerGoogleId}, async function(err, history) {
+      let result = await historyFinder(err, history);
+      return Promise.all(morePromises);
+      // if (err) {
+      //   console.log('error');
+      // }
+      // else if (history === null) {
+      //   let number_wins = 0;
+      //   if (playerGoogleId === game.clientToSocketIdMap[game.indexMap[game.activePlayer]]) {
+      //     number_wins += 1;
+      //   }
+      //   const newHistory = new History({
+      //     'player_id': userGoogleInfo._id,
+      //     'player_name': userGoogleInfo.name,
+      //     'number_wins': number_wins,
+      //     'number_games': 1,
+      //   });
+      //   newHistory.save();
+      // }
+      // else {
+      //   console.log("is this in the right order")
+      //   let number_wins = 0;
+      //   if (playerGoogleId === game.clientToSocketIdMap[game.indexMap[game.activePlayer]]) {
+      //     console.log('winner')
+      //     history.number_wins += 1;
+      //   }
+      //   history.number_games = history.number_games + 1;
+      //   history.save();
+      // }
     });
 }
 
@@ -281,10 +315,10 @@ async function updateDatabase() {
   console.log('updateDatabase');
   for (player in game.indexMap) {
     let result = await updateDatabaseHelper(player);
+    // databasePromises.push(results);
   }
   return Promise.all(databasePromises);
 }
-
 
 
 

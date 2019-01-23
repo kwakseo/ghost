@@ -16,11 +16,6 @@ export default class GameRules extends React.Component {
     console.log("get history in select room")
     console.log(this.props.userInfo)
     console.log(this.props.history);
-
-    // this.props.socket.on('get-history', (history) => {
-    //   this.props.history = history;
-    //   // console.log(this.props.history)
-    // })
   }
 
   componentDidMount() {
@@ -112,7 +107,7 @@ export default class GameRules extends React.Component {
         .then(res => res.json())
         .then(
           historyObj => {
-            console.log("history object");
+          console.log("history object");
           console.log(historyObj);
           // console.log(historyObj[0]._id)
                 if (historyObj[0] !== undefined) {

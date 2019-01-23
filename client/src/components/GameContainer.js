@@ -57,7 +57,7 @@ export default class GameContainer extends React.Component {
                   numPlayers: game.numPlayers,
                   indexMap: game.indexMap,});
 
-      var container = document.getElementsByClassName("game-container");
+      let container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%");
 
       console.log("in container created room, user: " + this.state.userInfo);
@@ -86,7 +86,7 @@ export default class GameContainer extends React.Component {
                     indexMap: game.indexMap,
                     activePlayer: game.activePlayer,
                     clientToSocketIdMap: game.clientToSocketIdMap});
-      var container = document.getElementsByClassName("game-container");
+      let container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%")
     });
 
@@ -118,23 +118,17 @@ export default class GameContainer extends React.Component {
             
           }
       }
-      var container = document.getElementsByClassName("game-container");
+      let container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%");
     });
 
     this.socket.on('game-over', (game) => {
+      this.setState({activePlayer: game.activePlayer});
       this.setState({winnerId: this.state.clientToSocketIdMap[this.state.indexMap[this.state.activePlayer]]});
       console.log('game over')
       console.log(this.state.winnerId);
       this.setState({gameStatus: 2})
     });
-
-    // this.socket.on('player-death', (game) => {
-    //   this.updateHistory();
-    // });
-
-    
- 
 
     this.changeGameState = (newStatus) => {
       this.setState({roomSelect: newStatus});
@@ -148,12 +142,6 @@ export default class GameContainer extends React.Component {
           console.log(this.state.userInfo)
           this.socket.emit("user-info", this.state.userInfo);
         });
-        // this.getHistory().then(() => {
-        //   console.log("in getHistory")
-        //   console.log(this.state.history);
-        //   this.socket.emit("get-history", this.state.history);
-        // });
-        // this.addHistory();    
     };
 
     keyDownBound = (e) => { 
@@ -238,28 +226,5 @@ export default class GameContainer extends React.Component {
         );
     }
   }
-
-  // getHistory = () => {
-  //       return fetch('/api/history')
-  //       .then(res => res.json())
-  //       .then(
-  //         historyObj => {
-  //           console.log("history object");
-  //         console.log(historyObj);
-  //         // console.log(historyObj[0]._id)
-  //               if (historyObj[0] !== undefined) {
-  //                 console.log('returning player')
-  //                   this.setState({ 
-  //                       history: historyObj,
-  //                       newPlayer: false
-  //                   });
-  //               } else {
-  //                 console.log('new player')
-  //                   this.setState({ 
-  //                       history: null
-  //                   });
-  //               }
-  //           })
-  //   };
 
 }
