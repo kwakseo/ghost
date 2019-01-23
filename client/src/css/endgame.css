@@ -8,13 +8,22 @@
     display: flex;
     padding: 20px 30px;
     border-radius: 50px;
-
+    text-align: center;
     flex-direction: column;
     align-content: flex-start;
+    align-items: center; 
 }
 
 .loser-order {
 	margin-left: 20px;
 	margin-right: 20px;
-	margin-top: 20px;
+	margin-top: 30px;
+}
+
+
+.loser-order.player {
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 200px;
+	margin-bottom: 20px;
 }

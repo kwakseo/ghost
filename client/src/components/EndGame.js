@@ -26,14 +26,16 @@ export default class EndGame extends React.Component {
     // let deathOrder = JSON.stringify(this.props.deathOrder);
     let deathOrderArr = [];
     let rankingArr = [];
+    let number = 1;
     for (let loser in this.props.deathOrder.reverse()) {
       let player = JSON.stringify(this.props.deathOrder[loser].userInfo.name).replace(/['"]+/g, '')
       deathOrderArr.push((
-        <div key={loser} className="loser-order"> {player} </div>
+        <div>
+          <div key={loser} className="loser-order"> {number} </div>
+          <div key={loser} className="loser-order player"> {player} </div>
+        </div>
         ))
-      rankingArr.push((
-        <div key={loser} className="loser-order"> {loser} </div>
-        ))
+      number += 1
     }
     return (
       <div className={"game-container scroll-background-reverse"}>
@@ -41,9 +43,6 @@ export default class EndGame extends React.Component {
         <div className="rectangles">
           <div className="component-container">
             {deathOrderArr} 
-          </div>
-          <div className="component-container">
-            {rankingArr} 
           </div>
         </div>
         <Link to="/" className={"button"}>Home</Link>
