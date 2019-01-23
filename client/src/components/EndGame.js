@@ -13,13 +13,10 @@ export default class EndGame extends React.Component {
   componentDidMount () {
       var container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.props.background_pos + "%");
-      // this.props.updateHistory(this.props.winnerId);
-      // if (this.props.newPlayer) {
-      //   this.props.addHistory(this.props.winnerId);
-      // }
-      // else {
-      //   this.props.updateHistory(this.props.winnerId);
-      // }
+  }
+
+  goHome = () => {
+    this.props.socket.emit("go-back-home", "home");
   }
 
   render(){
@@ -46,7 +43,7 @@ export default class EndGame extends React.Component {
             {rankingArr} 
           </div>
         </div>
-        <Link to="/" className={"button"}>Home</Link>
+        <div className="button" onClick={this.goHome}>Home</div>
       </div>
     );
   }

@@ -57,7 +57,13 @@ export default class GameContainer extends React.Component {
                   admin: true,
                   numPlayers: game.numPlayers,
                   indexMap: game.indexMap,
-                  deathOrder: game.deathOrder,});
+                  deathOrder: game.deathOrder,
+                  letters: "",
+                  timer: null,
+                  background_pos: 100,
+                  winnerId: null,
+                  deathOrder: null,
+                  playerDeath: false});
 
       let container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%");
@@ -75,11 +81,24 @@ export default class GameContainer extends React.Component {
                   userInfo: userInfo,
                   playerOrder: game.playerOrder,
                   numPlayers: game.numPlayers,
-                  indexMap: game.indexMap,});
+                  indexMap: game.indexMap,
+                  deathOrder: game.deathOrder,
+                  letters: "",
+                  timer: null,
+                  background_pos: 100,
+                  winnerId: null,
+                  deathOrder: null,
+                  playerDeath: false});
       
       console.log("in container joined room, user: " + this.state.userInfo)
       this.GoToRoom();
 
+    });
+
+    this.socket.on('only-to-joiner', (game) => {
+      this.setState({
+        admin: false,
+      });
     });
     
     this.socket.on('gameStartedGo', (game) => {
@@ -137,6 +156,18 @@ export default class GameContainer extends React.Component {
         })
     });
 
+    this.socket.on("go-back-home", (home) => {
+      this.setState({
+        roomSelect: false,
+        gameStatus: 0,
+      });
+      this.getUser().then(() => {
+          console.log("game container did mount")
+          console.log(this.state.userInfo)
+          this.socket.emit("user-info", this.state.userInfo);
+        });
+    });
+
     this.changeGameState = (newStatus) => {
       this.setState({roomSelect: newStatus});
     };
@@ -190,7 +221,7 @@ export default class GameContainer extends React.Component {
                     console.log("info: def " + userObj)
                 } else {
                     this.setState({ 
-                        userInfo: userObj
+                        userInfo: null
                     });
                     console.log("info: undef " + userObj)
                 }
@@ -199,9 +230,15 @@ export default class GameContainer extends React.Component {
   } 
 
   render() {
+    const isLoggedIn = this.state.userInfo !== null
+    console.log('checking log in')
+    console.log(this.state.userInfo);
     switch (this.state.roomSelect) {
       case false:
         return (
+          <div>
+        {
+          isLoggedIn ? (
           <SelectRoom 
             socket={this.socket} 
             userInfo={this.state.userInfo} 
@@ -212,9 +249,18 @@ export default class GameContainer extends React.Component {
             indexMap = {this.state.indexMap}
             background_pos = {this.state.background_pos}
             letters = {this.state.letters} />
-        );
+            ): (
+            <div>You must be logged in to play.</div>
+            
+        )
+        };
+        </div>
+        )
       case true:
         return (
+          <div>
+        {
+          isLoggedIn ? (
           <Room roomNo={this.state.roomNo} 
             socket={this.socket} 
             gameStatus = {this.state.gameStatus}
@@ -231,6 +277,11 @@ export default class GameContainer extends React.Component {
             newPlayer = {this.state.newPlayer}
             winnerId = {this.state.winnerId} 
             deathOrder = {this.state.deathOrder}  />
+          ) : (
+          <div>You must be logged in to play.</div>
+          )
+        }
+        </div>
         );
     }
   }
