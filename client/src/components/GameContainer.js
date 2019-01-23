@@ -12,8 +12,8 @@ import Room from "./Room";
 export default class GameContainer extends React.Component {
   constructor(props) {
     super(props);
-    // this.socket = io("http://localhost:3000");
-    this.socket = io()
+    this.socket = io("http://localhost:3000");
+    // this.socket = io()
     console.log("socket room");
     console.log(this.socket.room);
     this.state = {
@@ -39,6 +39,7 @@ export default class GameContainer extends React.Component {
       winnerId: null,
       clientToSocketIdMap: [],
       playerDeath: false,
+      deathOrder: null,
     }
 
     document.addEventListener("keydown", this.keyDownBound);
@@ -55,7 +56,8 @@ export default class GameContainer extends React.Component {
                   userInfo: userInfo,
                   admin: true,
                   numPlayers: game.numPlayers,
-                  indexMap: game.indexMap,});
+                  indexMap: game.indexMap,
+                  deathOrder: game.deathOrder,});
 
       let container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%");
@@ -101,13 +103,14 @@ export default class GameContainer extends React.Component {
         isGameOver: game.isGameOver,
         letters: game.letters,
         playerOrder: game.playerOrder,
-
+        deathOrder: game.deathOrder,
       });
 
 
       if (this.state.roundEnd) {
         this.setState({
-          background_pos: 100
+          background_pos: 100,
+          deathOrder: game.deathOrder,
         })
 
         
@@ -127,7 +130,11 @@ export default class GameContainer extends React.Component {
       this.setState({winnerId: this.state.clientToSocketIdMap[this.state.indexMap[this.state.activePlayer]]});
       console.log('game over')
       console.log(this.state.winnerId);
-      this.setState({gameStatus: 2})
+
+      this.setState({
+        gameStatus: 2,
+        deathOrder: game.deathOrder,
+        })
     });
 
     this.changeGameState = (newStatus) => {
@@ -222,7 +229,8 @@ export default class GameContainer extends React.Component {
             background_pos = {this.state.background_pos}
             letters = {this.state.letters}
             newPlayer = {this.state.newPlayer}
-            winnerId = {this.state.winnerId}  />
+            winnerId = {this.state.winnerId} 
+            deathOrder = {this.state.deathOrder}  />
         );
     }
   }
