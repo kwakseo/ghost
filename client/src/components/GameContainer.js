@@ -12,8 +12,8 @@ import Room from "./Room";
 export default class GameContainer extends React.Component {
   constructor(props) {
     super(props);
-    // this.socket = io("http://localhost:3000");
-    this.socket = io()
+    this.socket = io("http://localhost:3000");
+    // this.socket = io()
     console.log("socket room");
     console.log(this.socket.room);
     this.state = {
