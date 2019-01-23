@@ -52,6 +52,7 @@ export default class Room extends React.Component {
             background_pos = {this.props.background_pos}
             newPlayer = {this.props.newPlayer}
             winnerId = {this.props.winnerId}
+            deathOrder = {this.props.deathOrder}
           />
         );
     }

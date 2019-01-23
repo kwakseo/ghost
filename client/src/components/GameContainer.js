@@ -13,7 +13,6 @@ export default class GameContainer extends React.Component {
   constructor(props) {
     super(props);
     this.socket = io("http://localhost:3000");
-/*    this.socket = io()*/
     console.log("socket room");
     console.log(this.socket.room);
     this.state = {
@@ -39,6 +38,7 @@ export default class GameContainer extends React.Component {
       winnerId: null,
       clientToSocketIdMap: [],
       playerDeath: false,
+      deathOrder: null,
     }
 
     document.addEventListener("keydown", this.keyDownBound);
@@ -55,9 +55,10 @@ export default class GameContainer extends React.Component {
                   userInfo: userInfo,
                   admin: true,
                   numPlayers: game.numPlayers,
-                  indexMap: game.indexMap,});
+                  indexMap: game.indexMap,
+                  deathOrder: game.deathOrder,});
 
-      var container = document.getElementsByClassName("game-container");
+      let container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%");
 
       console.log("in container created room, user: " + this.state.userInfo);
@@ -86,7 +87,7 @@ export default class GameContainer extends React.Component {
                     indexMap: game.indexMap,
                     activePlayer: game.activePlayer,
                     clientToSocketIdMap: game.clientToSocketIdMap});
-      var container = document.getElementsByClassName("game-container");
+      let container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%")
     });
 
@@ -101,13 +102,14 @@ export default class GameContainer extends React.Component {
         isGameOver: game.isGameOver,
         letters: game.letters,
         playerOrder: game.playerOrder,
-
+        deathOrder: game.deathOrder,
       });
 
 
       if (this.state.roundEnd) {
         this.setState({
-          background_pos: 100
+          background_pos: 100,
+          deathOrder: game.deathOrder,
         })
 
         
@@ -118,23 +120,21 @@ export default class GameContainer extends React.Component {
             
           }
       }
-      var container = document.getElementsByClassName("game-container");
+      let container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%");
     });
 
     this.socket.on('game-over', (game) => {
+      this.setState({activePlayer: game.activePlayer});
       this.setState({winnerId: this.state.clientToSocketIdMap[this.state.indexMap[this.state.activePlayer]]});
       console.log('game over')
       console.log(this.state.winnerId);
-      this.setState({gameStatus: 2})
+
+      this.setState({
+        gameStatus: 2,
+        deathOrder: game.deathOrder,
+        })
     });
-
-    // this.socket.on('player-death', (game) => {
-    //   this.updateHistory();
-    // });
-
-    
- 
 
     this.changeGameState = (newStatus) => {
       this.setState({roomSelect: newStatus});
@@ -148,12 +148,6 @@ export default class GameContainer extends React.Component {
           console.log(this.state.userInfo)
           this.socket.emit("user-info", this.state.userInfo);
         });
-        // this.getHistory().then(() => {
-        //   console.log("in getHistory")
-        //   console.log(this.state.history);
-        //   this.socket.emit("get-history", this.state.history);
-        // });
-        // this.addHistory();    
     };
 
     keyDownBound = (e) => { 
@@ -234,32 +228,10 @@ export default class GameContainer extends React.Component {
             background_pos = {this.state.background_pos}
             letters = {this.state.letters}
             newPlayer = {this.state.newPlayer}
-            winnerId = {this.state.winnerId}  />
+            winnerId = {this.state.winnerId} 
+            deathOrder = {this.state.deathOrder}  />
         );
     }
   }
-
-  // getHistory = () => {
-  //       return fetch('/api/history')
-  //       .then(res => res.json())
-  //       .then(
-  //         historyObj => {
-  //           console.log("history object");
-  //         console.log(historyObj);
-  //         // console.log(historyObj[0]._id)
-  //               if (historyObj[0] !== undefined) {
-  //                 console.log('returning player')
-  //                   this.setState({ 
-  //                       history: historyObj,
-  //                       newPlayer: false
-  //                   });
-  //               } else {
-  //                 console.log('new player')
-  //                   this.setState({ 
-  //                       history: null
-  //                   });
-  //               }
-  //           })
-  //   };
 
 }

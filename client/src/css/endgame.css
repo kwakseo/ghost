@@ -1,0 +1,20 @@
+
+.rectangles {
+    width:680px;
+    height:310px;
+    background:#efefef;
+    background-color: rgba(245, 245, 245, 0.2);
+    margin: 12px;
+    display: flex;
+    padding: 20px 30px;
+    border-radius: 50px;
+
+    flex-direction: column;
+    align-content: flex-start;
+}
+
+.loser-order {
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 20px;
+}

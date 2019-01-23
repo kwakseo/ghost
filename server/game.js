@@ -12,9 +12,12 @@ const initNewGame = () => ({
   gameOver: false,
   joinable: true,
   numPlayers: 1,
+  totalPlayers: 1,
   roundEnd: false,
   playerDeath: false,
+  deadPlayers: new Set(),
   clientToSocketIdMap: [],
+  deathOrder: [],
 });
 
 let shuffleArray = (array) => {
@@ -35,18 +38,28 @@ const gameUpdate = (game, letters) => {
         game.letters = "";
         //if player becomes ghost
         console.log("round has ended")
-        if (game.players[loser].ghost === 3) {
-        	let tempNumPlayers = game.numPlayers;
+        if (game.players[loser].ghost === 4) {
+          game.deadPlayers.add(game.activePlayer);
+        	// let tempNumPlayers = game.numPlayers;
             game.players[loser].alive = false;
             game.numPlayers -= 1;
             game.playerDeath = true;
             let oldPlayerOrder = game.playerOrder;
             game.playerOrder = [];
+<<<<<<< HEAD
             for (i of oldPlayerOrder) {
             	console.log("active player who died ");
                 console.log(game.activePlayer);
                 if (i != game.activePlayer) {
                     game.playerOrder.push(i);
+=======
+            game.deathOrder.push(game.players[loser]);
+            for (let i = 0; i < game.totalPlayers; i++) {
+            	console.log("should be only deleting one player")
+                console.log(game.activePlayer);
+                if (i != game.activePlayer && !game.deadPlayers.has(i)) {
+                    game.playerOrder.push(i)
+>>>>>>> 7a8da9baaa4649bb3064bb7246d95a6136ab8cbf
               }
               console.log("new player order");
               console.log(game.playerOrder);
@@ -58,18 +71,25 @@ const gameUpdate = (game, letters) => {
       else {
         console.log("strike" + game.numPlayers);
         game.players[loser].ghost += 1;
+
+        console.log('')
       }
 
       //end game if one player left
       if (game.numPlayers <= 1) {
         console.log("one player");
         game.activePlayer = game.playerOrder[0];
+        console.log("active player");
+        console.log(game.activePlayer);
+        let winner = game.indexMap[game.activePlayer];
+        game.deathOrder.push(game.players[winner])
         game.gameOver = true;
       }
-
-      shuffleArray(game.playerOrder);
-      game.activePlayer = game.playerOrder[0];
-      game.activePlayerIndex = 0;
+      else {
+        shuffleArray(game.playerOrder);
+        game.activePlayer = game.playerOrder[0];
+        game.activePlayerIndex = 0;
+      }
 
     }
   
