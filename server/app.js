@@ -131,8 +131,14 @@ socket.on("letter-added", (letters) => {
 socket.on("user-info", (userInfo) => {
   console.log("userInfo");
   console.log(userInfo);
-  userGoogleInfo = userInfo;
-  clientToSocketIdMap[socket.id] = userInfo._id;
+  if (userInfo === null) {
+    userGoogleInfo = 'new user';
+    clientToSocketIdMap[socket.id] = 'new user';
+  } else{
+
+    userGoogleInfo = userInfo;
+    clientToSocketIdMap[socket.id] = userInfo._id;
+  }
   console.log(clientToSocketIdMap);
 });
 

@@ -17,6 +17,7 @@ const initNewGame = () => ({
   playerDeath: false,
   deadPlayers: new Set(),
   clientToSocketIdMap: [],
+  deathOrder: [],
 });
 
 let shuffleArray = (array) => {
@@ -44,6 +45,7 @@ const gameUpdate = (game, letters) => {
             game.numPlayers -= 1;
             game.playerDeath = true;
             game.playerOrder = [];
+            game.deathOrder.push(game.players[loser]);
             for (let i = 0; i < game.totalPlayers; i++) {
             	console.log("should be only deleting one player")
                 console.log(game.activePlayer);
@@ -59,6 +61,8 @@ const gameUpdate = (game, letters) => {
       else {
         console.log("strike" + game.numPlayers);
         game.players[loser].ghost += 1;
+
+        console.log('')
       }
 
       //end game if one player left
@@ -67,6 +71,8 @@ const gameUpdate = (game, letters) => {
         game.activePlayer = game.playerOrder[0];
         console.log("active player");
         console.log(game.activePlayer);
+        let winner = game.indexMap[game.activePlayer];
+        game.deathOrder.push(game.players[winner])
         game.gameOver = true;
       }
       else {
