@@ -87,14 +87,10 @@ const server = http.Server(app);
 const io = socketio(server);
 app.set('socketio', io);
 
-<<<<<<< HEAD
-server.listen(5000, () => {
-=======
 console.log("print port info");
 console.log(process.env.PORT);
 
 server.listen((process.env.PORT || 3000), () => {
->>>>>>> a7db65d40c81c5f19070b88de660d5ba93456315
   console.log(`Listening on port 3000 and looking in folder ${publicPath}`);
 });
 
@@ -209,10 +205,9 @@ socket.on('roomChosen', (roomNoUserInfo) => {
       updateOrder.push(index);
       game.playerOrder = updateOrder;
       game.players[socket.id.toString()] = {alive: true, index: index, ghost: 0, userInfo: userInfo};
-      console.log(game.playerOrder);
       socket.room = roomNo;
       io.to(socket.room).emit('roomJoined', game, userInfo, socketid);
-/*      io.sockets.in(socket.id).emit('roomJoined', {roomNo: roomNo, userInfo: userInfo, socketId: socket.id});*/
+
     }
     else {
       console.log("too many players");
@@ -278,7 +273,7 @@ const updateDatabaseHelper = (player) => {
         history.save();
       }
     });
-}
+};
 
 const databasePromises = [];
 

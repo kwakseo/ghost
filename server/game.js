@@ -40,13 +40,15 @@ const gameUpdate = (game, letters) => {
             game.players[loser].alive = false;
             game.numPlayers -= 1;
             game.playerDeath = true;
+            let oldPlayerOrder = game.playerOrder;
             game.playerOrder = [];
-            for (let i = 0; i < tempNumPlayers; i++) {
-            	console.log("should be only deleting one player")
+            for (i of oldPlayerOrder) {
+            	console.log("active player who died ");
                 console.log(game.activePlayer);
                 if (i != game.activePlayer) {
-                    game.playerOrder.push(i)
+                    game.playerOrder.push(i);
               }
+              console.log("new player order");
               console.log(game.playerOrder);
             }
             // console.log(game.playerOrder);
