@@ -1,6 +1,6 @@
 html {
     height: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 body {
@@ -37,6 +37,14 @@ body {
     border-radius: 100px;
 }
 
+.left-align {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    justify-content: space-between;
+    border-radius: 100px;
+}
+
 .game-container {
     display: flex;
     height: 100vh;
@@ -66,7 +74,7 @@ body {
 }
 
 .button:hover{
-    background-color: rgba(245, 245, 245, 0.5);
+    background-color: rgba(245, 245, 245, 0.4);
     color: white;
 }
 
@@ -92,6 +100,24 @@ body {
 .scroll-background-reverse {
     animation: scrolltop 2s forwards;
     -webkit-animation: scrolltop 2s forwards;
+}
+
+.no-space-rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.corner-placed {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0px;
+    right: 0px;
+    margin: 30px 40px;
+
 }
 
 @keyframes scrollbottom {
@@ -145,8 +171,8 @@ h2{
 }
 
 .rule-button {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     border-radius: 50px;
     background-color: rgba(245, 245, 245, 0.2);
     color: white;
@@ -156,9 +182,12 @@ h2{
     text-decoration: none;
     margin: 0px 10px 0px 0px;
     font-weight: bold;
-    font-size: 22px;
+    font-size: 24px;
 }
 
+.rule-title {
+    font-size: 18px;
+}
 
 
 /* ============== Login Page ============== */
@@ -197,7 +226,7 @@ h2{
 }
 
 .join-button:hover {
-    background-color: rgba(245, 245, 245, 0.5);
+    background-color: rgba(245, 245, 245, 0.4);
     color: white;
 }
 
@@ -217,7 +246,141 @@ h2{
 
 }
 
+.profile-container {
+    background-color: rgba(245, 245, 245, 0.2);
+    width: 80px;
+    height: 550px;
+    border-radius: 75px 0px 0px 75px;
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    transform: translateY(-50%);
+    display: flex;
+    transition: width 0.5s 0.3s;
+}
 
+.profile-container:hover {
+    cursor: pointer;
+    background-color: rgba(245, 245, 245, 0.4);
+}
+
+.profile-container.open {
+    background-color: rgba(245, 245, 245, 0.2);
+    width: 420px;
+    transition: width 0.5s 0.3s;
+}
+
+
+.profile-greeting {
+    top: 50%;
+    right: 45%;
+    transform: translateY(-50%) translateX(50%) rotateZ(270deg);
+    width: 250px;
+    height: 80px;
+    position: fixed;
+    color: #efefef;
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 1s 0.5s, opacity 0.5s 0.5s;
+}
+
+.profile-greeting.open {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 1s, opacity 0.5s;
+
+
+}
+
+.icon-container {
+    margin: 0px 10px 25px 10px;
+}
+
+.profile-icon {
+    width: 175px;
+    height: 175px;
+    border-radius: 200px;
+    background-color: rgba(27, 26, 53, 0.7);
+    text-align: center;
+    display: flex;
+    font-size: 36px;
+    align-items: center;
+    justify-content: center;
+    border: #efefef solid 10px;
+    margin: 5px;
+}
+
+.stats-title {
+    color: #efefef;
+    font-weight: bold;
+    font-size: 36px;
+}
+
+.stats {
+    color: #efefef;
+    font-size: 18px;
+    margin: 5px;
+}
+
+.profile-content {
+    width: 420px;
+    height: 550px;
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    border-radius: 75px 0px 0px 75px;
+    transform: translateY(-50%);
+    display: flex;
+    transition: width 0.5s 0.5s;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 1s, opacity 0.5s;
+}
+
+.close-bar {
+    width: 80px;
+    height: 550px;
+    border-radius: 75px 0px 0px 75px;
+    background-color: rgba(245, 245, 245, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 45px;
+    font-weight: bold;
+    color: rgba(245, 245, 245, 0.6);
+}
+
+.close-bar:hover {
+    cursor: pointer;
+    background-color: rgba(245, 245, 245, 0.4);
+}
+
+.profile-content.open {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 1s 0.6s, opacity 0.5s 0.6s;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 5px 25px 10px;
+}
+
+.profile-content-box {
+    width: 360px;
+    height: 550px;
+}
 
 /* ============== GAME: Players ============== */
 
@@ -335,6 +498,8 @@ h2{
 .typing-player-3 {
     border-right-color: #ff9900;
 }
+
+
 
 /* ============== GAME: Timer ============== */
 

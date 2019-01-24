@@ -7,6 +7,7 @@ import Link from "react-router-dom/es/Link";
 import Route from "react-router-dom/es/Route";
 import Switch from "react-router-dom/es/Switch";
 import GameContainer from "./GameContainer";
+import Profile from "./Profile";
 
 export default class GameRules extends React.Component {
   constructor(props){
@@ -70,38 +71,35 @@ export default class GameRules extends React.Component {
     console.log('timer');
     console.log(this.state.render);
     console.log(this.state.history);
-    // if (this.state.render) {console.log(this.state.history.number_wins)}
-    const welcome = this.state.render ? <div>Welcome {this.props.userInfo.name}</div> : null;
+    const hello = this.state.render ? <Profile userInfo = {this.props.userInfo} history={this.state.history}/> : null;
     const invalid = this.state.validCode ? null : <div>invalid</div>;
-    const historyShow = (this.state.render && this.state.history != null) ? <div><div>Number Wins: {this.state.history[0].number_wins}</div><div>Total Games Played: {this.state.history[0].number_games}</div></div> : null;
-    const newPlayerHistoryShow = (this.state.render && this.state.history === null) ? <div><div>Number Wins: 0 </div><div>Total Games Played: 0 </div></div> : null
-    console.log(historyShow);
 
     return (
-      <div className={"game-container"}>
-      {welcome}
-        <GameTitle />
-        <form onSubmit={this.handleJoin} className="selectroom-container">
-         <div className={"component-container join-box"}> 
-          <input id="m" className="input-box" 
-                    value={this.state.value} 
-                    onChange={this.handleChange} 
-                    autoComplete="off" 
-                    placeholder="Enter Code"
-                    onFocus={(e) => e.target.placeholder = ""} 
-                    onBlur={(e) => e.target.placeholder = "Enter Code"}/>
-            <div className="join-button" onClick={this.handleJoin}>Join</div>
+      <div>
+        <div className={"game-container"}>
+          <GameTitle />
+          <form onSubmit={this.handleJoin} className="selectroom-container">
+           <div className={"component-container join-box"}> 
+            <input id="m" className="input-box" 
+                      value={this.state.value} 
+                      onChange={this.handleChange} 
+                      autoComplete="off" 
+                      placeholder="Enter Code"
+                      onFocus={(e) => e.target.placeholder = ""} 
+                      onBlur={(e) => e.target.placeholder = "Enter Code"}/>
+              <div className="join-button" onClick={this.handleJoin}>Join</div>
+            </div>
+            <div className="black-text">{invalid}</div>
+            <div className="button" onClick={this.handleNew}>Create Game</div>
+            <div className={"rules-box component-container"}>
+            <div className="corner-placed">
+              <Link to="/rules" className={"rule-button"}>?</Link>
+              <p className="rule-title">How to play</p>
+            </div>
           </div>
-          <div className="black-text">{invalid}</div>
-          <div className="button" onClick={this.handleNew}>New Game</div>
-          <div className={"rules-box component-container"}>
-          <Link to="/rules" className={"rule-button"}>?</Link>
-          <p>How to play</p>
+          </form>
         </div>
-        <div> History </div>
-        {historyShow}
-        {newPlayerHistoryShow}
-        </form>
+        {hello}
       </div>
     );
   }
@@ -113,7 +111,6 @@ export default class GameRules extends React.Component {
           historyObj => {
           console.log("history object");
           console.log(historyObj);
-          // console.log(historyObj[0]._id)
                 if (historyObj[0] !== undefined) {
                   console.log('returning player')
                     this.setState({ 

@@ -10,10 +10,10 @@ export default class LoginPage extends React.Component {
       <div className={"center login-title-box"}>
       	<GameTitle/>
       	<a className={"button"} href="/auth/google">Login</a>
-        <div className={"rules-box component-container"}>
-          <Link to="/rules" className={"rule-button"}>?</Link>
-          <p>How to play</p>
-        </div>
+      </div>
+      <div className="corner-placed">
+        <Link to="/rules" className={"rule-button"}>?</Link>
+        <p className="rule-title">How to play</p>
       </div>
     </div>
     );
