@@ -221,8 +221,8 @@ export default class GameContainer extends React.Component {
         if (this.socket.id === this.state.indexMap[this.state.activePlayer]) {
           if (e.keyCode >= 65 && e.keyCode <= 90) {
             this.setState({letters: this.state.letters + e.key});
-            }
             this.socket.emit("letter-added", this.state.letters);
+            }
 
           }
         }
