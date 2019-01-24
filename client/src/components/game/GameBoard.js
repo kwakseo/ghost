@@ -13,6 +13,7 @@ export default class GameBoard extends React.Component {
 
 
   render() {
+
     console.log("render board");
     console.log(this.props.playerOrder);
     console.log(this.props.activePlayer);
@@ -32,6 +33,7 @@ export default class GameBoard extends React.Component {
       <div className="game-container">
     {/*    <Timer activePlayer={this.props.activePlayer}/>*/}
         <Letters
+            roundEnd={this.props.roundEnd}
             letters = {this.props.letters}
             activePlayer={this.props.activePlayer}
         />

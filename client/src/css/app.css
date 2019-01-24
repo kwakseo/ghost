@@ -299,9 +299,17 @@ h2{
     border-right-style: solid;
     border-right-width: 5px;
     height: 70px;
+    opacity: 1;
 }
 
+.letters-fade {
+    animation: fade-out 2s linear;
+}
 
+@keyframes fade-out {
+   0% {opacity: 1;}
+   100% {opacity: 0;} 
+} 
 
 /* ============== GAME: Type Bar ============== */
 

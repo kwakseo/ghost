@@ -39,6 +39,8 @@ export default class GameContainer extends React.Component {
       clientToSocketIdMap: [],
       playerDeath: false,
       deathOrder: null,
+      lastActivePlayer: null,
+      lastWords: [],
     }
 
     document.addEventListener("keydown", this.keyDownBound);
@@ -92,42 +94,69 @@ export default class GameContainer extends React.Component {
     });
 
     this.socket.on("game-update", (game) => {
-      this.setState({
-        players: game.players,
-        indexMap: game.indexMap,
-        activePlayer: game.activePlayer,
-        numPlayers: game.numPlayers,
-        timer: game.timer,
-        roundEnd: game.roundEnd,
-        isGameOver: game.isGameOver,
-        letters: game.letters,
-        playerOrder: game.playerOrder,
-        deathOrder: game.deathOrder,
+
+      roundEndAnimation(this, game);
+      
       });
 
 
-      if (this.state.roundEnd) {
-        this.setState({
-          background_pos: 100,
-          deathOrder: game.deathOrder,
-        })
+    async function roundEndAnimation (item, game) {
 
-        
-      }
-      else {
-        if (this.state.background_pos - 5 >= 0) {
-            this.setState({background_pos: this.state.background_pos - 5});
-            
-          }
-      }
-      let container = document.getElementsByClassName("game-container");
-      container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%");
-    });
+        console.log('in round end');
+        item.setState({
+          roundEnd: game.roundEnd
+        });
+
+        function stalling(){
+          console.log('last word');
+          console.log(game.lastWords[game.lastWords.length-1]);
+          item.setState({
+            letters: game.lastWords[game.lastWords.length-1]
+          });
+          return new Promise(resolve => {
+            setTimeout(() => {resolve('resolved');
+            }, 2000);
+          });
+        }
+
+        if (item.state.roundEnd) {
+          
+          let result = await stalling();
+          item.setState({
+            background_pos: 100,
+          });
+        }
+
+        else {
+          if (item.state.background_pos - 5 >= 0) {
+              item.setState({background_pos: item.state.background_pos - 5});
+            }
+        }
+
+        item.setState({
+          players: game.players,
+          indexMap: game.indexMap,
+          activePlayer: game.activePlayer,
+          numPlayers: game.numPlayers,
+          timer: game.timer,
+          roundEnd: false,
+          isGameOver: game.isGameOver,
+          letters: game.letters,
+          playerOrder: game.playerOrder,
+          deathOrder: game.deathOrder,
+          lastActivePlayer: game.lastActivePlayer,
+          lastWords: game.lastWords,
+        });
+
+        let container = document.getElementsByClassName("game-container");
+        container[0].setAttribute("style", "background-position: " + "0% " + item.state.background_pos + "%");
+      
+        }
 
     this.socket.on('game-over', (game) => {
       this.setState({activePlayer: game.activePlayer});
       this.setState({winnerId: this.state.clientToSocketIdMap[this.state.indexMap[this.state.activePlayer]]});
-      console.log('game over')
+      console.log('game over');
       console.log(this.state.winnerId);
 
       this.setState({
@@ -154,7 +183,8 @@ export default class GameContainer extends React.Component {
 
     /* these should be moved to server eventually. 
         temporarily here for testing purposes. */
-      if (this.state.gameStatus === 1) {
+
+      if (this.state.gameStatus === 1 && !this.state.roundEnd) {
         console.log("keydown check");
         console.log("activePlayer" + this.state.activePlayer);
         if (this.socket.id === this.state.indexMap[this.state.activePlayer]) {
@@ -226,6 +256,7 @@ export default class GameContainer extends React.Component {
             activePlayer = {this.state.activePlayer}
             timer = {this.state.timer}
             background_pos = {this.state.background_pos}
+            roundEnd = {this.state.roundEnd}
             letters = {this.state.letters}
             newPlayer = {this.state.newPlayer}
             winnerId = {this.state.winnerId} 

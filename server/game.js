@@ -5,6 +5,7 @@ const initNewGame = () => ({
   players: {}, //alive or dead, assign all players no. 0-3, how many letters of GHOST they have
   indexMap: {}, //maps index 0-3 to socket id
   activePlayer: null,
+  lastActivePlayer: null,
   activePlayerIndex: 0,
   playerOrder: [],
   letters: '',
@@ -18,6 +19,7 @@ const initNewGame = () => ({
   deadPlayers: new Set(),
   clientToSocketIdMap: [],
   deathOrder: [],
+  lastWords: [],
 });
 
 let shuffleArray = (array) => {
@@ -28,14 +30,16 @@ let shuffleArray = (array) => {
 };
 
 const gameUpdate = (game, letters) => {
+  game.lastActivePlayer = game.activePlayer;
   game.roundEnd = false;
 	let loser = game.indexMap[game.activePlayer];
-
 	game.timer = 10;
   return checkWord(letters, game).then((valid) => {
       if (valid) {
+        console.log("empty letter invalid")
+        game.lastWords.push(letters);
         game.roundEnd = true;
-        game.letters = "";
+        game.letters = '';
         //if player becomes ghost
         console.log("round has ended")
         if (game.players[loser].ghost === 4) {
@@ -46,20 +50,12 @@ const gameUpdate = (game, letters) => {
             game.playerDeath = true;
             let oldPlayerOrder = game.playerOrder;
             game.playerOrder = [];
-<<<<<<< HEAD
-            for (i of oldPlayerOrder) {
-            	console.log("active player who died ");
-                console.log(game.activePlayer);
-                if (i != game.activePlayer) {
-                    game.playerOrder.push(i);
-=======
             game.deathOrder.push(game.players[loser]);
             for (let i = 0; i < game.totalPlayers; i++) {
             	console.log("should be only deleting one player")
                 console.log(game.activePlayer);
                 if (i != game.activePlayer && !game.deadPlayers.has(i)) {
                     game.playerOrder.push(i)
->>>>>>> 7a8da9baaa4649bb3064bb7246d95a6136ab8cbf
               }
               console.log("new player order");
               console.log(game.playerOrder);

@@ -111,7 +111,6 @@ socket.on("letter-added", (letters) => {
   console.log("letter added emit");
   game.letters += letters[letters.length -1];
 /*  socket.broadcast.to(socket.room).emit("letter-added", letters[letters.length -1]);*/
-
   gameUpdate(game, letters).then(() => {
     console.log(game)
     if (game.playerDeath) {
@@ -128,6 +127,10 @@ socket.on("letter-added", (letters) => {
   })
   });
 //once game has ended remove game number from list
+
+async function transitionAnimation(game) {
+
+}
 
 socket.on("user-info", (userInfo) => {
   console.log("userInfo");

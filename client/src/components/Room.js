@@ -32,6 +32,7 @@ export default class Room extends React.Component {
       case 1:
         return (
           <GameBoard 
+            roundEnd={this.props.roundEnd}
             socket={this.props.socket} 
             userInfo={this.props.userInfo} 
             players={this.props.players} 
