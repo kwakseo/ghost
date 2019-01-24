@@ -54,6 +54,8 @@ export default class GameRules extends React.Component {
     let roomNo = Math.floor((Math.random() * 100000) + 1);
     console.log("socketid");
     console.log(this.props.userInfo);
+    console.log('should be new game')
+    console.log(roomNo);
     const roomNoUserInfo = {roomNo:roomNo, userInfo: this.props.userInfo, socketId: this.props.socket.id};
 
     this.props.socket.emit('roomCreated', roomNoUserInfo);
@@ -72,6 +74,7 @@ export default class GameRules extends React.Component {
     const welcome = this.state.render ? <div>Welcome {this.props.userInfo.name}</div> : null;
     const invalid = this.state.validCode ? null : <div>invalid</div>;
     const historyShow = (this.state.render && this.state.history != null) ? <div><div>Number Wins: {this.state.history[0].number_wins}</div><div>Total Games Played: {this.state.history[0].number_games}</div></div> : null;
+    const newPlayerHistoryShow = (this.state.render && this.state.history === null) ? <div><div>Number Wins: 0 </div><div>Total Games Played: 0 </div></div> : null
     console.log(historyShow);
 
     return (
@@ -97,6 +100,7 @@ export default class GameRules extends React.Component {
         </div>
         <div> History </div>
         {historyShow}
+        {newPlayerHistoryShow}
         </form>
       </div>
     );

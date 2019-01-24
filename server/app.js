@@ -153,6 +153,8 @@ socket.on('get-history', (history) => {
 socket.on('roomCreated', (roomNoUserInfo) =>  {
   const userInfo = roomNoUserInfo.userInfo;
   let roomNo = roomNoUserInfo.roomNo;
+  console.log("room created app side")
+  console.log(roomNo);
 
   while (roomNo.toString() in allRooms) {
     roomNo = Math.floor((Math.random() * 100000) + 1);
@@ -217,6 +219,8 @@ socket.on('roomChosen', (roomNoUserInfo) => {
       game.players[socket.id.toString()] = {alive: true, index: index, ghost: 0, userInfo: userInfo};
       socket.room = roomNo;
       io.to(socket.room).emit('roomJoined', game, userInfo, socketid);
+      io.to(socket.id).emit('only-to-joiner', game);
+/*      io.sockets.in(socket.id).emit('roomJoined', {roomNo: roomNo, userInfo: userInfo, socketId: socket.id});*/
 
     }
     else {
@@ -243,6 +247,12 @@ socket.on('gameStarted', (roomNo) => {
 
   io.to(socket.room).emit('gameStartedGo', game);
 
+});
+
+socket.on("go-back-home", (home) => {
+  io.to(socket.id).emit('go-back-home', home);
+  socket.leave(game.roomNo);
+  game = initNewGame()
 });
 
 function historyFinder(err, history) {

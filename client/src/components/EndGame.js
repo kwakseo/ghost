@@ -13,27 +13,26 @@ export default class EndGame extends React.Component {
   componentDidMount () {
       var container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.props.background_pos + "%");
-      // this.props.updateHistory(this.props.winnerId);
-      // if (this.props.newPlayer) {
-      //   this.props.addHistory(this.props.winnerId);
-      // }
-      // else {
-      //   this.props.updateHistory(this.props.winnerId);
-      // }
+  }
+
+  goHome = () => {
+    this.props.socket.emit("go-back-home", "home");
   }
 
   render(){
     // let deathOrder = JSON.stringify(this.props.deathOrder);
     let deathOrderArr = [];
     let rankingArr = [];
+    let number = 1;
     for (let loser in this.props.deathOrder.reverse()) {
       let player = JSON.stringify(this.props.deathOrder[loser].userInfo.name).replace(/['"]+/g, '')
       deathOrderArr.push((
-        <div key={loser} className="loser-order"> {player} </div>
+        <div>
+          <div key={loser} className="loser-order"> {number} </div>
+          <div key={loser} className="loser-order player"> {player} </div>
+        </div>
         ))
-      rankingArr.push((
-        <div key={loser} className="loser-order"> {loser} </div>
-        ))
+      number += 1
     }
     return (
       <div className={"game-container scroll-background-reverse"}>
@@ -42,11 +41,8 @@ export default class EndGame extends React.Component {
           <div className="component-container">
             {deathOrderArr} 
           </div>
-          <div className="component-container">
-            {rankingArr} 
-          </div>
         </div>
-        <Link to="/" className={"button"}>Home</Link>
+        <div className="button" onClick={this.goHome}>Home</div>
       </div>
     );
   }

@@ -50,6 +50,7 @@ export default class Room extends React.Component {
       case 2: 
         return (
           <EndGame 
+            socket={this.props.socket} 
             background_pos = {this.props.background_pos}
             newPlayer = {this.props.newPlayer}
             winnerId = {this.props.winnerId}

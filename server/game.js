@@ -42,7 +42,7 @@ const gameUpdate = (game, letters) => {
         game.letters = '';
         //if player becomes ghost
         console.log("round has ended")
-        if (game.players[loser].ghost === 4) {
+        if (game.players[loser].ghost === 3) {
           game.deadPlayers.add(game.activePlayer);
         	// let tempNumPlayers = game.numPlayers;
             game.players[loser].alive = false;
