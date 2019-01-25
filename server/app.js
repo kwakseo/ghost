@@ -257,6 +257,13 @@ socket.on('gameStarted', (roomNo) => {
 
 });
 
+socket.on("mousemove", (obj) => {
+  console.log("in mousemove")
+  console.log(obj.x)
+  console.log(obj.y)
+  io.to(socket.room).emit('mousemove', (obj));
+});
+
 socket.on("go-back-home", (home) => {
   io.to(socket.id).emit('go-back-home', home);
   socket.leave(game.roomNo);

@@ -4,6 +4,7 @@ import io from "socket.io-client";
 import Letters from "./Letters";
 import Player from "./Player";
 import Timer from "./Timer";
+import DeadPlayer from "./DeadPlayer";
 
 export default class GameBoard extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ export default class GameBoard extends React.Component {
     console.log(this.props.playerOrder);
     console.log(this.props.activePlayer);
     var players = [];
+    let deadPlayers = [];
     for (var playerIndex of this.props.playerOrder) {
       players.push(<Player 
               key={playerIndex}
@@ -28,9 +30,27 @@ export default class GameBoard extends React.Component {
             />
             )
     };
+    if (this.props.deathOrder != null) {
+      console.log('in death order');
+      console.log(this.props.deathOrder);
+      for (var playerIndex of this.props.deathOrder) {
+        deadPlayers.push(<DeadPlayer 
+          key={playerIndex}
+          playerIndex = {playerIndex.index}
+          players = {this.props.players}
+          indexMap = {this.props.indexMap}
+          socket={this.props.socket} 
+          />
+          )
+      }
+    }
     return (
-
+      <div>
+      <div className="full-screen">
+      <div className="overlap-game-container"> {deadPlayers} </div>
+      </div>
       <div className="game-container">
+
     {/*    <Timer activePlayer={this.props.activePlayer}/>*/}
         <Letters
             roundEnd={this.props.roundEnd}
@@ -41,6 +61,7 @@ export default class GameBoard extends React.Component {
           {players}
 
         </div>
+      </div>
       </div>
     );
   

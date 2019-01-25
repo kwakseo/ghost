@@ -45,6 +45,7 @@ export default class Room extends React.Component {
             gameStatus={this.props.gameStatus} 
             letters = {this.props.letters} 
             winnerId = {this.props.winnerId}
+            deathOrder = {this.props.deathOrder}
             />
           );
       case 2: 
