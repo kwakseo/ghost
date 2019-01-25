@@ -100,6 +100,7 @@ let game = {};
 let allRooms = {};
 let clientToSocketIdMap = {};
 let userGoogleInfo = {};
+let leaderboardInfo = [];
 
 io.on("connection", (socket) => {
   numConnected += 1;
@@ -144,10 +145,17 @@ socket.on("user-info", (userInfo) => {
     clientToSocketIdMap[socket.id] = userInfo._id;
   }
   console.log(clientToSocketIdMap);
+
+  console.log('calling getLeaderInfo')
+  getLeaderInfo();
+  console.log('done getting leader info')
 });
 
 socket.on('get-history', (history) => {
   io.in(socket.room).emit('get-history', history);
+  console.log('in get history')
+  // console.log(leaderboardInfo)
+  // io.in(socket.room).emit('leader-info', leaderboardInfo);
 });
 
 socket.on('roomCreated', (roomNoUserInfo) =>  {
@@ -253,6 +261,7 @@ socket.on("go-back-home", (home) => {
   io.to(socket.id).emit('go-back-home', home);
   socket.leave(game.roomNo);
   game = initNewGame()
+  leaderboardInfo = [];
 });
 
 function historyFinder(err, history) {
@@ -326,6 +335,22 @@ async function updateDatabase() {
   return Promise.all(databasePromises);
 }
 
+
+getLeaderInfo = () => {
+  leaderboardInfo = [];
+  console.log('getLeaderInfo');
+  History.find().sort({number_wins:-1}).limit(10).exec(function(err, result) {
+    console.log('did it find')
+    console.log(result);
+    console.log('setting stuff');
+    let rawLeaderInfo = result;
+    for (let i in rawLeaderInfo) {
+      leaderboardInfo.push([rawLeaderInfo[i].player_name, rawLeaderInfo[i].number_wins]);
+    };
+    console.log(leaderboardInfo);
+    io.emit('leader-info', leaderboardInfo);
+  });
+}
 
 
   socket.on("disconnect", () => {

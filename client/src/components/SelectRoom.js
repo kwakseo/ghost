@@ -1,7 +1,7 @@
 import React from "react";
 // import "../css/homepage.css"
 import "../css/app.css"
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import GameTitle from "./GameTitle";
 import Link from "react-router-dom/es/Link";
 import Route from "react-router-dom/es/Route";
@@ -12,11 +12,17 @@ import Profile from "./Profile";
 export default class GameRules extends React.Component {
   constructor(props){
     super(props);
-    this.state = {value: '', validCode: true, render: false, history: null};
+    this.state = {value: '', validCode: true, render: false, history: null, leaderboardInfo: null};
 
     console.log("get history in select room")
     console.log(this.props.userInfo)
     console.log(this.props.history);
+
+    this.props.socket.on('leader-info', (leaderboardInfo) => {
+      this.setState({leaderboardInfo: leaderboardInfo});
+      console.log('in leader info')
+      console.log(leaderboardInfo);
+    });
   }
 
   componentDidMount() {
@@ -72,6 +78,7 @@ export default class GameRules extends React.Component {
     console.log(this.state.render);
     console.log(this.state.history);
     const hello = this.state.render ? <Profile userInfo = {this.props.userInfo} history={this.state.history}/> : null;
+    const leaderBoard = this.state.render ? <div>{this.state.leaderboardInfo}</div>: null;
     const invalid = this.state.validCode ? null : <div>invalid</div>;
 
     return (
@@ -91,6 +98,7 @@ export default class GameRules extends React.Component {
             </div>
             <div className="black-text">{invalid}</div>
             <div className="button" onClick={this.handleNew}>Create Game</div>
+            {leaderBoard}
             <div className={"rules-box component-container"}>
             <div className="corner-placed">
               <Link to="/rules" className={"rule-button"}>?</Link>

@@ -20,6 +20,7 @@ const initNewGame = () => ({
   clientToSocketIdMap: [],
   deathOrder: [],
   lastWords: [],
+  leaderBoard: null
 });
 
 let shuffleArray = (array) => {

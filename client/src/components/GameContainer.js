@@ -41,13 +41,20 @@ export default class GameContainer extends React.Component {
       deathOrder: null,
       lastActivePlayer: null,
       lastWords: [],
+      leaderboardInfo: null,
     }
 
     document.addEventListener("keydown", this.keyDownBound);
 
     this.socket.on('get-history', (history) => {
       this.setState({history: history});
-    })
+    });
+
+    // this.socket.on('leader-info', (leaderboardInfo) => {
+    //   this.setState({leaderboardInfo: leaderboardInfo});
+    //   console.log('leader info sent to client');
+    //   console.log(this.state.leaderboardInfo)
+    // });
 
     this.socket.on('gameInit', (game, userInfo, socketid) => {
       const players = game.players;
@@ -66,6 +73,7 @@ export default class GameContainer extends React.Component {
                   deathOrder: null,
                   playerDeath: false,
                   lastWords: [],
+                  leaderboardInfo: null,
                 });
 
       let container = document.getElementsByClassName("game-container");
@@ -93,6 +101,7 @@ export default class GameContainer extends React.Component {
                   deathOrder: null,
                   playerDeath: false,
                   lastWords: [],
+                  leaderboardInfo: null,
                 });
       
       console.log("in container joined room, user: " + this.state.userInfo)
