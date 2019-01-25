@@ -349,7 +349,7 @@ async function updateDatabase() {
 getLeaderInfo = () => {
   leaderboardInfo = [];
   console.log('getLeaderInfo');
-  History.find().sort({number_wins:-1}).limit(10).exec(function(err, result) {
+  History.find().sort({number_wins:-1}).limit(8).exec(function(err, result) {
     console.log('did it find')
     console.log(result);
     console.log('setting stuff');

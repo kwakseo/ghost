@@ -78,8 +78,7 @@ export default class GameRules extends React.Component {
     console.log('timer');
     console.log(this.state.render);
     console.log(this.state.history);
-    const hello = this.state.render ? <Navbar userInfo = {this.props.userInfo} history={this.state.history}/> : null;
-    const leaderBoard = this.state.render ? <div>{this.state.leaderboardInfo}</div>: null;
+    const hello = this.state.render ? <Navbar userInfo = {this.props.userInfo} history={this.state.history} leaderboardInfo={this.state.leaderboardInfo}/> : null;
     const invalid = this.state.validCode ? null : <div>invalid</div>;
 
     return (
@@ -99,7 +98,6 @@ export default class GameRules extends React.Component {
             </div>
             <div className="black-text">{invalid}</div>
             <div className="button" onClick={this.handleNew}>Create Game</div>
-            {leaderBoard}
             <div className={"rules-box component-container"}>
           </div>
           </form>

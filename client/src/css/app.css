@@ -92,6 +92,7 @@ body {
     padding: 16px 25px;
     border-radius: 50px;
     text-decoration-line: none;
+    transition: background-color 0.2s;
 }
 
 .button:hover{
@@ -130,20 +131,12 @@ body {
     align-items: center;
 }
 
-.left-content {
+.horizontal-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 }
-
-.right-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 .corner-placed {
     position: absolute;
     display: flex;
@@ -233,11 +226,11 @@ h2{
 
 
 
-/* ============== Navbar ============== */
+/* ============== Navbar: General ============== */
 
 .nav-background {
     background-color: rgba(27, 26, 53);
-    width: 700px;
+    width: 600px;
     height: 80px;
     border-radius: 0px 0px 75px 75px;
     position: absolute;
@@ -248,8 +241,9 @@ h2{
 }
 
 .nav-container {
+    animation: fade-in 0.5s;
     background-color: rgba(245, 245, 245, 0.2);
-    width: 700px;
+    width: 600px;
     height: 80px;
     border-radius: 0px 0px 75px 75px;
     position: absolute;
@@ -261,14 +255,14 @@ h2{
 }
 
 .nav-container.open {
-    height: 580px;
+    height: 700px;
     background-color: rgba(27, 26, 53);
     transition: height 0.5s 0.3s, background-color 0s 0s;
 }
 
 .nav-content {
-    width: 700px;
-    height: 420px;
+    width: 600px;
+    height: 540px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -276,36 +270,24 @@ h2{
     margin-top: 80px;
     opacity: 0;
     visibility: hidden;
-    transition: visibility 1s 1s, opacity 0.5s 0s;
+    transition: visibility 1s 0.5s, opacity 0.5s 0s;
 }
 
 .nav-content.open {
-    transition: visibility 1s 1s, opacity 0.5s 1s;
+    transition: visibility 1s 0.7s, opacity 0.5s 0.7s;
     visibility: visible;
     opacity: 1;
-
-}
-
-.winner-names {
-    text-align: center;
-    width: 350px;
-    height: 360px;
-
-}
-
-.winner-scores {
-    text-align: center;
-    width: 350px;
-    height: 360px;
 
 }
 
 .nav-close-bar {
     transition: visibility 1s 1s, opacity 0.5s 0s;
     background-color: rgba(245, 245, 245, 0.2);
-    width: 700px;
+    width: 600px;
     height: 80px;
     border-radius: 0px 0px 75px 75px;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     bottom: 0%;
     right: 50%;
@@ -318,19 +300,30 @@ h2{
 }
 
 .nav-close-bar.open {
-    transition: visibility 1s 2s, opacity 0.5s 2s;
+    transition: visibility 1s 0.5s, opacity 0.5s 0.5s;
     visibility: visible;
     opacity: 1;
-    transition: none;
 }
 
 .nav-close-bar.open:hover {
+    transition: background-color 0.2s;
     cursor: pointer;
+    background-color: rgba(245, 245, 245, 0.5);
+}
+
+.menu-horizontal {
+    width: 55px;
+    height: 55px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    filter: brightness(0.7);
+    background-image: url(./hamburgermenu_horiz.png);
 }
 
 .icon-container {
     background-color: transparent;
-    width: 700px;
+    width: 600px;
     height: 80px;
     position: absolute;
     top: 0%;
@@ -344,38 +337,22 @@ h2{
 }
 
 .icon-container.open {
-    transition: background-color 0.5s 0.4s;
+    transition: background-color 0.5s 0.3s;
     opacity: 1;
     background-color: rgba(245, 245, 245, 0.2);
 }
 
-.bar-divider {
-    background-color: rgba(245, 245, 245, 0.3);
-    border-radius: 10px;
-    width: 3px;
-    height: 65px;
-}
-
 .icon {
-    transition: filter 1s;
+    transition: filter 0.2s;
     background-size: 100% 100%;
-    margin: 0px 70px;
-    filter: brightness(0.5);
+    margin: 0px 55px;
+    filter: brightness(0.7);
     width: 55px;
 }
 
 .icon:hover {
     cursor: pointer;
-    filter: brightness(0.9);
-}
-
-.icon.open {
-    filter: brightness(0.7);
-}
-
-.icon.open:hover {
-    cursor: pointer;
-    filter: brightness(0.9);
+    filter: brightness(1);
 }
 
 .leader-button {
@@ -393,13 +370,151 @@ h2{
     background-image: url(./rules.png);
 }
 
-@keyframes fade-in-out {
-    0% {opacity: 1;}
-
-    20% {opacity: 0;}
-
-    100% {opacity: 0;}
+@keyframes fade-in {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }
+
+
+
+/* ============== Navbar: Leaderboard ============== */
+
+.winner-names {
+    text-align: left;
+    margin: 40px 80px 40px 50px;
+
+}
+
+.winner-scores {
+    text-align: right;
+    margin: 40px 50px 40px 80px;
+}
+
+.leader {
+    font-size: 18px;
+    color: #c3c3c3;
+    margin: 10px;
+}
+
+.leader-top-three {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px;
+
+}
+
+.leaderboard-title {
+    font-weight: bold;
+    font-size: 36px;
+}
+
+
+
+/* ============== Navbar: Profile ============== */
+
+.profile-icon {
+    width: 175px;
+    height: 175px;
+    border-radius: 200px;
+    background-color: rgba(27, 26, 53, 0.7);
+    text-align: center;
+    display: flex;
+    font-size: 36px;
+    align-items: center;
+    justify-content: center;
+    border: #efefef solid 10px;
+    margin: 15px;
+}
+
+.stats-title {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.stats {
+    font-size: 18px;
+    margin: 5px;
+    color: #c3c3c3;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 5px 25px 10px;
+}
+
+
+
+/* ============== Navbar: Rules ============== */
+
+.rule-component {
+    color: #d1d1d1;
+    font-size: 16px;
+    padding: 10px;
+    border-bottom-color: rgba(245, 245, 245, 0.2);
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    display: flex;
+    flex-direction: column;
+}
+
+.rule-component.players {
+    width: 90px;
+    height: 100px;
+    border-left-color: rgba(245, 245, 245, 0.2);
+    border-left-width: 3px;
+    border-left-style: solid;
+    margin-top: 15px;
+    align-items: center;
+
+}
+
+.rule-component.goal {
+    width: 450px;
+    height: 100px;
+    border-bottom-color: rgba(245, 245, 245, 0.2);
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    margin-top: 15px;
+
+}
+
+.rule-component.strikes {
+    width: 563px;
+    height: 200px;
+}
+
+.rule-component.rounds {
+    width: 563px;
+    height: 100px;
+}
+
+.rule-component-letsplay {
+    color: #d1d1d1;
+    font-size: 16px;
+    padding: 20px 0px 30px 0px;
+}
+
+.rule-component-title {
+    color: #efefef;
+    font-size: 24px;
+    font-weight: bold;
+    align-self: center;
+    margin: 5px 0px 10px 0px;
+}
+
+.rule-component-content {
+    margin: 5px;
+}
+
+.rule-component-content.italic {
+    font-style: italic;
+    margin: 0px 25px;
+}
+
+
 
 /* ============== Select Room Page ============== */
 
@@ -419,6 +534,7 @@ h2{
     text-decoration-line: none;
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
+    transition: background-color 0.2s;
 }
 
 .selectroom-container {
@@ -447,118 +563,6 @@ h2{
     background-color: #efefef;
     line-height: 1;
 
-}
-
-.profile-container {
-    background-color: rgba(245, 245, 245, 0.2);
-    width: 80px;
-    height: 550px;
-    border-radius: 75px 0px 0px 75px;
-    position: absolute;
-    top: 50%;
-    right: 0%;
-    transform: translateY(-50%);
-    display: flex;
-    transition: width 0.5s 0.3s;
-}
-
-.profile-container:hover {
-    cursor: pointer;
-    background-color: rgba(245, 245, 245, 0.4);
-}
-
-.profile-container.open {
-    background-color: rgba(245, 245, 245, 0.2);
-    width: 420px;
-    transition: width 0.5s 0.3s;
-}
-
-
-.profile-greeting {
-    top: 50%;
-    right: 45%;
-    transform: translateY(-50%) translateX(50%) rotateZ(270deg);
-    width: 250px;
-    height: 80px;
-    position: fixed;
-    color: #efefef;
-    font-size: 24px;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 1s 0.5s, opacity 0.5s 0.5s;
-}
-
-.profile-greeting.open {
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 1s, opacity 0.5s;
-
-
-}
-
-.profile-icon {
-    width: 175px;
-    height: 175px;
-    border-radius: 200px;
-    background-color: rgba(27, 26, 53, 0.7);
-    text-align: center;
-    display: flex;
-    font-size: 36px;
-    align-items: center;
-    justify-content: center;
-    border: #efefef solid 10px;
-    margin: 15px;
-}
-
-.stats-title {
-    color: #efefef;
-    font-weight: bold;
-    font-size: 36px;
-}
-
-.stats {
-    color: #efefef;
-    font-size: 18px;
-    margin: 5px;
-}
-
-
-
-.close-bar {
-    width: 80px;
-    height: 550px;
-    border-radius: 75px 0px 0px 75px;
-    background-color: rgba(245, 245, 245, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 45px;
-    font-weight: bold;
-    color: rgba(245, 245, 245, 0.6);
-}
-
-.close-bar:hover {
-    cursor: pointer;
-    background-color: rgba(245, 245, 245, 0.4);
-}
-
-
-
-.stats-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 5px 25px 10px;
-}
-
-.profile-content-box {
-    width: 360px;
-    height: 550px;
 }
 
 /* ============== GAME: Players ============== */
