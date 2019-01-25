@@ -30,7 +30,9 @@ export default class Waiting extends React.Component {
 
     return (
       <div className={"center"}>
-        <div className="black-text"> Waiting to start </div>
+        <div className="waiting-text">Invite friends with your game code:</div>
+        <div className="waiting-code">{this.props.roomNo}</div>
+        <div className="waiting-text"> Waiting for admin to click start</div>
         <div className={"players-box component-container"}>
           {players}
         </div>

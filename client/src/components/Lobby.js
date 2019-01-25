@@ -30,6 +30,7 @@ export default class Lobby extends React.Component {
 
       : <Waiting 
           socket={this.props.socket} 
+          roomNo={this.props.roomNo} 
           userInfo={this.props.userInfo} 
           players={this.props.players}
           indexMap={this.props.indexMap} 
