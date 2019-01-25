@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require("express");
 const session = require('express-session');
 const path = require("path");
+const _ = require("underscore")
 
 /*const http = require("http").Server(express);
 const io = require("socket.io")(http);*/
@@ -17,7 +18,7 @@ const api = require('./routes/api');
 require('dotenv').config();
 // const router = express.Router();
 
-const { initNewGame, gameUpdate, shuffleArray } = require("./game");
+const { initNewGame, gameUpdate, shuffleArray, removePlayers } = require("./game");
 
 const app = express();
 const publicPath = path.resolve(__dirname, '..', "client", "dist");
@@ -112,7 +113,7 @@ socket.on("letter-added", (letters) => {
   console.log("letter added emit");
   game.letters += letters[letters.length -1];
 /*  socket.broadcast.to(socket.room).emit("letter-added", letters[letters.length -1]);*/
-  gameUpdate(game, letters).then(() => {
+  gameUpdate(game, '').then(() => {
     console.log(game)
     if (game.playerDeath) {
       io.in(socket.room).emit("player-death", game);
@@ -124,8 +125,8 @@ socket.on("letter-added", (letters) => {
 
     else {
       io.in(socket.room).emit("game-update", game);
-  }
-  })
+      }
+    })
   });
 //once game has ended remove game number from list
 
@@ -249,7 +250,9 @@ socket.on('gameStarted', (roomNo) => {
   console.log("player order");
   console.log(game.playerOrder);
   game.activePlayerIndex = 0;
+  game.gameStatus = 1; 
   game.activePlayer = game.playerOrder[0];
+  game.deathOrder = []
   // game.activePlayerIndex = game.playerOrder[0];
   allRooms[roomNo.toString()].joinable = false;
 
@@ -359,6 +362,34 @@ getLeaderInfo = () => {
     if (numConnected === 0) {
       gameStarted = false;
     }
+    console.log(socket.id + " disconnected")
+    console.log(game.gameStatus)
+
+
+    if (game.players && game.gameStatus === 1){
+      game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
+      game.players[socket.id].ghost = 4
+      gameUpdate(game, '').then(() => {
+        console.log(game)
+        if (game.playerDeath) {
+          io.in(socket.room).emit("player-death", game);
+        }
+        if (game.gameOver) {
+          io.in(socket.room).emit("game-over", game);
+          updateDatabase();
+        }
+        else {
+          io.in(socket.room).emit("game-update", game);
+          }
+        })
+    } else if (game.players && game.gameStatus === 0){
+      game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
+      console.log('inside game status 0')
+      console.log(game.activePlayer)
+      removePlayers(game, game.activePlayer)
+      io.in(socket.room).emit("disconnect", game); 
+    }
+
   });
-  });
+})
 

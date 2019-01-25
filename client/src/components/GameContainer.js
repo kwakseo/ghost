@@ -125,6 +125,15 @@ export default class GameContainer extends React.Component {
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%")
     });
 
+    this.socket.on("disconnect", (game) => {
+        this.setState({
+          playerOrder: game.playerOrder,
+          indexMap: game.indexMap,
+          players: game.players,
+          numPlayers: game.numPlayers,
+        })
+    });
+
     this.socket.on("game-update", (game) => {
 
       roundEndAnimation(this, game);
@@ -233,7 +242,7 @@ export default class GameContainer extends React.Component {
         console.log("activePlayer" + this.state.activePlayer);
         if (this.socket.id === this.state.indexMap[this.state.activePlayer]) {
           if (e.keyCode >= 65 && e.keyCode <= 90) {
-            this.setState({letters: this.state.letters + e.key});
+            this.setState({letters: this.state.letters + e.key}); 
             this.socket.emit("letter-added", this.state.letters);
             }
 
