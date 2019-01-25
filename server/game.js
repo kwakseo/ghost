@@ -111,7 +111,7 @@ const removePlayers = (game, loser) => {
     console.log(game.players) 
     game.deathOrder.push(game.players[loser]); 
     console.log('number of players now') 
-    game.totalPlayers -= 1
+    // game.totalPlayers -= 1
     console.log(game.totalPlayers)
 
     // delete game.players[game.indexMap[loser]] 

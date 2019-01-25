@@ -76,7 +76,7 @@ body {
 .full-screen {
     position: fixed;
     height: 100%;
-    width: 100%;
+    width:;
 }
 
 .button {
@@ -492,7 +492,7 @@ h2{
 }
 
 .letters-fade {
-    animation: fade-out 2s linear;
+    animation: fade-out 1s linear;
 }
 
 @keyframes fade-out {

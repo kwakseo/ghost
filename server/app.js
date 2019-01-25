@@ -113,7 +113,7 @@ socket.on("letter-added", (letters) => {
   console.log("letter added emit");
   game.letters += letters[letters.length -1];
 /*  socket.broadcast.to(socket.room).emit("letter-added", letters[letters.length -1]);*/
-  gameUpdate(game, '').then(() => {
+  gameUpdate(game, letters).then(() => {
     console.log(game)
     if (game.playerDeath) {
       io.in(socket.room).emit("player-death", game);
@@ -372,30 +372,35 @@ getLeaderInfo = () => {
     console.log(socket.id + " disconnected")
     console.log(game.gameStatus)
 
-
-    if (game.players && game.gameStatus === 1){
-      game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
-      game.players[socket.id].ghost = 4
-      gameUpdate(game, '').then(() => {
-        console.log(game)
-        if (game.playerDeath) {
-          io.in(socket.room).emit("player-death", game);
+    try {
+        if (game.players && game.gameStatus === 1){
+          game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
+          game.players[socket.id].ghost = 4
+          gameUpdate(game, '').then(() => {
+            console.log(game)
+            if (game.playerDeath) {
+              io.in(socket.room).emit("player-death", game);
+            }
+            if (game.gameOver) {
+              io.in(socket.room).emit("game-over", game);
+              updateDatabase();
+            }
+            else {
+              io.in(socket.room).emit("game-update", game);
+              }
+            })
+        } else if (game.players && game.gameStatus === 0){
+          game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
+          console.log('inside game status 0')
+          console.log(game.activePlayer)
+          removePlayers(game, game.activePlayer)
+          io.in(socket.room).emit("disconnect", game); 
         }
-        if (game.gameOver) {
-          io.in(socket.room).emit("game-over", game);
-          updateDatabase();
-        }
-        else {
-          io.in(socket.room).emit("game-update", game);
-          }
-        })
-    } else if (game.players && game.gameStatus === 0){
-      game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
-      console.log('inside game status 0')
-      console.log(game.activePlayer)
-      removePlayers(game, game.activePlayer)
-      io.in(socket.room).emit("disconnect", game); 
+    } catch {
+        console.log('user null error')
     }
+
+
 
   });
 })
