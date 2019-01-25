@@ -28,7 +28,7 @@ export default class EndGame extends React.Component {
       let player = JSON.stringify(this.props.deathOrder[loser].userInfo.name).replace(/['"]+/g, '')
       deathOrderArr.push((
         <div>
-          <div key={loser} className="loser-order"> {number} </div>
+          <div key={loser+0} className="loser-order"> {number} </div>
           <div key={loser} className="loser-order player"> {player} </div>
         </div>
         ))
