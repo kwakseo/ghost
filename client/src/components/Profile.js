@@ -32,7 +32,7 @@ export default class Profile extends React.Component{
 
   	var wins = (this.props.history != null) ? this.props.history[0].number_wins : "0";
   	var plays = (this.props.history != null) ? this.props.history[0].number_games : "0";
-  	var longestString = null;
+  	var longestString = (this.props.history != null) ? this.props.history[0].longest_word : 'N/A';
 
   	if (this.state.open) {
   		containerClasses += " open";
@@ -59,7 +59,7 @@ export default class Profile extends React.Component{
 	  			</div>
 	  			<div className="stats-container">
 	  				<div className="stats-title">Longest string</div>
-	  				<div className="stats">thisisalongstring</div>
+	  				<div className="stats">{longestString}</div>
 	  			</div>
 	  		</div>
   		</div>

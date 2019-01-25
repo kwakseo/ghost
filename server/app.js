@@ -256,6 +256,12 @@ socket.on("go-back-home", (home) => {
 });
 
 function historyFinder(err, history) {
+  let longestWord = game.lastWords[0];
+  for (let i in game.lastWords) {
+    if (game.lastWords[i].length > longestWord.length) {
+      longestWord = game.lastWords[i]
+    }
+  };
   if (err) {
         console.log('error');
       }
@@ -269,6 +275,7 @@ function historyFinder(err, history) {
           'player_name': userGoogleInfo.name,
           'number_wins': number_wins,
           'number_games': 1,
+          'longest_word': longestWord,
         });
         newHistory.save();
       }
@@ -280,6 +287,12 @@ function historyFinder(err, history) {
           history.number_wins += 1;
         }
         history.number_games = history.number_games + 1;
+        if (history.longest_word === undefined) {
+          history.longest_word = longestWord;
+        }
+        else if (longestWord.length > history.longest_word.length) {
+          history.longest_word = longestWord;
+        };
         history.save();
       }
 } 
@@ -299,32 +312,6 @@ async function updateDatabaseHelper(player) {
     return History.findOne({player_id: playerGoogleId}, async function(err, history) {
       let result = await historyFinder(err, history);
       return Promise.all(morePromises);
-      // if (err) {
-      //   console.log('error');
-      // }
-      // else if (history === null) {
-      //   let number_wins = 0;
-      //   if (playerGoogleId === game.clientToSocketIdMap[game.indexMap[game.activePlayer]]) {
-      //     number_wins += 1;
-      //   }
-      //   const newHistory = new History({
-      //     'player_id': userGoogleInfo._id,
-      //     'player_name': userGoogleInfo.name,
-      //     'number_wins': number_wins,
-      //     'number_games': 1,
-      //   });
-      //   newHistory.save();
-      // }
-      // else {
-      //   console.log("is this in the right order")
-      //   let number_wins = 0;
-      //   if (playerGoogleId === game.clientToSocketIdMap[game.indexMap[game.activePlayer]]) {
-      //     console.log('winner')
-      //     history.number_wins += 1;
-      //   }
-      //   history.number_games = history.number_games + 1;
-      //   history.save();
-      // }
     });
 };
 

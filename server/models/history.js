@@ -6,6 +6,7 @@ const HistoryModelSchema = new mongoose.Schema ({
   player_name          : String,
   number_wins      : Number,
   number_games:   Number,
+  longest_word: String,
 
 });
 

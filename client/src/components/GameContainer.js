@@ -64,7 +64,9 @@ export default class GameContainer extends React.Component {
                   background_pos: 100,
                   winnerId: null,
                   deathOrder: null,
-                  playerDeath: false});
+                  playerDeath: false,
+                  lastWords: [],
+                });
 
       let container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%");
@@ -89,7 +91,9 @@ export default class GameContainer extends React.Component {
                   background_pos: 100,
                   winnerId: null,
                   deathOrder: null,
-                  playerDeath: false});
+                  playerDeath: false,
+                  lastWords: [],
+                });
       
       console.log("in container joined room, user: " + this.state.userInfo)
       this.GoToRoom();
