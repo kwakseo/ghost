@@ -56,6 +56,27 @@ body {
     background-repeat: no-repeat;
     transition: background-position 0.5s;
     -webkit-transition: background-position 0.5s;
+    z-index: 1;
+}
+
+.overlay-game-container {
+  position: fixed;
+  display: none;
+  width: 80px;
+  height: 80px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.full-screen {
+    position: fixed;
+    height: 100%;
+    width:;
 }
 
 .button {
@@ -605,6 +626,10 @@ h2{
 
 .dead-player {
     background-image: url(./ghost_logo.png);
+    width: 80px;
+    height: 80px;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 
@@ -626,7 +651,7 @@ h2{
 }
 
 .letters-fade {
-    animation: fade-out 2s linear;
+    animation: fade-out 1s linear;
 }
 
 @keyframes fade-out {

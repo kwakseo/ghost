@@ -29,7 +29,7 @@ export default class EndGame extends React.Component {
       deathOrderArr.push((
         <div>
           <div key={loser} className="loser-order"> {number} </div>
-          <div key={loser} className="loser-order player"> {player} </div>
+          <div key={loser + 10} className="loser-order player"> {player} </div>
         </div>
         ))
       number += 1

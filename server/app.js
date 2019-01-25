@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require("express");
 const session = require('express-session');
 const path = require("path");
+const _ = require("underscore")
 
 /*const http = require("http").Server(express);
 const io = require("socket.io")(http);*/
@@ -17,7 +18,7 @@ const api = require('./routes/api');
 require('dotenv').config();
 // const router = express.Router();
 
-const { initNewGame, gameUpdate, shuffleArray } = require("./game");
+const { initNewGame, gameUpdate, shuffleArray, removePlayers } = require("./game");
 
 const app = express();
 const publicPath = path.resolve(__dirname, '..', "client", "dist");
@@ -100,6 +101,7 @@ let game = {};
 let allRooms = {};
 let clientToSocketIdMap = {};
 let userGoogleInfo = {};
+let leaderboardInfo = [];
 
 io.on("connection", (socket) => {
   numConnected += 1;
@@ -123,8 +125,8 @@ socket.on("letter-added", (letters) => {
 
     else {
       io.in(socket.room).emit("game-update", game);
-  }
-  })
+      }
+    })
   });
 //once game has ended remove game number from list
 
@@ -144,10 +146,17 @@ socket.on("user-info", (userInfo) => {
     clientToSocketIdMap[socket.id] = userInfo._id;
   }
   console.log(clientToSocketIdMap);
+
+  console.log('calling getLeaderInfo')
+  getLeaderInfo();
+  console.log('done getting leader info')
 });
 
 socket.on('get-history', (history) => {
   io.in(socket.room).emit('get-history', history);
+  console.log('in get history')
+  // console.log(leaderboardInfo)
+  // io.in(socket.room).emit('leader-info', leaderboardInfo);
 });
 
 socket.on('roomCreated', (roomNoUserInfo) =>  {
@@ -241,7 +250,9 @@ socket.on('gameStarted', (roomNo) => {
   console.log("player order");
   console.log(game.playerOrder);
   game.activePlayerIndex = 0;
+  game.gameStatus = 1; 
   game.activePlayer = game.playerOrder[0];
+  game.deathOrder = []
   // game.activePlayerIndex = game.playerOrder[0];
   allRooms[roomNo.toString()].joinable = false;
 
@@ -249,13 +260,27 @@ socket.on('gameStarted', (roomNo) => {
 
 });
 
+socket.on("mousemove", (obj) => {
+  console.log("in mousemove")
+  console.log(obj.x)
+  console.log(obj.y)
+  io.to(socket.room).emit('mousemove', (obj));
+});
+
 socket.on("go-back-home", (home) => {
   io.to(socket.id).emit('go-back-home', home);
   socket.leave(game.roomNo);
   game = initNewGame()
+  leaderboardInfo = [];
 });
 
 function historyFinder(err, history) {
+  let longestWord = game.lastWords[0];
+  for (let i in game.lastWords) {
+    if (game.lastWords[i].length > longestWord.length) {
+      longestWord = game.lastWords[i]
+    }
+  };
   if (err) {
         console.log('error');
       }
@@ -269,6 +294,7 @@ function historyFinder(err, history) {
           'player_name': userGoogleInfo.name,
           'number_wins': number_wins,
           'number_games': 1,
+          'longest_word': longestWord,
         });
         newHistory.save();
       }
@@ -280,6 +306,12 @@ function historyFinder(err, history) {
           history.number_wins += 1;
         }
         history.number_games = history.number_games + 1;
+        if (history.longest_word === undefined) {
+          history.longest_word = longestWord;
+        }
+        else if (longestWord.length > history.longest_word.length) {
+          history.longest_word = longestWord;
+        };
         history.save();
       }
 } 
@@ -299,32 +331,6 @@ async function updateDatabaseHelper(player) {
     return History.findOne({player_id: playerGoogleId}, async function(err, history) {
       let result = await historyFinder(err, history);
       return Promise.all(morePromises);
-      // if (err) {
-      //   console.log('error');
-      // }
-      // else if (history === null) {
-      //   let number_wins = 0;
-      //   if (playerGoogleId === game.clientToSocketIdMap[game.indexMap[game.activePlayer]]) {
-      //     number_wins += 1;
-      //   }
-      //   const newHistory = new History({
-      //     'player_id': userGoogleInfo._id,
-      //     'player_name': userGoogleInfo.name,
-      //     'number_wins': number_wins,
-      //     'number_games': 1,
-      //   });
-      //   newHistory.save();
-      // }
-      // else {
-      //   console.log("is this in the right order")
-      //   let number_wins = 0;
-      //   if (playerGoogleId === game.clientToSocketIdMap[game.indexMap[game.activePlayer]]) {
-      //     console.log('winner')
-      //     history.number_wins += 1;
-      //   }
-      //   history.number_games = history.number_games + 1;
-      //   history.save();
-      // }
     });
 };
 
@@ -340,6 +346,22 @@ async function updateDatabase() {
 }
 
 
+getLeaderInfo = () => {
+  leaderboardInfo = [];
+  console.log('getLeaderInfo');
+  History.find().sort({number_wins:-1}).limit(10).exec(function(err, result) {
+    console.log('did it find')
+    console.log(result);
+    console.log('setting stuff');
+    let rawLeaderInfo = result;
+    for (let i in rawLeaderInfo) {
+      leaderboardInfo.push([rawLeaderInfo[i].player_name, rawLeaderInfo[i].number_wins]);
+    };
+    console.log(leaderboardInfo);
+    io.emit('leader-info', leaderboardInfo);
+  });
+}
+
 
   socket.on("disconnect", () => {
     console.log("a user dced");
@@ -347,6 +369,39 @@ async function updateDatabase() {
     if (numConnected === 0) {
       gameStarted = false;
     }
+    console.log(socket.id + " disconnected")
+    console.log(game.gameStatus)
+
+    try {
+        if (game.players && game.gameStatus === 1){
+          game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
+          game.players[socket.id].ghost = 4
+          gameUpdate(game, '').then(() => {
+            console.log(game)
+            if (game.playerDeath) {
+              io.in(socket.room).emit("player-death", game);
+            }
+            if (game.gameOver) {
+              io.in(socket.room).emit("game-over", game);
+              updateDatabase();
+            }
+            else {
+              io.in(socket.room).emit("game-update", game);
+              }
+            })
+        } else if (game.players && game.gameStatus === 0){
+          game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
+          console.log('inside game status 0')
+          console.log(game.activePlayer)
+          removePlayers(game, game.activePlayer)
+          io.in(socket.room).emit("disconnect", game); 
+        }
+    } catch {
+        console.log('user null error')
+    }
+
+
+
   });
-  });
+})
 

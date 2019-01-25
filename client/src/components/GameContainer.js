@@ -41,13 +41,20 @@ export default class GameContainer extends React.Component {
       deathOrder: null,
       lastActivePlayer: null,
       lastWords: [],
+      leaderboardInfo: null,
     }
 
     document.addEventListener("keydown", this.keyDownBound);
 
     this.socket.on('get-history', (history) => {
       this.setState({history: history});
-    })
+    });
+
+    // this.socket.on('leader-info', (leaderboardInfo) => {
+    //   this.setState({leaderboardInfo: leaderboardInfo});
+    //   console.log('leader info sent to client');
+    //   console.log(this.state.leaderboardInfo)
+    // });
 
     this.socket.on('gameInit', (game, userInfo, socketid) => {
       const players = game.players;
@@ -64,7 +71,10 @@ export default class GameContainer extends React.Component {
                   background_pos: 100,
                   winnerId: null,
                   deathOrder: null,
-                  playerDeath: false});
+                  playerDeath: false,
+                  lastWords: [],
+                  leaderboardInfo: null,
+                });
 
       let container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%");
@@ -89,7 +99,10 @@ export default class GameContainer extends React.Component {
                   background_pos: 100,
                   winnerId: null,
                   deathOrder: null,
-                  playerDeath: false});
+                  playerDeath: false,
+                  lastWords: [],
+                  leaderboardInfo: null,
+                });
       
       console.log("in container joined room, user: " + this.state.userInfo)
       this.GoToRoom();
@@ -110,6 +123,15 @@ export default class GameContainer extends React.Component {
                     clientToSocketIdMap: game.clientToSocketIdMap});
       let container = document.getElementsByClassName("game-container");
       container[0].setAttribute("style", "background-position: " + "0% " + this.state.background_pos + "%")
+    });
+
+    this.socket.on("disconnect", (game) => {
+        this.setState({
+          playerOrder: game.playerOrder,
+          indexMap: game.indexMap,
+          players: game.players,
+          numPlayers: game.numPlayers,
+        })
     });
 
     this.socket.on("game-update", (game) => {
@@ -134,7 +156,7 @@ export default class GameContainer extends React.Component {
           });
           return new Promise(resolve => {
             setTimeout(() => {resolve('resolved');
-            }, 2000);
+            }, 900);
           });
         }
 
@@ -220,7 +242,7 @@ export default class GameContainer extends React.Component {
         console.log("activePlayer" + this.state.activePlayer);
         if (this.socket.id === this.state.indexMap[this.state.activePlayer]) {
           if (e.keyCode >= 65 && e.keyCode <= 90) {
-            this.setState({letters: this.state.letters + e.key});
+            this.setState({letters: this.state.letters + e.key}); 
             this.socket.emit("letter-added", this.state.letters);
             }
 

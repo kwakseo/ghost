@@ -4,6 +4,7 @@ const initNewGame = () => ({
   roomNo: 0,
   players: {}, //alive or dead, assign all players no. 0-3, how many letters of GHOST they have
   indexMap: {}, //maps index 0-3 to socket id
+  gameStatus: 0, // 0 is not started, 1 is in session, 2 is ended
   activePlayer: null,
   lastActivePlayer: null,
   activePlayerIndex: 0,
@@ -20,6 +21,7 @@ const initNewGame = () => ({
   clientToSocketIdMap: [],
   deathOrder: [],
   lastWords: [],
+  leaderBoard: null
 });
 
 let shuffleArray = (array) => {
@@ -31,6 +33,9 @@ let shuffleArray = (array) => {
 
 const gameUpdate = (game, letters) => {
   game.lastActivePlayer = game.activePlayer;
+  console.log('changed it here')
+  console.log(game.lastActivePlayer)
+  console.log()
   game.roundEnd = false;
 	let loser = game.indexMap[game.activePlayer];
 	game.timer = 10;
@@ -42,24 +47,11 @@ const gameUpdate = (game, letters) => {
         game.letters = '';
         //if player becomes ghost
         console.log("round has ended")
-        if (game.players[loser].ghost === 3) {
+        if (game.players[loser].ghost >= 3) {
           game.deadPlayers.add(game.activePlayer);
         	// let tempNumPlayers = game.numPlayers;
             game.players[loser].alive = false;
-            game.numPlayers -= 1;
-            game.playerDeath = true;
-            let oldPlayerOrder = game.playerOrder;
-            game.playerOrder = [];
-            game.deathOrder.push(game.players[loser]);
-            for (let i = 0; i < game.totalPlayers; i++) {
-            	console.log("should be only deleting one player")
-                console.log(game.activePlayer);
-                if (i != game.activePlayer && !game.deadPlayers.has(i)) {
-                    game.playerOrder.push(i)
-              }
-              console.log("new player order");
-              console.log(game.playerOrder);
-            }
+            removePlayers(game, loser)
             // console.log(game.playerOrder);
         }
       
@@ -108,6 +100,38 @@ const gameUpdate = (game, letters) => {
     })
 }
 
+const removePlayers = (game, loser) => {
+    game.numPlayers -= 1;
+    game.playerDeath = true;
+    let oldPlayerOrder = game.playerOrder;
+    game.playerOrder = [];
+    console.log('debugging deathOrder')
+    console.log(loser)
+    console.log(game.indexMap)
+    console.log(game.players) 
+    game.deathOrder.push(game.players[loser]); 
+    console.log('number of players now') 
+    // game.totalPlayers -= 1
+    console.log(game.totalPlayers)
+
+    // delete game.players[game.indexMap[loser]] 
+    // delete game.indexMap[loser]
+    // console.log(loser)
+    // console.log(game.players)
+    // console.log(game.indexMap)
+
+
+    for (let i = 0; i < game.totalPlayers; i++) {
+        console.log("should be only deleting one player")
+        console.log(game.activePlayer);
+        if (i != game.activePlayer && !game.deadPlayers.has(i)) {
+            game.playerOrder.push(i)
+      }
+      console.log("new player order");
+      console.log(game.playerOrder);
+    }
+}
+
 
 const checkWord = (new_word, game) => {
   let datamuseURL = 'https://api.datamuse.com/words?max=50&sp=' + new_word + '*';
@@ -117,34 +141,41 @@ const checkWord = (new_word, game) => {
   return fetch(datamuseURL)
   .then(data => data.json())  
   .then(res => {
-    for(const item of res){
-      let word = item.word
-      if(word.indexOf(" ") === -1){ 
-        noSpaceWords.push(word);
-      }
-      }
-    
-    result = JSON.stringify(noSpaceWords);
-    console.log(result);
 
-    result = JSON.stringify(noSpaceWords)
-    console.log(result)
-    console.log('result length')
-    console.log(noSpaceWords.length);
+    if (new_word === ""){
+        return true;
+    } else{
+        for(const item of res){
+          let word = item.word
+          if(word.indexOf(" ") === -1){ 
+            noSpaceWords.push(word);
+            }
+          }
+        
+        result = JSON.stringify(noSpaceWords);
+        console.log(result);
 
-    if (noSpaceWords.length === 1){
-      if (noSpaceWords[0] === game.letters) {
-    	   return true;
+        result = JSON.stringify(noSpaceWords)
+        console.log(result)
+        console.log('result length')
+        console.log(noSpaceWords.length);
+
+        console.log()
+
+        if (noSpaceWords.length === 1){
+          if (noSpaceWords[0] === game.letters) {
+             return true;
+          }
+        }
+        else {
+          if (noSpaceWords.length === 0){
+        	  return true;
+          }
+          return false;
+        }
       }
-    }
-    else {
-      if (noSpaceWords.length === 0){
-    	return true;
-      }
-      return false;
-    }
-  })
-  .catch(error => {console.log(error)})
+    })
+    .catch(error => {console.log(error)})
 }
 
-module.exports = { initNewGame, gameUpdate, shuffleArray };
+module.exports = { initNewGame, gameUpdate, shuffleArray, removePlayers };
