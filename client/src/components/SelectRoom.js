@@ -8,6 +8,7 @@ import Route from "react-router-dom/es/Route";
 import Switch from "react-router-dom/es/Switch";
 import GameContainer from "./GameContainer";
 import Profile from "./Profile";
+import Navbar from "./Navbar";
 
 export default class GameRules extends React.Component {
   constructor(props){
@@ -71,7 +72,7 @@ export default class GameRules extends React.Component {
     console.log('timer');
     console.log(this.state.render);
     console.log(this.state.history);
-    const hello = this.state.render ? <Profile userInfo = {this.props.userInfo} history={this.state.history}/> : null;
+    const hello = this.state.render ? <Navbar userInfo = {this.props.userInfo} history={this.state.history}/> : null;
     const invalid = this.state.validCode ? null : <div>invalid</div>;
 
     return (
@@ -92,10 +93,6 @@ export default class GameRules extends React.Component {
             <div className="black-text">{invalid}</div>
             <div className="button" onClick={this.handleNew}>Create Game</div>
             <div className={"rules-box component-container"}>
-            <div className="corner-placed">
-              <Link to="/rules" className={"rule-button"}>?</Link>
-              <p className="rule-title">How to play</p>
-            </div>
           </div>
           </form>
         </div>

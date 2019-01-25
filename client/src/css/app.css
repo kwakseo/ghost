@@ -102,7 +102,21 @@ body {
     -webkit-animation: scrolltop 2s forwards;
 }
 
-.no-space-rows {
+.vertical-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -197,6 +211,174 @@ h2{
 }
 
 
+
+/* ============== Navbar ============== */
+
+.nav-background {
+    background-color: rgba(27, 26, 53);
+    width: 700px;
+    height: 80px;
+    border-radius: 0px 0px 75px 75px;
+    position: absolute;
+    top: 0%;
+    right: 50%;
+    transform: translateX(50%);
+    display: flex;
+}
+
+.nav-container {
+    background-color: rgba(245, 245, 245, 0.2);
+    width: 700px;
+    height: 80px;
+    border-radius: 0px 0px 75px 75px;
+    position: absolute;
+    top: 0%;
+    right: 50%;
+    transform: translateX(50%);
+    display: flex;
+    transition: height 0.5s 0.3s, background-color 0.5s 0.8s;
+}
+
+.nav-container.open {
+    height: 580px;
+    background-color: rgba(27, 26, 53);
+    transition: height 0.5s 0.3s, background-color 0s 0s;
+}
+
+.nav-content {
+    width: 700px;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 80px;
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 1s 1s, opacity 0.5s 0s;
+}
+
+.nav-content.open {
+    transition: visibility 1s 1s, opacity 0.5s 1s;
+    visibility: visible;
+    opacity: 1;
+
+}
+
+.winner-names {
+    text-align: center;
+    width: 350px;
+    height: 360px;
+
+}
+
+.winner-scores {
+    text-align: center;
+    width: 350px;
+    height: 360px;
+
+}
+
+.nav-close-bar {
+    transition: visibility 1s 1s, opacity 0.5s 0s;
+    background-color: rgba(245, 245, 245, 0.2);
+    width: 700px;
+    height: 80px;
+    border-radius: 0px 0px 75px 75px;
+    position: fixed;
+    bottom: 0%;
+    right: 50%;
+    transform: translateX(50%);
+    display: flex;
+    transition: height 0.5s 0.3s;
+    visibility: hidden;
+    transition: visibility 1s, opacity 0.8s 0s;
+    opacity: 0;
+}
+
+.nav-close-bar.open {
+    transition: visibility 1s 2s, opacity 0.5s 2s;
+    visibility: visible;
+    opacity: 1;
+    transition: none;
+}
+
+.nav-close-bar.open:hover {
+    cursor: pointer;
+}
+
+.icon-container {
+    background-color: transparent;
+    width: 700px;
+    height: 80px;
+    position: absolute;
+    top: 0%;
+    right: 50%;
+    transform: translateX(50%);
+    display: flex;
+    transition: height 0.5s 0.3s, background-color 0s;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.icon-container.open {
+    transition: background-color 0.5s 0.4s;
+    opacity: 1;
+    background-color: rgba(245, 245, 245, 0.2);
+}
+
+.bar-divider {
+    background-color: rgba(245, 245, 245, 0.3);
+    border-radius: 10px;
+    width: 3px;
+    height: 65px;
+}
+
+.icon {
+    transition: filter 1s;
+    background-size: 100% 100%;
+    margin: 0px 70px;
+    filter: brightness(0.5);
+    width: 55px;
+}
+
+.icon:hover {
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+
+.icon.open {
+    filter: brightness(0.7);
+}
+
+.icon.open:hover {
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+
+.leader-button {
+    height: 55px;
+    background-image: url(./leader.png);
+}
+
+.prof-button {
+    height: 55px;
+    background-image: url(./profile.png);
+}
+
+.howto-button {
+    height: 57px;
+    background-image: url(./rules.png);
+}
+
+@keyframes fade-in-out {
+    0% {opacity: 1;}
+
+    20% {opacity: 0;}
+
+    100% {opacity: 0;}
+}
 
 /* ============== Select Room Page ============== */
 
@@ -297,10 +479,6 @@ h2{
 
 }
 
-.icon-container {
-    margin: 0px 10px 25px 10px;
-}
-
 .profile-icon {
     width: 175px;
     height: 175px;
@@ -312,7 +490,7 @@ h2{
     align-items: center;
     justify-content: center;
     border: #efefef solid 10px;
-    margin: 5px;
+    margin: 15px;
 }
 
 .stats-title {
@@ -327,23 +505,7 @@ h2{
     margin: 5px;
 }
 
-.profile-content {
-    width: 420px;
-    height: 550px;
-    position: absolute;
-    top: 50%;
-    right: 0%;
-    border-radius: 75px 0px 0px 75px;
-    transform: translateY(-50%);
-    display: flex;
-    transition: width 0.5s 0.5s;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 1s, opacity 0.5s;
-}
+
 
 .close-bar {
     width: 80px;
@@ -363,11 +525,7 @@ h2{
     background-color: rgba(245, 245, 245, 0.4);
 }
 
-.profile-content.open {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 1s 0.6s, opacity 0.5s 0.6s;
-}
+
 
 .stats-container {
     display: flex;
@@ -444,6 +602,7 @@ h2{
 
 
 /* ============== GAME: Players ============== */
+
 .dead-player {
     background-image: url(./ghost_logo.png);
 }
