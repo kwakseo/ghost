@@ -62,7 +62,7 @@ export default class DeadPlayer extends React.Component{
       <div>
         {console.log(name)}
         <div id={socketid} className = "dead-player">
-          <div className="player-name">{name}</div>
+          <div className="dead-player-name">{name}</div>
         </div>
       </div>
     );

@@ -61,7 +61,6 @@ export default class GameContainer extends React.Component {
 
       this.setState({players: players,
                   roomNo: game.roomNo,
-                  userInfo: userInfo,
                   admin: true,
                   numPlayers: game.numPlayers,
                   indexMap: game.indexMap,
@@ -89,7 +88,6 @@ export default class GameContainer extends React.Component {
 
       this.setState({players: players,
                   roomNo: game.roomNo,
-                  userInfo: userInfo,
                   playerOrder: game.playerOrder,
                   numPlayers: game.numPlayers,
                   indexMap: game.indexMap,
