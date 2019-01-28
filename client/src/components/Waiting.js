@@ -17,7 +17,7 @@ export default class Waiting extends React.Component {
   render() {
     var players = [];
     console.log('in waiting');
-    for (var i=0; i<this.props.numPlayers; i++) {
+    for (var i of this.props.playerOrder) {
       players.push(<Player 
               key = {i}
               players = {this.props.players}

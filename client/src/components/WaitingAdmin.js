@@ -26,10 +26,13 @@ export default class WaitingAdmin extends React.Component {
 
   render() {
     var players = [];
-    console.log('in waitingadmin');
-    console.log(this.props.players);
-    console.log(this.props.numPlayers);
-    for (var i=0; i<this.props.numPlayers; i++) {
+    var startButton = <div className="waiting-text one-player">Waiting for at least 1 more player...</div>
+    
+    if (this.props.numPlayers > 1) {
+      startButton = <div className="button" onClick={this.startGame}>All players ready</div>
+    }
+
+    for (var i of this.props.playerOrder) {
       console.log(this.props.players);
       players.push(<Player 
               key = {i}
@@ -46,7 +49,7 @@ export default class WaitingAdmin extends React.Component {
       <div className={"center"}>
       	<div className="waiting-text">Invite friends with your game code:</div>
         <div className="waiting-code">{this.props.roomNo}</div>
-        <div className="button" onClick={this.startGame}>All players ready</div>
+        {startButton}
         <div className={"players-box component-container"}>
           {players}
         </div>

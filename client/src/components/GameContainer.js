@@ -24,7 +24,8 @@ export default class GameContainer extends React.Component {
       userInfo: null,
 
       players: null,
-      numPlayers: 4,
+      numPlayers: null,
+      totalPlayers: null,
       indexMap: null,
       playerOrder: null,
       roundEnd: false,
@@ -66,6 +67,7 @@ export default class GameContainer extends React.Component {
                   numPlayers: game.numPlayers,
                   indexMap: game.indexMap,
                   deathOrder: game.deathOrder,
+                  playerOrder: game.playerOrder,
                   letters: "",
                   timer: null,
                   background_pos: 100,
@@ -130,6 +132,7 @@ export default class GameContainer extends React.Component {
           indexMap: game.indexMap,
           players: game.players,
           numPlayers: game.numPlayers,
+          totalPlayers: game.totalPlayers,
         })
     });
 

@@ -108,6 +108,7 @@ export default class Profile extends React.Component{
           <div className="stats-title">Longest string</div>
           <div className="stats">{longestString}</div>
         </div>
+        <a className={"button"} href="/logout">Logout</a>
       </div>
     }
     else if (this.state.page === "leader") {

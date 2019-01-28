@@ -26,6 +26,7 @@ export default class Room extends React.Component {
             userInfo={this.props.userInfo} 
             players={this.props.players} 
             indexMap={this.props.indexMap}
+            playerOrder={this.props.playerOrder}
             numPlayers = {this.props.numPlayers}
             background_pos = {this.props.background_pos} />
         );

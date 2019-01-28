@@ -99,7 +99,6 @@ export default class GameRules extends React.Component {
               <div className="invalid-code">{invalid}</div>
             </div>
             <div className="button" onClick={this.handleNew}>Create Game</div>
-            <a className={"button"} href="/logout">Logout</a>
             <div className={"rules-box component-container"}>
           </div>
           </form>
