@@ -13,8 +13,8 @@ import Loading from "./Loading";
 export default class GameContainer extends React.Component {
   constructor(props) {
     super(props);
-    // this.socket = io("http://localhost:3000");
-    this.socket = io();
+    this.socket = io("http://localhost:3000");
+    // this.socket = io();
     this.state = {
       gameStatus: 0, // 0 is not started, 1 is in session, 2 is ended
       roomSelect: false,
@@ -33,6 +33,7 @@ export default class GameContainer extends React.Component {
       timer: null,
       background_pos: 100,
       letters: "",
+      keyPressed: new Set(),
 
       history: null,
       newPlayer: true,
@@ -69,6 +70,8 @@ export default class GameContainer extends React.Component {
                   playerDeath: false,
                   lastWords: [],
                   leaderboardInfo: null,
+                  keyPressed: new Set(),
+
                 });
 
       let container = document.getElementsByClassName("game-container");
@@ -157,6 +160,8 @@ export default class GameContainer extends React.Component {
           let result = await stalling();
           item.setState({
             background_pos: 100,
+            keyPressed: new Set(),
+
           });
         }
 
@@ -216,6 +221,7 @@ export default class GameContainer extends React.Component {
         timer: null,
         background_pos: 100,
         letters: "",
+        keyPressed: new Set(),
 
         history: null,
         newPlayer: true,
@@ -248,14 +254,14 @@ export default class GameContainer extends React.Component {
 
     /* these should be moved to server eventually. 
         temporarily here for testing purposes. */
-
-      if (this.state.gameStatus === 1 && !this.state.roundEnd) {
+      if (this.state.gameStatus === 1 && !this.state.roundEnd && !this.state.keyPressed.has(this.state.activePlayer)) {
+        this.state.keyPressed = new Set()
+        this.state.keyPressed.add(this.state.activePlayer)
         if (this.socket.id === this.state.indexMap[this.state.activePlayer]) {
           if (e.keyCode >= 65 && e.keyCode <= 90) {
             this.setState({letters: this.state.letters + e.key}); 
             this.socket.emit("letter-added", this.state.letters);
             }
-
           }
         }
     };
