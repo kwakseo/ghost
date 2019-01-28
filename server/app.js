@@ -3,9 +3,6 @@ const express = require("express");
 const session = require('express-session');
 const path = require("path");
 const _ = require("underscore")
-
-/*const http = require("http").Server(express);
-const io = require("socket.io")(http);*/
 const http = require("http");
 const socketio = require("socket.io");
 const bodyParser = require('body-parser');
@@ -16,7 +13,6 @@ const db = require('./db');
 const passport = require('./passport');
 const api = require('./routes/api');
 require('dotenv').config();
-// const router = express.Router();
 
 const { initNewGame, gameUpdate, shuffleArray, removePlayers, removeFromLobby } = require("./game");
 
@@ -48,11 +44,10 @@ app.get(
     });
 
 app.get('/logout', function(req, res) {
-    console.log("logged out!");
     req.logout();
     req.session.destroy(function (err) {
       req.user = null;
-      res.redirect('/'); //Inside a callback… bulletproof!
+      res.redirect('/'); 
   });
 });
 
@@ -61,8 +56,6 @@ app.use(bodyParser.json());
 
 app.get('/user', function(req, res) {
     User.findOne({ _id: req.query._id }, function(err, user) {
-
-        console.log('in find one');
     });
 });
 
@@ -93,11 +86,8 @@ const server = http.Server(app);
 const io = socketio(server);
 app.set('socketio', io);
 
-console.log("print port info");
-console.log(process.env.PORT);
-
 server.listen((process.env.PORT || 3000), () => {
-  console.log(`Listening on port 3000 and looking in folder ${publicPath}`);
+/*  console.log(`Listening on port 3000 and looking in folder ${publicPath}`);*/
 });
 
 let numConnected = 0;
@@ -110,16 +100,12 @@ let leaderboardInfo = [];
 
 io.on("connection", (socket) => {
   numConnected += 1;
-  console.log("a user connected they are user number " + numConnected);
 
 
 socket.on("letter-added", (letters) => {
   game = allRooms[socket.room.toString()];
-  console.log("letter added emit");
   game.letters += letters[letters.length -1];
-/*  socket.broadcast.to(socket.room).emit("letter-added", letters[letters.length -1]);*/
   gameUpdate(game, letters).then(() => {
-    console.log(game)
     if (game.playerDeath) {
       io.in(socket.room).emit("player-death", game);
     }
@@ -133,15 +119,12 @@ socket.on("letter-added", (letters) => {
       }
     })
   });
-//once game has ended remove game number from list
 
 async function transitionAnimation(game) {
 
 }
 
 socket.on("user-info", (userInfo) => {
-  console.log("userInfo");
-  console.log(userInfo);
   if (userInfo === null) {
     userGoogleInfo = 'new user';
     clientToSocketIdMap[socket.id] = 'new user';
@@ -150,25 +133,16 @@ socket.on("user-info", (userInfo) => {
     userGoogleInfo = userInfo;
     clientToSocketIdMap[socket.id] = userInfo._id;
   }
-  console.log(clientToSocketIdMap);
-
-  console.log('calling getLeaderInfo')
   getLeaderInfo();
-  console.log('done getting leader info')
 });
 
 socket.on('get-history', (history) => {
   io.in(socket.room).emit('get-history', history);
-  console.log('in get history')
-  // console.log(leaderboardInfo)
-  // io.in(socket.room).emit('leader-info', leaderboardInfo);
 });
 
 socket.on('roomCreated', (roomNoUserInfo) =>  {
   const userInfo = roomNoUserInfo.userInfo;
   let roomNo = roomNoUserInfo.roomNo;
-  console.log("room created app side")
-  console.log(roomNo);
 
   while (roomNo.toString() in allRooms) {
     roomNo = Math.floor((Math.random() * 100000) + 1);
@@ -178,7 +152,6 @@ socket.on('roomCreated', (roomNoUserInfo) =>  {
   socket.join(roomNo);
   game = initNewGame();
   game.clientToSocketIdMap = clientToSocketIdMap;
-  console.log(allRooms[roomNo.toString()]);
 
   game.roomNo = roomNo;
   const socketid = socket.id.toString();
@@ -186,32 +159,20 @@ socket.on('roomCreated', (roomNoUserInfo) =>  {
   game.indexMap[0] = socketid;
   game.playerOrder = [0];
   game.timer = 10;
-
-  console.log("init game");
-  console.log(game);
-  console.log("info");
-  console.log(userInfo);
   io.to(socket.room).emit("gameInit", game, userInfo, socketid);
 
   allRooms[roomNo.toString()] = game;
-  console.log("userinfo, appjs: " + userInfo);
 });
 
 socket.on('roomChosen', (roomNoUserInfo) => {
   const roomNo = roomNoUserInfo.roomNo;
   const userInfo = roomNoUserInfo.userInfo;
   if (!(roomNo.toString() in allRooms) || !allRooms[roomNo.toString()].joinable) {
-    console.log("appjs checking joinable");
-/*    console.log(allRooms[roomNo.toString()]);
-    console.log(allRooms[roomNo.toString()].joinable);*/
-    console.log("appjs checking in rooms");
-    console.log(roomNo.toString() in allRooms);
     io.sockets.in(socket.id).emit('roomInvalid', roomNo);
   }
 
   else {
     if (io.sockets.adapter.rooms[roomNo].length < 4) {
-      console.log("valid room");
       socket.join(roomNo);
       game = allRooms[roomNo.toString()];
       game.numPlayers += 1;
@@ -223,7 +184,6 @@ socket.on('roomChosen', (roomNoUserInfo) => {
           break
         }
       };
-      console.log("num players " + game.numPlayers);
 
       socketid = socket.id.toString();
       game.indexMap[index] = socketid;
@@ -231,7 +191,6 @@ socket.on('roomChosen', (roomNoUserInfo) => {
 
       for (var i of game.playerOrder) {
         updateOrder.push(i);
-        console.log(i);
       };
 
       updateOrder.push(index);
@@ -244,7 +203,6 @@ socket.on('roomChosen', (roomNoUserInfo) => {
 
     }
     else {
-      console.log("too many players");
       allRooms[roomNo.toString()].joinable = false;
       roomNo = -1;
       io.sockets.in(socket.id).emit('roomInvalid', roomNo);
@@ -258,8 +216,6 @@ socket.on('gameStarted', (roomNo) => {
 
 
   shuffleArray(game.playerOrder);
-  console.log("player order");
-  console.log(game.playerOrder);
   game.activePlayerIndex = 0;
   game.gameStatus = 1; 
   game.activePlayer = game.playerOrder[0];
@@ -307,10 +263,8 @@ function historyFinder(err, history) {
         newHistory.save();
       }
       else {
-        console.log("is this in the right order")
         let number_wins = 0;
         if (playerGoogleId === game.clientToSocketIdMap[game.indexMap[game.activePlayer]]) {
-          console.log('winner')
           history.number_wins += 1;
         }
         history.number_games = history.number_games + 1;
@@ -327,15 +281,7 @@ function historyFinder(err, history) {
 const morePromises = [];
 
 async function updateDatabaseHelper(player) {
-    console.log('one loop in updateDatabase')
-    console.log(player);
     playerGoogleId = game.clientToSocketIdMap[game.indexMap[player]];
-    console.log(game.indexMap[player]);
-    console.log(game.clientToSocketIdMap[game.indexMap[player]]);
-    // console.log()
-    console.log(playerGoogleId);
-    console.log('winning person info')
-    console.log(game.clientToSocketIdMap[game.indexMap[game.activePlayer]])
     return History.findOne({player_id: playerGoogleId}, async function(err, history) {
       let result = await historyFinder(err, history);
       return Promise.all(morePromises);
@@ -345,10 +291,8 @@ async function updateDatabaseHelper(player) {
 const databasePromises = [];
 
 async function updateDatabase() {
-  console.log('updateDatabase');
   for (player in game.indexMap) {
     let result = await updateDatabaseHelper(player);
-    // databasePromises.push(results);
   }
   return Promise.all(databasePromises);
 }
@@ -356,16 +300,11 @@ async function updateDatabase() {
 
 getLeaderInfo = () => {
   leaderboardInfo = [];
-  console.log('getLeaderInfo');
   History.find().sort({number_wins:-1}).limit(8).exec(function(err, result) {
-    console.log('did it find')
-    console.log(result);
-    console.log('setting stuff');
     let rawLeaderInfo = result;
     for (let i in rawLeaderInfo) {
       leaderboardInfo.push([rawLeaderInfo[i].player_name, rawLeaderInfo[i].number_wins]);
     };
-    console.log(leaderboardInfo);
     io.emit('leader-info', leaderboardInfo);
   });
 }
@@ -373,27 +312,21 @@ getLeaderInfo = () => {
 
 
 socket.on("game-over", (status) => {
-  console.log("in game-over");
-  console.log(status);
   game.gameStatus = status;
 });
 
 
 socket.on("disconnect", () => {
-    console.log("a user dced");
     numConnected -= 1;
     if (numConnected === 0) {
       gameStarted = false;
     }
-    console.log(socket.id + " disconnected")
-    console.log(game.gameStatus)
 
     try {
         if (game.players && game.gameStatus === 1){
           game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
           game.players[socket.id].ghost = 4
           gameUpdate(game, '').then(() => {
-            console.log(game)
             if (game.playerDeath) {
               io.in(socket.room).emit("player-death", game);
             }
@@ -407,15 +340,11 @@ socket.on("disconnect", () => {
             })
         } else if (game.players && game.gameStatus === 0){
           game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
-          console.log('inside game status 0')
-          console.log(game.activePlayer)
           removeFromLobby(game, game.activePlayer);
           io.in(socket.room).emit("disconnect", game); 
         } else if (game.gameStatus === 2) {
-          console.log("in game stat 2")
         }
     } catch {
-        console.log('user null error')
     }
   });
 

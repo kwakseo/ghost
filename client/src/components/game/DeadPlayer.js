@@ -8,8 +8,6 @@ export default class DeadPlayer extends React.Component{
 
   constructor(props) {
     super(props);
-
-    console.log('reached dead player component');
     
     this.props.socket.on("mousemove", (obj) => {
       $(obj.cssId).css('margin-left', obj.x);

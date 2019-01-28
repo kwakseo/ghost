@@ -12,7 +12,6 @@ passport.use(new GoogleStrategy({
   User.findOne({
     'googleid': profile.id
   }, function(err, user) {
-    console.log("looking in passport");
     if (err) return done(err);
 
     if (!user) {

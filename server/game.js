@@ -33,42 +33,30 @@ let shuffleArray = (array) => {
 
 const gameUpdate = (game, letters) => {
   game.lastActivePlayer = game.activePlayer;
-  console.log('changed it here')
-  console.log(game.lastActivePlayer)
-  console.log()
   game.roundEnd = false;
 	let loser = game.indexMap[game.activePlayer];
 	game.timer = 10;
   return checkWord(letters, game).then((valid) => {
       if (valid) {
-        console.log("empty letter invalid")
         game.lastWords.push(letters);
         game.roundEnd = true;
         game.letters = '';
         //if player becomes ghost
-        console.log("round has ended")
         if (game.players[loser].ghost >= 2) {
           game.deadPlayers.add(game.activePlayer);
         	// let tempNumPlayers = game.numPlayers;
             game.players[loser].alive = false;
             removePlayers(game, loser)
-            // console.log(game.playerOrder);
         }
       
       //if player gets strike
       else {
-        console.log("strike" + game.numPlayers);
         game.players[loser].ghost += 1;
-
-        console.log('')
       }
 
       //end game if one player left
       if (game.numPlayers <= 1) {
-        console.log("one player");
         game.activePlayer = game.playerOrder[0];
-        console.log("active player");
-        console.log(game.activePlayer);
         let winner = game.indexMap[game.activePlayer];
         game.deathOrder.push(game.players[winner]);
         game.gameStatus = 2;
@@ -86,7 +74,6 @@ const gameUpdate = (game, letters) => {
 
 	//game ongoing, change active player
   	else {
-      console.log('change active player');
         game.letters = letters;
     		if (game.activePlayerIndex < game.numPlayers - 1) {
     			 game.activePlayerIndex += 1;
@@ -106,25 +93,13 @@ const removePlayers = (game, loser) => {
     game.playerDeath = true;
     let oldPlayerOrder = game.playerOrder;
     game.playerOrder = [];
-    console.log('debugging deathOrder')
-    console.log(loser)
-    game.deathOrder.push(game.players[loser]); 
-
-    // delete game.players[game.indexMap[loser]] 
-    // delete game.indexMap[loser]
-    // console.log(loser)
-    // console.log(game.players)
-    // console.log(game.indexMap)
+    game.deathOrder.push(game.players[loser]);
 
 
     for (var i of oldPlayerOrder) {
-        console.log("should be only deleting one player")
-        console.log(game.activePlayer);
         if (i != game.activePlayer && !game.deadPlayers.has(i)) {
             game.playerOrder.push(i)
       }
-      console.log("new player order");
-      console.log(game.playerOrder);
     }
 }
 
@@ -139,8 +114,6 @@ const removeFromLobby = (game, loser) => {
         if (i != loser) {
             game.playerOrder.push(i)
       }
-    console.log("removed from lobby");
-    console.log(game.playerOrder);
 }
 }
 
@@ -165,14 +138,6 @@ const checkWord = (new_word, game) => {
           }
         
         result = JSON.stringify(noSpaceWords);
-        console.log(result);
-
-        result = JSON.stringify(noSpaceWords)
-        console.log(result)
-        console.log('result length')
-        console.log(noSpaceWords.length);
-
-        console.log()
 
         if (noSpaceWords.length === 1){
           if (noSpaceWords[0] === game.letters) {
