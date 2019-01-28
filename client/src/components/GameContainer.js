@@ -211,6 +211,7 @@ export default class GameContainer extends React.Component {
 
     this.socket.on("go-back-home", (home) => {
       this.setState({
+        gameStatus: 0,
         roomSelect: false,
         roomNo: -1,
         admin: false,
