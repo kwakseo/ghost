@@ -118,8 +118,14 @@ export default class Profile extends React.Component{
           <div className="leaderboard-title">Leaderboard</div>
         </div>
         <div className="horizontal-content">
-          <div className="winner-names">{leaderboardNames}</div>
-          <div className="winner-scores">{leaderboardScores}</div>
+          <div className="winner-names">
+          <div className="leader-label">Player</div>
+          {leaderboardNames}
+          </div>
+          <div className="winner-scores">
+          <div className="leader-label">Wins</div>
+          {leaderboardScores}
+          </div>
         </div>
       </div>
     }

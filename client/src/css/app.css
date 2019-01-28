@@ -515,6 +515,14 @@ h2{
     font-size: 36px;
 }
 
+.leader-label {
+    color: #c3c3c3;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0px 10px 30px 10px;
+    text-decoration: underline;
+}
+
 
 
 /* ============== Navbar: Profile ============== */
