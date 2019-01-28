@@ -26,7 +26,7 @@ export default class WaitingAdmin extends React.Component {
 
   render() {
     var players = [];
-    var startButton = <div className="waiting-text one-player">Waiting for at least 1 more player...</div>
+    var startButton = <div className="waiting-text waiting-load">Waiting for at least 1 more player...</div>
     
     if (this.props.numPlayers > 1) {
       startButton = <div className="button" onClick={this.startGame}>All players ready</div>

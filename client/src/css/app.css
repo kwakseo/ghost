@@ -700,7 +700,7 @@ h2{
     margin: 5px 5px 10px 5px;
 }
 
-.one-player {
+.waiting-load {
     animation: fade-in 1s alternate infinite;
 }
 
