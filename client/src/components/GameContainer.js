@@ -262,7 +262,15 @@ export default class GameContainer extends React.Component {
 
     keyDownBound = (e) => { 
 
+<<<<<<< HEAD
       if (this.state.gameStatus === 1 && !this.state.roundEnd) {
+=======
+    /* these should be moved to server eventually. 
+        temporarily here for testing purposes. */
+      if (this.state.gameStatus === 1 && !this.state.roundEnd && !this.state.keyPressed.has(this.state.activePlayer)) {
+        this.setState({keyPressed: new Set()});
+        this.state.keyPressed.add(this.state.activePlayer)
+>>>>>>> 35b280029909da1ddf8d32fbec45e83a1564b0d5
         if (this.socket.id === this.state.indexMap[this.state.activePlayer]) {
           if (e.keyCode >= 65 && e.keyCode <= 90) {
             this.setState({letters: this.state.letters + e.key}); 
