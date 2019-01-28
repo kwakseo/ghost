@@ -42,7 +42,7 @@ const gameUpdate = (game, letters) => {
         game.roundEnd = true;
         game.letters = '';
         //if player becomes ghost
-        if (game.players[loser].ghost >= 2) {
+        if (game.players[loser].ghost >= 4) {
           game.deadPlayers.add(game.activePlayer);
         	// let tempNumPlayers = game.numPlayers;
             game.players[loser].alive = false;
