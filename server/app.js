@@ -47,6 +47,15 @@ app.get(
     res.redirect('/success');
     });
 
+app.get('/logout', function(req, res) {
+    console.log("logged out!");
+    req.logout();
+    req.session.destroy(function (err) {
+      req.user = null;
+      res.redirect('/'); //Inside a callback… bulletproof!
+  });
+});
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 

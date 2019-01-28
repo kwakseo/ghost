@@ -49,6 +49,7 @@ module.exports = {
     proxy: {
       '/api': 'http://localhost:3000',
       '/auth': 'http://localhost:3000',
+      '/logout': 'http://localhost:3000',
       '/success': 'http://localhost:3000',
       
       '/rules': 'http://localhost:3000',

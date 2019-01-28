@@ -61,7 +61,6 @@ export default class GameContainer extends React.Component {
 
       this.setState({players: players,
                   roomNo: game.roomNo,
-                  userInfo: userInfo,
                   admin: true,
                   numPlayers: game.numPlayers,
                   indexMap: game.indexMap,
@@ -89,7 +88,6 @@ export default class GameContainer extends React.Component {
 
       this.setState({players: players,
                   roomNo: game.roomNo,
-                  userInfo: userInfo,
                   playerOrder: game.playerOrder,
                   numPlayers: game.numPlayers,
                   indexMap: game.indexMap,
@@ -280,6 +278,13 @@ export default class GameContainer extends React.Component {
         );
   } 
 
+  logout = () => {
+    console.log('logging out')
+        this.setState({
+            userInfo: null
+        })
+    };
+
   render() {
     const isLoggedIn = this.state.userInfo !== null
     console.log('checking log in')
@@ -299,7 +304,8 @@ export default class GameContainer extends React.Component {
             updateUsers={(roomNoUserInfo) => this.updateUsers(roomNoUserInfo)}
             indexMap = {this.state.indexMap}
             background_pos = {this.state.background_pos}
-            letters = {this.state.letters} />
+            letters = {this.state.letters}
+            logout = {this.logout} />
             ): (
             <div>You must be logged in to play.</div>
             
