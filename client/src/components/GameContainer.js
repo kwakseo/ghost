@@ -266,14 +266,9 @@ export default class GameContainer extends React.Component {
       //   this.setState({keyPressed: new Set()});
       // }
       if (this.state.gameStatus === 1 && !this.state.roundEnd && !this.state.hadTurn) {
-        this.setState({hadTurn: true});
-        this.state.keyPressed.clear();
-        console.log('reset set')
-        console.log(this.state.keyPressed);
-        this.state.keyPressed.add(this.state.activePlayer)
-        console.log(this.state.keyPressed)
         if (this.socket.id === this.state.indexMap[this.state.activePlayer]) {
           if (e.keyCode >= 65 && e.keyCode <= 90) {
+            this.setState({hadTurn: true});
             this.setState({letters: this.state.letters + e.key}); 
             this.socket.emit("letter-added", this.state.letters);
             }
