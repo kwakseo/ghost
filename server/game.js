@@ -47,13 +47,11 @@ const gameUpdate = (game, letters) => {
         	// let tempNumPlayers = game.numPlayers;
             game.players[loser].alive = false;
             removePlayers(game, loser)
-            // console.log(game.playerOrder);
         }
       
       //if player gets strike
       else {
         game.players[loser].ghost += 1;
-
       }
 
       //end game if one player left
@@ -95,13 +93,7 @@ const removePlayers = (game, loser) => {
     game.playerDeath = true;
     let oldPlayerOrder = game.playerOrder;
     game.playerOrder = [];
-    game.deathOrder.push(game.players[loser]); 
-
-    // delete game.players[game.indexMap[loser]] 
-    // delete game.indexMap[loser]
-    // console.log(loser)
-    // console.log(game.players)
-    // console.log(game.indexMap)
+    game.deathOrder.push(game.players[loser]);
 
 
     for (var i of oldPlayerOrder) {
@@ -146,8 +138,6 @@ const checkWord = (new_word, game) => {
           }
         
         result = JSON.stringify(noSpaceWords);
-
-        result = JSON.stringify(noSpaceWords)
 
         if (noSpaceWords.length === 1){
           if (noSpaceWords[0] === game.letters) {

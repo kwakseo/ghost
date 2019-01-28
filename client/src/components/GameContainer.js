@@ -1,6 +1,5 @@
 import React from "react";
 import GameBoard from "./game/GameBoard";
-import HomePage from "./HomePage";
 import SelectRoom from "./SelectRoom";
 import WaitingAdmin from "./WaitingAdmin";
 import Waiting from "./Waiting";
@@ -13,8 +12,9 @@ import Loading from "./Loading";
 export default class GameContainer extends React.Component {
   constructor(props) {
     super(props);
-    // this.socket = io("http://localhost:3000");
-    this.socket = io();
+/*    this.socket = io("http://localhost:3000");*/
+    this.socket=io();
+
     this.state = {
       gameStatus: 0, // 0 is not started, 1 is in session, 2 is ended
       roomSelect: false,
@@ -53,6 +53,12 @@ export default class GameContainer extends React.Component {
       this.setState({history: history});
     });
 
+    // this.socket.on('leader-info', (leaderboardInfo) => {
+    //   this.setState({leaderboardInfo: leaderboardInfo});
+    //   console.log('leader info sent to client');
+    //   console.log(this.state.leaderboardInfo)
+    // });
+
     this.socket.on('gameInit', (game, userInfo, socketid) => {
       const players = game.players;
 
@@ -73,7 +79,6 @@ export default class GameContainer extends React.Component {
                   leaderboardInfo: null,
                   keyPressed: new Set(),
                   hadTurn: false,
-
                 });
 
       let container = document.getElementsByClassName("game-container");
@@ -148,11 +153,14 @@ export default class GameContainer extends React.Component {
 
     async function roundEndAnimation (item, game) {
 
+        console.log('in round end');
         item.setState({
           roundEnd: game.roundEnd
         });
 
         function stalling(){
+          console.log('last word');
+          console.log(game.lastWords[game.lastWords.length-1]);
           item.setState({
             letters: game.lastWords[game.lastWords.length-1]
           });
@@ -167,8 +175,6 @@ export default class GameContainer extends React.Component {
           let result = await stalling();
           item.setState({
             background_pos: 100,
-            keyPressed: new Set(),
-
           });
         }
 
@@ -201,6 +207,8 @@ export default class GameContainer extends React.Component {
     this.socket.on('game-over', (game) => {
       this.setState({activePlayer: game.activePlayer});
       this.setState({winnerId: this.state.clientToSocketIdMap[this.state.indexMap[this.state.activePlayer]]});
+      console.log('game over');
+      console.log(this.state.winnerId);
 
       this.setState({
         gameStatus: 2,
@@ -242,6 +250,8 @@ export default class GameContainer extends React.Component {
         leaderboardInfo: null,
       });
       this.getUser().then(() => {
+          console.log("game container did mount")
+          console.log(this.state.userInfo)
           this.socket.emit("user-info", this.state.userInfo);
         });
     });
@@ -254,17 +264,14 @@ export default class GameContainer extends React.Component {
 
     componentDidMount() {
        this.getUser().then(() => {
+          console.log("game container did mount")
+          console.log(this.state.userInfo)
           this.socket.emit("user-info", this.state.userInfo);
         });
     };
 
     keyDownBound = (e) => { 
 
-    /* these should be moved to server eventually. 
-        temporarily here for testing purposes. */
-      // if (this.state.keyPressed.size === this.state.numPlayers.length) {
-      //   this.setState({keyPressed: new Set()});
-      // }
       if (this.state.gameStatus === 1 && !this.state.roundEnd && !this.state.hadTurn) {
         if (this.socket.id === this.state.indexMap[this.state.activePlayer]) {
           if (e.keyCode >= 65 && e.keyCode <= 90) {
@@ -272,10 +279,10 @@ export default class GameContainer extends React.Component {
             this.setState({letters: this.state.letters + e.key}); 
             this.socket.emit("letter-added", this.state.letters);
             }
+
           }
         }
     };
-
 
   GoToRoomAdmin = () => {
     this.setState({admin: true});
@@ -295,16 +302,19 @@ export default class GameContainer extends React.Component {
                     this.setState({ 
                         userInfo: userObj
                     });
+                    console.log("info: def " + userObj)
                 } else {
                     this.setState({ 
                         userInfo: null
                     });
+                    console.log("info: undef " + userObj)
                 }
             }
         );
   } 
 
   logout = () => {
+    console.log('logging out')
         this.setState({
             userInfo: null
         })
@@ -312,6 +322,8 @@ export default class GameContainer extends React.Component {
 
   render() {
     const isLoggedIn = this.state.userInfo !== null
+    console.log('checking log in')
+    console.log(this.state.userInfo);
     switch (this.state.roomSelect) {
       case false:
         return (

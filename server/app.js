@@ -3,9 +3,6 @@ const express = require("express");
 const session = require('express-session');
 const path = require("path");
 const _ = require("underscore")
-
-/*const http = require("http").Server(express);
-const io = require("socket.io")(http);*/
 const http = require("http");
 const socketio = require("socket.io");
 const bodyParser = require('body-parser');
@@ -16,7 +13,6 @@ const db = require('./db');
 const passport = require('./passport');
 const api = require('./routes/api');
 require('dotenv').config();
-// const router = express.Router();
 
 const { initNewGame, gameUpdate, shuffleArray, removePlayers, removeFromLobby } = require("./game");
 
@@ -48,11 +44,10 @@ app.get(
     });
 
 app.get('/logout', function(req, res) {
-    console.log("logged out!");
     req.logout();
     req.session.destroy(function (err) {
       req.user = null;
-      res.redirect('/'); //Inside a callback… bulletproof!
+      res.redirect('/'); 
   });
 });
 
@@ -61,8 +56,6 @@ app.use(bodyParser.json());
 
 app.get('/user', function(req, res) {
     User.findOne({ _id: req.query._id }, function(err, user) {
-
-        console.log('in find one');
     });
 });
 
@@ -93,11 +86,8 @@ const server = http.Server(app);
 const io = socketio(server);
 app.set('socketio', io);
 
-console.log("print port info");
-console.log(process.env.PORT);
-
 server.listen((process.env.PORT || 3000), () => {
-  console.log(`Listening on port 3000 and looking in folder ${publicPath}`);
+/*  console.log(`Listening on port 3000 and looking in folder ${publicPath}`);*/
 });
 
 let numConnected = 0;
@@ -110,13 +100,11 @@ let leaderboardInfo = [];
 
 io.on("connection", (socket) => {
   numConnected += 1;
-  console.log("a user connected they are user number " + numConnected);
 
 
 socket.on("letter-added", (letters) => {
   game = allRooms[socket.room.toString()];
   game.letters += letters[letters.length -1];
-/*  socket.broadcast.to(socket.room).emit("letter-added", letters[letters.length -1]);*/
   gameUpdate(game, letters).then(() => {
     if (game.playerDeath) {
       io.in(socket.room).emit("player-death", game);
@@ -131,7 +119,6 @@ socket.on("letter-added", (letters) => {
       }
     })
   });
-//once game has ended remove game number from list
 
 async function transitionAnimation(game) {
 
@@ -172,7 +159,6 @@ socket.on('roomCreated', (roomNoUserInfo) =>  {
   game.indexMap[0] = socketid;
   game.playerOrder = [0];
   game.timer = 10;
-
   io.to(socket.room).emit("gameInit", game, userInfo, socketid);
 
   allRooms[roomNo.toString()] = game;
@@ -205,7 +191,6 @@ socket.on('roomChosen', (roomNoUserInfo) => {
 
       for (var i of game.playerOrder) {
         updateOrder.push(i);
-        console.log(i);
       };
 
       updateOrder.push(index);
@@ -306,10 +291,8 @@ async function updateDatabaseHelper(player) {
 const databasePromises = [];
 
 async function updateDatabase() {
-  console.log('updateDatabase');
   for (player in game.indexMap) {
     let result = await updateDatabaseHelper(player);
-    // databasePromises.push(results);
   }
   return Promise.all(databasePromises);
 }
@@ -360,10 +343,8 @@ socket.on("disconnect", () => {
           removeFromLobby(game, game.activePlayer);
           io.in(socket.room).emit("disconnect", game); 
         } else if (game.gameStatus === 2) {
-          console.log("in game stat 2")
         }
     } catch {
-        console.log('user null error')
     }
   });
 
