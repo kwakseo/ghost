@@ -61,10 +61,6 @@ app.get(["/success"], (req, res) => {
   res.sendFile(path.join(publicPath, "index.html"));
 });
 
-app.get(["/rules"], (req, res) => {
-  res.sendFile(path.join(publicPath, "index.html"));
-});
-
 app.use('/api', api );
 app.use(express.static(publicPath));
 

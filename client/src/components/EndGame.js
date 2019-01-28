@@ -66,7 +66,9 @@ export default class EndGame extends React.Component {
             {deathOrderArr} 
           </div>
         </div>
-        <div className="button" onClick={this.goHome}>Home</div>
+        <div className="button" onClick={this.goHome}>
+         <div className="home-icon"/>
+        </div>
       </div>
     );
   }

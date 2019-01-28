@@ -29,6 +29,8 @@ export default class Profile extends React.Component{
     var contentClasses = "nav-content";
     var howtoplayClasses = "how-to-play-title";
     var closeBarClasses = "nav-close-bar";
+    var howtoplayOnClick = this.handleOpen;
+    var howtoplayText = "How to Play";
 
     if (this.state.open) {
 
@@ -37,6 +39,8 @@ export default class Profile extends React.Component{
     contentClasses += " open";
     closeBarClasses += " open";
     howtoplayClasses += " open";
+    howtoplayOnClick = this.handleClose;
+    howtoplayText = "Close";
     };
 
     var contents =
@@ -75,7 +79,7 @@ export default class Profile extends React.Component{
 
     return (
         <div className={containerClasses}>
-          <div className={howtoplayClasses} onClick={this.handleOpen}>How to Play</div>
+          <div className={howtoplayClasses} onClick={howtoplayOnClick}>{howtoplayText}</div>
           <div className={contentClasses}>
             {contents}
           </div>

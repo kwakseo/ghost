@@ -22,13 +22,13 @@ export default class DeadPlayer extends React.Component{
     const socketid = this.props.indexMap[index];
     const playerStats = this.props.players[socketid];
 
-    // const numStrikes = playerStats.ghost;
     const userInfo = playerStats.userInfo;
     const name = userInfo.name;
 
     console.log('reached dead player component')
     console.log(socketid)
     console.log(this.props.socket.id)
+
     if (socketid === this.props.socket.id) {
       $(document).mousemove((e) => {
       var x = e.pageX;

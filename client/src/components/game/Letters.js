@@ -31,10 +31,19 @@ export default class Letters extends React.Component{
       typeClassList += "letters-fade "
     };
 
-    typeClassList += "letters-active typing-player-" + this.props.activePlayer;
+    var content = null;
+
+    if (this.props.letters === "" && this.props.socket.id === this.props.indexMap[this.props.activePlayer]) {
+      content = <div className="press-any-letter">Press any letter key to start</div>
+    }
+    else {
+      typeClassList += "letters-active typing-player-" + this.props.activePlayer;
+      content = <div className={typeClassList}>{this.props.letters}</div>
+    }
+
     return (
       <div className={"letters-box component-container"}>
-        <div className={typeClassList}>{this.props.letters}</div>
+        {content}
       </div>
     );
   }
