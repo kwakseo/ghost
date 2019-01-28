@@ -368,7 +368,15 @@ getLeaderInfo = () => {
 }
 
 
-  socket.on("disconnect", () => {
+
+socket.on("game-over", (status) => {
+  console.log("in game-over");
+  console.log(status);
+  game.gameStatus = status;
+});
+
+
+socket.on("disconnect", () => {
     console.log("a user dced");
     numConnected -= 1;
     if (numConnected === 0) {
@@ -406,9 +414,8 @@ getLeaderInfo = () => {
     } catch {
         console.log('user null error')
     }
-
-
-
   });
+
+
 })
 
