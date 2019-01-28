@@ -93,7 +93,17 @@ const removePlayers = (game, loser) => {
     game.playerDeath = true;
     let oldPlayerOrder = game.playerOrder;
     game.playerOrder = [];
+<<<<<<< HEAD
     game.deathOrder.push(game.players[loser]);
+=======
+    game.deathOrder.push(game.players[loser]); 
+
+    // delete game.players[game.indexMap[loser]] 
+    // delete game.indexMap[loser]
+    // console.log(loser)
+    // console.log(game.players)
+    // console.log(game.indexMap)
+>>>>>>> e415ead4c9a8cad6629dfced6bb851f6e25d089e
 
 
     for (var i of oldPlayerOrder) {
