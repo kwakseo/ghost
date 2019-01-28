@@ -15,21 +15,13 @@ export default class GameRules extends React.Component {
     super(props);
     this.state = {value: '', validCode: true, render: false, history: null, leaderboardInfo: null};
 
-    console.log("get history in select room")
-    console.log(this.props.userInfo)
-    console.log(this.props.history);
-
     this.props.socket.on('leader-info', (leaderboardInfo) => {
       this.setState({leaderboardInfo: leaderboardInfo});
-      console.log('in leader info')
-      console.log(leaderboardInfo);
     });
   }
 
   componentDidMount() {
     this.getHistory().then(() => {
-      console.log("in getHistory")
-      console.log(this.state.history);
       this.props.socket.emit("get-history", this.state.history);
     });
 
@@ -43,12 +35,10 @@ export default class GameRules extends React.Component {
   };
 
   handleJoin = (event) => {
-    console.log("trying to join");
 
     this.props.socket.emit('roomChosen', {roomNo: this.state.value, userInfo: this.props.userInfo, socketId: this.props.socket.id});
 
     this.props.socket.on('roomInvalid', (roomNo) => {
-      console.log("room invalid heard" + roomNo);
       this.setState({validCode: false});
     });
 
@@ -60,10 +50,6 @@ export default class GameRules extends React.Component {
 
   handleNew = (event) => {
     let roomNo = Math.floor((Math.random() * 100000) + 1);
-    console.log("socketid");
-    console.log(this.props.userInfo);
-    console.log('should be new game')
-    console.log(roomNo);
     const roomNoUserInfo = {roomNo:roomNo, userInfo: this.props.userInfo, socketId: this.props.socket.id};
 
     this.props.socket.emit('roomCreated', roomNoUserInfo);
@@ -113,15 +99,11 @@ export default class GameRules extends React.Component {
         .then(res => res.json())
         .then(
           historyObj => {
-          console.log("history object");
-          console.log(historyObj);
                 if (historyObj[0] !== undefined) {
-                  console.log('returning player')
                     this.setState({ 
                         history: historyObj,
                     });
                 } else {
-                  console.log('new player')
                     this.setState({ 
                         history: null
                     });
