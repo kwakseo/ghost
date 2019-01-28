@@ -280,6 +280,13 @@ export default class GameContainer extends React.Component {
         );
   } 
 
+  logout = () => {
+    console.log('logging out')
+        this.setState({
+            userInfo: null
+        })
+    };
+
   render() {
     const isLoggedIn = this.state.userInfo !== null
     console.log('checking log in')
@@ -299,7 +306,8 @@ export default class GameContainer extends React.Component {
             updateUsers={(roomNoUserInfo) => this.updateUsers(roomNoUserInfo)}
             indexMap = {this.state.indexMap}
             background_pos = {this.state.background_pos}
-            letters = {this.state.letters} />
+            letters = {this.state.letters}
+            logout = {this.logout} />
             ): (
             <Loading
             socket = {this.socket}/>
