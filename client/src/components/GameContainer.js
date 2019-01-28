@@ -34,6 +34,7 @@ export default class GameContainer extends React.Component {
       background_pos: 100,
       letters: "",
       keyPressed: new Set(),
+      hadTurn: false,
 
       history: null,
       newPlayer: true,
@@ -71,6 +72,7 @@ export default class GameContainer extends React.Component {
                   lastWords: [],
                   leaderboardInfo: null,
                   keyPressed: new Set(),
+                  hadTurn: false,
 
                 });
 
@@ -99,6 +101,8 @@ export default class GameContainer extends React.Component {
                   playerDeath: false,
                   lastWords: [],
                   leaderboardInfo: null,
+                  keyPressed: new Set(),
+                  hadTurn: false,
                 });
       
       console.log("in container joined room, user: " + this.state.userInfo)
@@ -135,6 +139,9 @@ export default class GameContainer extends React.Component {
     this.socket.on("game-update", (game) => {
 
       roundEndAnimation(this, game);
+      if (this.state.hadTurn) {
+        this.setState({hadTurn: false});
+      }
       
       });
 
@@ -222,6 +229,7 @@ export default class GameContainer extends React.Component {
         background_pos: 100,
         letters: "",
         keyPressed: new Set(),
+        hadTurn: false,
 
         history: null,
         newPlayer: true,
@@ -254,9 +262,16 @@ export default class GameContainer extends React.Component {
 
     /* these should be moved to server eventually. 
         temporarily here for testing purposes. */
-      if (this.state.gameStatus === 1 && !this.state.roundEnd && !this.state.keyPressed.has(this.state.activePlayer)) {
-        this.setState({keyPressed: new Set()});
+      // if (this.state.keyPressed.size === this.state.numPlayers.length) {
+      //   this.setState({keyPressed: new Set()});
+      // }
+      if (this.state.gameStatus === 1 && !this.state.roundEnd && !this.state.hadTurn) {
+        this.setState({hadTurn: true});
+        this.state.keyPressed.clear();
+        console.log('reset set')
+        console.log(this.state.keyPressed);
         this.state.keyPressed.add(this.state.activePlayer)
+        console.log(this.state.keyPressed)
         if (this.socket.id === this.state.indexMap[this.state.activePlayer]) {
           if (e.keyCode >= 65 && e.keyCode <= 90) {
             this.setState({letters: this.state.letters + e.key}); 
