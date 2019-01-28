@@ -108,12 +108,7 @@ const removePlayers = (game, loser) => {
     game.playerOrder = [];
     console.log('debugging deathOrder')
     console.log(loser)
-    console.log(game.indexMap)
-    console.log(game.players) 
     game.deathOrder.push(game.players[loser]); 
-    console.log('number of players now') 
-    // game.totalPlayers -= 1
-    console.log(game.totalPlayers)
 
     // delete game.players[game.indexMap[loser]] 
     // delete game.indexMap[loser]
@@ -122,7 +117,7 @@ const removePlayers = (game, loser) => {
     // console.log(game.indexMap)
 
 
-    for (let i = 0; i < game.totalPlayers; i++) {
+    for (var i of oldPlayerOrder) {
         console.log("should be only deleting one player")
         console.log(game.activePlayer);
         if (i != game.activePlayer && !game.deadPlayers.has(i)) {
@@ -131,6 +126,22 @@ const removePlayers = (game, loser) => {
       console.log("new player order");
       console.log(game.playerOrder);
     }
+}
+
+const removeFromLobby = (game, loser) => {
+    let oldnumPlayers = game.numPlayers
+    game.numPlayers -= 1;
+    let oldPlayerOrder = game.playerOrder;
+    game.playerOrder = [];
+    game.playerDeath = true;
+    game.playerOrder = [];
+    for (var i of oldPlayerOrder) {
+        if (i != loser) {
+            game.playerOrder.push(i)
+      }
+    console.log("removed from lobby");
+    console.log(game.playerOrder);
+}
 }
 
 
@@ -179,4 +190,4 @@ const checkWord = (new_word, game) => {
     .catch(error => {console.log(error)})
 }
 
-module.exports = { initNewGame, gameUpdate, shuffleArray, removePlayers };
+module.exports = { initNewGame, gameUpdate, shuffleArray, removePlayers, removeFromLobby };

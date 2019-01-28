@@ -18,7 +18,7 @@ const api = require('./routes/api');
 require('dotenv').config();
 // const router = express.Router();
 
-const { initNewGame, gameUpdate, shuffleArray, removePlayers } = require("./game");
+const { initNewGame, gameUpdate, shuffleArray, removePlayers, removeFromLobby } = require("./game");
 
 const app = express();
 const publicPath = path.resolve(__dirname, '..', "client", "dist");
@@ -44,7 +44,7 @@ app.get(
   ),
   function(req, res) {
 
-    res.redirect('/success');
+    res.redirect('/game');
     });
 
 app.get('/logout', function(req, res) {
@@ -66,7 +66,7 @@ app.get('/user', function(req, res) {
     });
 });
 
-app.get(["/success"], (req, res) => {
+app.get(["/game"], (req, res) => {
   res.sendFile(path.join(publicPath, "index.html"));
 });
 
@@ -216,7 +216,13 @@ socket.on('roomChosen', (roomNoUserInfo) => {
       game = allRooms[roomNo.toString()];
       game.numPlayers += 1;
       game.totalPlayers += 1;
-      const index = game.numPlayers - 1;
+      var index = null;
+      for (var j = 0; j<4; j++){
+        if (!game.playerOrder.includes(j)) {
+          index = j
+          break
+        }
+      };
       console.log("num players " + game.numPlayers);
 
       socketid = socket.id.toString();
@@ -266,9 +272,6 @@ socket.on('gameStarted', (roomNo) => {
 });
 
 socket.on("mousemove", (obj) => {
-  console.log("in mousemove")
-  console.log(obj.x)
-  console.log(obj.y)
   io.to(socket.room).emit('mousemove', (obj));
 });
 
@@ -406,10 +409,10 @@ socket.on("disconnect", () => {
           game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
           console.log('inside game status 0')
           console.log(game.activePlayer)
-          removePlayers(game, game.activePlayer)
+          removeFromLobby(game, game.activePlayer);
           io.in(socket.room).emit("disconnect", game); 
         } else if (game.gameStatus === 2) {
-          
+          console.log("in game stat 2")
         }
     } catch {
         console.log('user null error')

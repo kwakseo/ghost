@@ -47,7 +47,8 @@ export default class Player extends React.Component{
     const index = this.props.playerIndex;
     const socketid = this.props.indexMap[index];
     const playerStats = this.props.players[socketid];
-
+    console.log("stats");
+    console.log(playerStats);
     const numStrikes = playerStats.ghost;
     const userInfo = playerStats.userInfo;
     const name = userInfo.name;
