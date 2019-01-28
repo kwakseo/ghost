@@ -813,6 +813,7 @@ h2{
     margin: 65px;
     padding: 10px 5px;
     font-weight: bold;
+    text-align: center;
 }
 
 @keyframes fade-out {

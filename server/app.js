@@ -391,6 +391,8 @@ getLeaderInfo = () => {
           console.log(game.activePlayer)
           removePlayers(game, game.activePlayer)
           io.in(socket.room).emit("disconnect", game); 
+        } else if (game.gameStatus === 2) {
+          
         }
     } catch {
         console.log('user null error')

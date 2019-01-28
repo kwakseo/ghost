@@ -70,7 +70,8 @@ const gameUpdate = (game, letters) => {
         console.log("active player");
         console.log(game.activePlayer);
         let winner = game.indexMap[game.activePlayer];
-        game.deathOrder.push(game.players[winner])
+        game.deathOrder.push(game.players[winner]);
+        game.gameStatus = 2;
         game.gameOver = true;
       }
       else {
