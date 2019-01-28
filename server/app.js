@@ -159,10 +159,6 @@ socket.on('roomCreated', (roomNoUserInfo) =>  {
   game.indexMap[0] = socketid;
   game.playerOrder = [0];
   game.timer = 10;
-<<<<<<< HEAD
-=======
-
->>>>>>> e415ead4c9a8cad6629dfced6bb851f6e25d089e
   io.to(socket.room).emit("gameInit", game, userInfo, socketid);
 
   allRooms[roomNo.toString()] = game;

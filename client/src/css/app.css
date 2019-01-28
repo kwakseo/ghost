@@ -770,6 +770,7 @@ h2{
 /* ============== GAME: Players ============== */
 
 .dead-player {
+    position: fixed;
     background-image: url(./ghost_logo.png);
     opacity: 0.5;
     width: 100px;

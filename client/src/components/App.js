@@ -3,7 +3,6 @@ import "../css/app.css";
 import { Route, Switch, withRouter } from 'react-router-dom';
 import GameContainer from "./GameContainer";
 import LoginPage from "./LoginPage";
-import GameRules from "./GameRules";
 
 class App extends React.Component {
   constructor(props) {
