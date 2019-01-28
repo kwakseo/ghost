@@ -203,6 +203,7 @@ export default class GameContainer extends React.Component {
         gameStatus: 2,
         deathOrder: game.deathOrder,
         })
+      this.socket.emit("game-over", this.state.gameStatus);
     });
 
     this.socket.on("go-back-home", (home) => {
