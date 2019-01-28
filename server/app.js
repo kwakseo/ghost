@@ -278,7 +278,7 @@ socket.on("mousemove", (obj) => {
 socket.on("go-back-home", (home) => {
   io.to(socket.id).emit('go-back-home', home);
   socket.leave(game.roomNo);
-  game = initNewGame()
+  game = initNewGame();
   leaderboardInfo = [];
 });
 

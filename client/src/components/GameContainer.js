@@ -212,7 +212,31 @@ export default class GameContainer extends React.Component {
     this.socket.on("go-back-home", (home) => {
       this.setState({
         roomSelect: false,
-        gameStatus: 0,
+        roomNo: -1,
+        admin: false,
+        userInfo: null,
+
+        players: null,
+        numPlayers: null,
+        totalPlayers: null,
+        indexMap: null,
+        playerOrder: null,
+        roundEnd: false,
+
+        activePlayer: null,
+        timer: null,
+        background_pos: 100,
+        letters: "",
+
+        history: null,
+        newPlayer: true,
+        winnerId: null,
+        clientToSocketIdMap: [],
+        playerDeath: false,
+        deathOrder: null,
+        lastActivePlayer: null,
+        lastWords: [],
+        leaderboardInfo: null,
       });
       this.getUser().then(() => {
           console.log("game container did mount")
