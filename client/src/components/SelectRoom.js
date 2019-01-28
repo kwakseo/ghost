@@ -75,18 +75,19 @@ export default class GameRules extends React.Component {
   };
 
   render(){
-    console.log('timer');
-    console.log(this.state.render);
-    console.log(this.state.history);
+    var invalid = null;
     const hello = this.state.render ? <Navbar userInfo = {this.props.userInfo} history={this.state.history} leaderboardInfo={this.state.leaderboardInfo}/> : null;
-    const invalid = this.state.validCode ? null : <div>invalid</div>;
+    
+    if (!this.state.validCode) {
+      invalid = "Invalid code"
+    }
 
     return (
       <div>
         <div className={"game-container"}>
           <GameTitle />
           <form onSubmit={this.handleJoin} className="selectroom-container">
-           <div className={"component-container join-box"}> 
+           <div className="component-container join-box"> 
             <input id="m" className="input-box" 
                       value={this.state.value} 
                       onChange={this.handleChange} 
@@ -95,8 +96,8 @@ export default class GameRules extends React.Component {
                       onFocus={(e) => e.target.placeholder = ""} 
                       onBlur={(e) => e.target.placeholder = "Enter Code"}/>
               <div className="join-button" onClick={this.handleJoin}>Join</div>
+              <div className="invalid-code">{invalid}</div>
             </div>
-            <div className="black-text">{invalid}</div>
             <div className="button" onClick={this.handleNew}>Create Game</div>
             <a className={"button"} href="/logout">Logout</a>
             <div className={"rules-box component-container"}>

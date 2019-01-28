@@ -22,13 +22,13 @@ export default class DeadPlayer extends React.Component{
     const socketid = this.props.indexMap[index];
     const playerStats = this.props.players[socketid];
 
-    // const numStrikes = playerStats.ghost;
     const userInfo = playerStats.userInfo;
     const name = userInfo.name;
 
     console.log('reached dead player component')
     console.log(socketid)
     console.log(this.props.socket.id)
+
     if (socketid === this.props.socket.id) {
       $(document).mousemove((e) => {
       var x = e.pageX;
@@ -62,7 +62,7 @@ export default class DeadPlayer extends React.Component{
       <div>
         {console.log(name)}
         <div id={socketid} className = "dead-player">
-          <div className="player-name">{name}</div>
+          <div className="dead-player-name">{name}</div>
         </div>
       </div>
     );

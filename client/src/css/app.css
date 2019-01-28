@@ -9,6 +9,7 @@ body {
     padding: 0px;
     font-family: 'Lato', sans-serif;
     color: #efefef;
+    background-image: url(./gradient-2.png);
 }
 
 #root {
@@ -51,7 +52,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url(./gradient_big.png);
+    background-image: url(./gradient-2.png);
     background-position: 0% 0%;
     background-repeat: no-repeat;
     transition: background-position 0.5s;
@@ -80,6 +81,7 @@ body {
 }
 
 .button {
+    position: relative;
     cursor: pointer;
     font-size: 18px;
     background-color: rgba(245, 245, 245, 0.2);
@@ -110,8 +112,39 @@ body {
     border-right-color: #ccff00;
     border-right-width: 7px;
     overflow: hidden;
+    opacity: 1;
+    animation: typewriter 4s 1s normal infinite;
+}
 
-    animation: typewriter 2s normal steps(2) infinite;
+.title-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    animation: title-disappear 4s 1s alternate infinite;
+}
+
+.title-container {
+    position: relative;
+    display: flex;
+    width: 300px;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+}
+.title-logo {
+    position: fixed;
+    display: flex;
+    width: 200px;
+    height: 200px;
+    align-items: center;
+    justify-content: center;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(./ghost_logo.png);
+    opacity: 0;
+    animation: logo-appear 4s 1s alternate infinite;
 }
 
 .scroll-background {
@@ -158,10 +191,23 @@ body {
 }
 
 @keyframes typewriter {
-  from {width: 202px;}
-  to {width: auto;}
+  0% {width: 202px;}
+  25% {width: auto;}
+  100% {width: 202px;}
 }
 
+@keyframes logo-appear {
+    0% {opacity: 0;}
+    50% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+@keyframes title-disappear {
+    0% {opacity: 1;}
+    25% {opacity: 1;}
+    50% {opacity: 0;}
+    100% {opacity: 0;}
+}
 
 
 /* ============== Rules Page ============== */
@@ -224,8 +270,36 @@ h2{
     width: 300px;
 }
 
+.how-to-play-title {
+    font-size: 36px;
+    font-weight: bold;
+    width: 600px;
+    height: 65px;
+    border-radius: 0px 0px 75px 75px;
+    text-align: center;
+    position: absolute;
+    padding-top: 15px;
+    top: 0%;
+    right: 50%;
+    transform: translateX(50%);
+    transition: background-color 0.5s 0.5s, border-radius 0.5s 0.5s;
+}
 
+.how-to-play-title:hover {
+    cursor: pointer;
+    background-color: rgba(245, 245, 245, 0.2);
+}
 
+.how-to-play-title.open {
+    transition: background-color 0.5s 0s, border-radius 0.5s 0.5s;
+    background-color: rgba(245, 245, 245, 0.2);
+    border-radius: 0px 0px 0px 0px;
+}
+
+.how-to-play-title.open:hover {
+    background-color: rgba(245, 245, 245, 0.5);
+    border-radius: 0px 0px 0px 0px;
+}
 /* ============== Navbar: General ============== */
 
 .nav-background {
@@ -377,17 +451,50 @@ h2{
 
 
 
+/* ============== Loading ============== */
+
+.loading {
+    margin-top: 300px;
+    font-size: 36px;
+    animation-name: fade-in;
+    animation-iteration-count: 5;
+    animation-delay: 3s;
+    animation-direction: alternate;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.vertical-content.login {
+    margin-top: 50px;
+    opacity: 0;
+    animation-name: fade-in;
+    animation-delay: 13s;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+.load-fail {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+
+
+
 /* ============== Navbar: Leaderboard ============== */
 
 .winner-names {
     text-align: left;
-    margin: 40px 80px 40px 50px;
+    width: 400px;
+    margin: 40px 0px 0px 40px;
 
 }
 
 .winner-scores {
     text-align: right;
-    margin: 40px 50px 40px 80px;
+    width: 120px;
+    margin: 40px 40px 0px 0px;
 }
 
 .leader {
@@ -522,6 +629,21 @@ h2{
     width: 600px;
 }
 
+.join-box {
+    position: relative;
+}
+
+.invalid-code {
+    position: absolute;
+    right: -85%;
+    font-size: 18px;
+    background-image: url(./invalid.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 125px;
+    text-align: right;
+}
+
 .join-button {
     cursor: pointer;
     font-size: 18px;
@@ -541,7 +663,6 @@ h2{
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
 .join-button:hover {
@@ -562,7 +683,6 @@ h2{
     color: #1b1a35;
     background-color: #efefef;
     line-height: 1;
-
 }
 
 
@@ -616,6 +736,7 @@ h2{
     text-align: center;
     display: flex;
     align-items: center;
+    justify-content: center;
     font-size: 16px;
 }
 
@@ -646,10 +767,23 @@ h2{
 
 .dead-player {
     background-image: url(./ghost_logo.png);
-    width: 80px;
-    height: 80px;
+    opacity: 0.5;
+    width: 100px;
+    height: 100px;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
+}
+
+.dead-player-name {
+    text-align: center;
+    margin-top: 40px;
+    color: #1b1a35;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 
@@ -674,12 +808,20 @@ h2{
     animation: fade-out 1s linear;
 }
 
+.press-any-letter {
+    font-size: 30px;
+    margin: 65px;
+    padding: 10px 5px;
+    font-weight: bold;
+}
+
 @keyframes fade-out {
    0% {opacity: 1;}
    100% {opacity: 0;} 
 } 
 
 /* ============== GAME: Type Bar ============== */
+
 
 .type-bar {
     font-size: 100px;
@@ -782,5 +924,101 @@ h2{
 .ghost-player-3 {
     color: #ff9900;
 }
+
+/* ============== End Game ============== */
+
+.winner-container {
+    display: flex;
+    background-color: rgba(245, 245, 245, 0.2);
+    border-radius: 55px;
+    width: 220px;
+    height: 250px;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.winner-icon {
+    width: 120px;
+    height: 120px;
+    border-radius: 100px;
+    background-color: rgba(27, 26, 53);
+    margin: 0px 5px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: #efefef solid 5px;
+    font-size: 24px;
+    margin: 25px;
+}
+
+.winner-rank {
+    font-weight: bold;
+    font-size: 30px;
+    margin: 30px 0px 5px 0px;
+
+}
+
+.loser-container {
+    display: flex;
+    border-radius: 55px;
+    width: 200px;
+    height: 250px;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.loser-icon {
+    background-image: url(./ghost_logo.png);
+    width: 120px;
+    height: 120px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 25px;
+
+
+}
+
+.loser-rank {
+    font-weight: bold;
+    font-size: 30px;
+    color: #c3c3c3;
+    margin: 30px 0px 5px 0px;
+
+}
+
+.loser-name {
+    width: 65px;
+    height: 65px;
+    border-radius: 50px;
+    color: #1b1a35;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+
+}
+
+.home-icon {
+    background-size: 100% 100%;
+    margin: 7px 0px;
+    filter: brightness(0.8);
+    width: 55px;
+    height: 55px;
+    background-image: url(./home.png);
+}
+
 
 

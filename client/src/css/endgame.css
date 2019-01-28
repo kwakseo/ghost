@@ -1,17 +1,14 @@
 
 .rectangles {
-    width:680px;
-    height:310px;
     background:#efefef;
     background-color: rgba(245, 245, 245, 0.2);
     margin: 12px;
     display: flex;
-    padding: 20px 30px;
-    border-radius: 50px;
-    text-align: center;
+    border-radius: 70px;
     flex-direction: column;
-    align-content: flex-start;
     align-items: center; 
+    justify-content: center;
+    padding: 25px;
 }
 
 .loser-order {
@@ -26,4 +23,9 @@
 	margin-right: 20px;
 	margin-top: 200px;
 	margin-bottom: 20px;
+}
+
+.end-title {
+    font-size: 48px;
+    padding-bottom: 20px;
 }

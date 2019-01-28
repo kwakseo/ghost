@@ -12,29 +12,16 @@ import "../css/app.css";
 export default class GameTitle extends React.Component {
   constructor(props) {
     super(props);
-
-/*    this.state = {
-    	isVisible: true,
-    	word: "ghost",
-    	full: true,
-    	fullword: "ghost",
-    };*/
   }
-
-/*  componentDidMount() {
-    setInterval(() => {
-      this.setState({ full: !this.state.full });
-      this.setState({ full ? this.state.word.substring(0, this.state.word.length - 1) : this.state.word.fullword});
-    }, 250);
-  }*/
-
-/*  <Box className="title" >
-      		{this.state.word}
-      </Box>*/
   render() {
-/*  	const isVisible = this.state.isVisible;*/
+
     return(
-    	<div className="title">ghost</div>
+      <div className="title-container">
+        <div className="title-logo"/>
+        <div className="title-box">
+          <div className="title">ghost</div>
+        </div>
+      </div>
     );
 	}	
  }

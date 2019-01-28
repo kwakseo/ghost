@@ -8,6 +8,7 @@ import InvalidCode from "./InvalidCode";
 import io from "socket.io-client";
 import EndGame from "./EndGame";
 import Room from "./Room";
+import Loading from "./Loading";
 
 export default class GameContainer extends React.Component {
   constructor(props) {
@@ -307,10 +308,11 @@ export default class GameContainer extends React.Component {
             letters = {this.state.letters}
             logout = {this.logout} />
             ): (
-            <div>You must be logged in to play.</div>
+            <Loading
+            socket = {this.socket}/>
             
         )
-        };
+        }
         </div>
         )
       case true:
@@ -336,7 +338,8 @@ export default class GameContainer extends React.Component {
             winnerId = {this.state.winnerId} 
             deathOrder = {this.state.deathOrder}  />
           ) : (
-          <div>You must be logged in to play.</div>
+          <Loading
+            socket = {this.socket}/>
           )
         }
         </div>

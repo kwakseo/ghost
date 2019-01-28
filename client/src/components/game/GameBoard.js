@@ -56,6 +56,8 @@ export default class GameBoard extends React.Component {
             roundEnd={this.props.roundEnd}
             letters = {this.props.letters}
             activePlayer={this.props.activePlayer}
+            socket={this.props.socket}
+            indexMap={this.props.indexMap}
         />
         <div className="players-box component-container">
           {players}
