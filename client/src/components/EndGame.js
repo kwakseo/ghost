@@ -21,7 +21,8 @@ export default class EndGame extends React.Component {
   };
 
   render(){
-    let rankOrder = this.props.deathOrder.reverse();
+    let deathOrderCopy = this.props.deathOrder.slice().reverse();
+    let rankOrder = deathOrderCopy;
     let deathOrderArr = [];
     let number = 2;
     var title = null;
