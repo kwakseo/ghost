@@ -104,6 +104,8 @@ io.on("connection", (socket) => {
 
 socket.on("letter-added", (letters) => {
   game = allRooms[socket.room.toString()];
+  console.log("socket room letter added");
+  console.log(allRooms);
   game.letters += letters[letters.length -1];
   gameUpdate(game, letters).then(() => {
     if (game.playerDeath) {
