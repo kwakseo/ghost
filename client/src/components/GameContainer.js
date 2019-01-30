@@ -12,8 +12,13 @@ import Loading from "./Loading";
 export default class GameContainer extends React.Component {
   constructor(props) {
     super(props);
+<<<<<<< HEAD
     this.socket = io("http://localhost:3000");
 /*    this.socket=io();*/
+=======
+    // this.socket = io("http://localhost:3000");
+    this.socket=io();
+>>>>>>> a7fae3bb595502532c6cd981e0b290ed9846f4d0
 
     this.state = {
       gameStatus: 0, // 0 is not started, 1 is in session, 2 is ended

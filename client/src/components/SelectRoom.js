@@ -27,7 +27,7 @@ export default class GameRules extends React.Component {
 
     setTimeout(function() { //Start the timer
         this.setState({render: true}) //After 1 second, set render to true
-    }.bind(this), 500)
+    }.bind(this), 2000)
   }
 
   handleChange = (event) => {
