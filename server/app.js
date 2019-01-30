@@ -102,13 +102,7 @@ io.on("connection", (socket) => {
 
 
 socket.on("letter-added", (letters) => {
-<<<<<<< HEAD
-  game = allRooms[socket.room.toString()];
-  console.log("socket room letter added");
-  console.log(allRooms);
-=======
   let game = allRooms[socket.room.toString()];
->>>>>>> a7fae3bb595502532c6cd981e0b290ed9846f4d0
   game.letters += letters[letters.length -1];
   gameUpdate(game, letters).then(() => {
     if (game.playerDeath) {
