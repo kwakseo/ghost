@@ -240,6 +240,7 @@ socket.on("go-back-home", (home) => {
 });
 
 function historyFinder(err, history) {
+  console.log('in history finder now');
   let game = allRooms[socket.room.toString()];
   let longestWord = game.lastWords[0];
   for (let i in game.lastWords) {
@@ -283,9 +284,12 @@ function historyFinder(err, history) {
 const morePromises = [];
 
 async function updateDatabaseHelper(player) {
+  console.log('update database helper')
+  console.log(player)
   let game = allRooms[socket.room.toString()];
     playerGoogleId = game.clientToSocketIdMap[game.indexMap[player]];
     return History.findOne({player_id: playerGoogleId}, async function(err, history) {
+      console.log('in find one')
       let result = await historyFinder(err, history);
       return Promise.all(morePromises);
     });
@@ -296,6 +300,8 @@ const databasePromises = [];
 async function updateDatabase() {
   let game = allRooms[socket.room.toString()];
   for (player in game.indexMap) {
+    console.log('a loop')
+    console.log(player)
     let result = await updateDatabaseHelper(player);
   }
   return Promise.all(databasePromises);
