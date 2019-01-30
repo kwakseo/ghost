@@ -92,7 +92,6 @@ server.listen((process.env.PORT || 3000), () => {
 
 let numConnected = 0;
 let gameStarted = false;
-let game = {};
 let allRooms = {};
 let clientToSocketIdMap = {};
 let userGoogleInfo = {};
@@ -103,7 +102,7 @@ io.on("connection", (socket) => {
 
 
 socket.on("letter-added", (letters) => {
-  game = allRooms[socket.room.toString()];
+  let game = allRooms[socket.room.toString()];
   game.letters += letters[letters.length -1];
   gameUpdate(game, letters).then(() => {
     if (game.playerDeath) {
@@ -150,7 +149,7 @@ socket.on('roomCreated', (roomNoUserInfo) =>  {
 
   socket.room = roomNo;
   socket.join(roomNo);
-  game = initNewGame();
+  let game = initNewGame();
   game.clientToSocketIdMap = clientToSocketIdMap;
 
   game.roomNo = roomNo;
@@ -174,7 +173,7 @@ socket.on('roomChosen', (roomNoUserInfo) => {
   else {
     if (io.sockets.adapter.rooms[roomNo].length < 4) {
       socket.join(roomNo);
-      game = allRooms[roomNo.toString()];
+      let game = allRooms[roomNo.toString()];
       game.numPlayers += 1;
       game.totalPlayers += 1;
       var index = null;
@@ -211,7 +210,7 @@ socket.on('roomChosen', (roomNoUserInfo) => {
 });
 
 socket.on('gameStarted', (roomNo) => {
-  game = allRooms[roomNo.toString()];
+  let game = allRooms[roomNo.toString()];
   let index = 0;
 
 
@@ -232,13 +231,16 @@ socket.on("mousemove", (obj) => {
 });
 
 socket.on("go-back-home", (home) => {
+  let game = allRooms[socket.room.toString()];
   io.to(socket.id).emit('go-back-home', home);
+  game.gameStatus = 0;
   socket.leave(game.roomNo);
-  game = initNewGame();
+  // game = initNewGame();
   leaderboardInfo = [];
 });
 
 function historyFinder(err, history) {
+  let game = allRooms[socket.room.toString()];
   let longestWord = game.lastWords[0];
   for (let i in game.lastWords) {
     if (game.lastWords[i].length > longestWord.length) {
@@ -281,6 +283,7 @@ function historyFinder(err, history) {
 const morePromises = [];
 
 async function updateDatabaseHelper(player) {
+  let game = allRooms[socket.room.toString()];
     playerGoogleId = game.clientToSocketIdMap[game.indexMap[player]];
     return History.findOne({player_id: playerGoogleId}, async function(err, history) {
       let result = await historyFinder(err, history);
@@ -291,6 +294,7 @@ async function updateDatabaseHelper(player) {
 const databasePromises = [];
 
 async function updateDatabase() {
+  let game = allRooms[socket.room.toString()];
   for (player in game.indexMap) {
     let result = await updateDatabaseHelper(player);
   }
@@ -312,39 +316,47 @@ getLeaderInfo = () => {
 
 
 socket.on("game-over", (status) => {
+  let game = allRooms[socket.room.toString()];
   game.gameStatus = status;
 });
 
 
 socket.on("disconnect", () => {
-    numConnected -= 1;
-    if (numConnected === 0) {
-      gameStarted = false;
-    }
+  if (socket.room === undefined || socket.room === null) {
+    console.log("nope");
+  } 
+  else {
 
-    try {
-        if (game.players && game.gameStatus === 1){
-          game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
-          game.players[socket.id].ghost = 4
-          gameUpdate(game, '').then(() => {
-            if (game.playerDeath) {
-              io.in(socket.room).emit("player-death", game);
-            }
-            if (game.gameOver) {
-              io.in(socket.room).emit("game-over", game);
-              updateDatabase();
-            }
-            else {
-              io.in(socket.room).emit("game-update", game);
+    let game = allRooms[socket.room.toString()];
+      numConnected -= 1;
+      if (numConnected === 0) {
+        gameStarted = false;
+      }
+
+      try {
+          if (game.players && game.gameStatus === 1){
+            game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
+            game.players[socket.id].ghost = 4
+            gameUpdate(game, '').then(() => {
+              if (game.playerDeath) {
+                io.in(socket.room).emit("player-death", game);
               }
-            })
-        } else if (game.players && game.gameStatus === 0){
-          game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
-          removeFromLobby(game, game.activePlayer);
-          io.in(socket.room).emit("disconnect", game); 
-        } else if (game.gameStatus === 2) {
-        }
-    } catch {
+              if (game.gameOver) {
+                io.in(socket.room).emit("game-over", game);
+                updateDatabase();
+              }
+              else {
+                io.in(socket.room).emit("game-update", game);
+                }
+              })
+          } else if (game.players && game.gameStatus === 0){
+            game.activePlayer = (_.invert(game.indexMap))[socket.id].toString()
+            removeFromLobby(game, game.activePlayer);
+            io.in(socket.room).emit("disconnect", game); 
+          } else if (game.gameStatus === 2) {
+          }
+      } catch {
+      }
     }
   });
 
