@@ -327,7 +327,6 @@ socket.on("game-over", (status) => {
 
 socket.on("disconnect", () => {
   if (socket.room === undefined || socket.room === null) {
-    console.log("nope");
   } 
   else {
 
