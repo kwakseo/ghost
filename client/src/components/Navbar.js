@@ -62,7 +62,7 @@ export default class Profile extends React.Component{
 
     var leaderboardNames = [];
     var leaderboardScores = [];
-
+    
     for (var i=0; i<this.props.leaderboardInfo.length; i++) {
       var leaderStats = this.props.leaderboardInfo[i];
 

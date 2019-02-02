@@ -97,18 +97,13 @@ let clientToSocketIdMap = {};
 let userGoogleInfo = {};
 let leaderboardInfo = [];
 
+
 io.on("connection", (socket) => {
   numConnected += 1;
 
 
 socket.on("letter-added", (letters) => {
-<<<<<<< HEAD
-  game = allRooms[socket.room.toString()];
-  console.log("socket room letter added");
-  console.log(allRooms);
-=======
   let game = allRooms[socket.room.toString()];
->>>>>>> a7fae3bb595502532c6cd981e0b290ed9846f4d0
   game.letters += letters[letters.length -1];
   gameUpdate(game, letters).then(() => {
     if (game.playerDeath) {
@@ -240,13 +235,11 @@ socket.on("go-back-home", (home) => {
   let game = allRooms[socket.room.toString()];
   io.to(socket.id).emit('go-back-home', home);
   game.gameStatus = 0;
-  socket.leave(game.roomNo);
-  // game = initNewGame();
+  socket.leave(socket.room);
   leaderboardInfo = [];
 });
 
-function historyFinder(err, history) {
-  console.log('in history finder now');
+function historyFinder(err, history, playerGoogleId, player) {
   let game = allRooms[socket.room.toString()];
   let longestWord = game.lastWords[0];
   for (let i in game.lastWords) {
@@ -262,9 +255,10 @@ function historyFinder(err, history) {
         if (playerGoogleId === game.clientToSocketIdMap[game.indexMap[game.activePlayer]]) {
           number_wins += 1;
         }
+        const socketid = socket.id.toString();
         const newHistory = new History({
-          'player_id': userGoogleInfo._id,
-          'player_name': userGoogleInfo.name,
+          'player_id': playerGoogleId,
+          'player_name': game.players[game.indexMap[player]].userInfo.name,
           'number_wins': number_wins,
           'number_games': 1,
           'longest_word': longestWord,
@@ -290,13 +284,11 @@ function historyFinder(err, history) {
 const morePromises = [];
 
 async function updateDatabaseHelper(player) {
-  console.log('update database helper')
-  console.log(player)
   let game = allRooms[socket.room.toString()];
     playerGoogleId = game.clientToSocketIdMap[game.indexMap[player]];
     return History.findOne({player_id: playerGoogleId}, async function(err, history) {
-      console.log('in find one')
-      let result = await historyFinder(err, history);
+      let result = await historyFinder(err, history, playerGoogleId, player);
+      morePromises.push(result);
       return Promise.all(morePromises);
     });
 };
@@ -304,11 +296,11 @@ async function updateDatabaseHelper(player) {
 const databasePromises = [];
 
 async function updateDatabase() {
+
   let game = allRooms[socket.room.toString()];
   for (player in game.indexMap) {
-    console.log('a loop')
-    console.log(player)
     let result = await updateDatabaseHelper(player);
+    databasePromises.push(result);
   }
   return Promise.all(databasePromises);
 }
